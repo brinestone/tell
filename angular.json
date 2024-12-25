@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "tellme": {
+    "tellthem": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -42,7 +42,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/tellme",
+            "outputPath": "dist/tellthem",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -89,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tellme:build:production"
+              "buildTarget": "tellthem:build:production"
             },
             "development": {
-              "buildTarget": "tellme:build:development"
+              "buildTarget": "tellthem:build:development"
             }
           },
           "defaultConfiguration": "development"
