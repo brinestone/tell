@@ -1,9 +1,13 @@
-import { Component, HostListener, inject, OnInit, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Card } from 'primeng/card';
 import { Title } from '@angular/platform-browser';
 import { Divider } from 'primeng/divider';
 import { GoogleButton } from '../../components/google-button.component';
 import { environment } from '../../../environments/environment.development';
+import { dispatch } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { ActivatedRoute } from '@angular/router';
+import { GoogleSignInFlow } from '../../state/user';
 
 @Component({
   selector: 'tm-login',
@@ -15,13 +19,15 @@ import { environment } from '../../../environments/environment.development';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent {
   readonly title = inject(Title);
+  readonly route = inject(ActivatedRoute);
+  private readonly navigate = dispatch(Navigate);
+  private readonly beginGoogleFlow = dispatch(GoogleSignInFlow);
+
   onGoogleButtonClicked() {
-    location.href = `${environment.apiOrigin}/api/auth/google`
+    const continueTo = this.route.snapshot.queryParams['continue'] ?? '/';
+    this.beginGoogleFlow(`${environment.apiOrigin}/api`, continueTo);
   }
 
-  ngOnInit() {
-    console.log(document.cookie);
-  }
 }

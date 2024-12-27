@@ -1,8 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import passport from 'passport';
+import express from 'express';
 
-export function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.status(401).json({ message: 'Not authorized' });
-}
+export const auth = passport.authenticate('jwt', { session: false }) as express.Handler;
