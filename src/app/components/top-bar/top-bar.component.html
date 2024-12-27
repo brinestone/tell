@@ -1,0 +1,21 @@
+<div class="p-1">
+  <p-menubar [model]="menuItems">
+    <ng-template #end>
+      <p-menu #userMenu [popup]="true" [model]="userMenuItems">
+        <ng-template #start>
+          <div class="p-3 flex gap-3">
+            <div>
+              <p-avatar shape="circle" size="large" [image]="principal()?.image"/>
+            </div>
+            <div class="space-y-2">
+              <p class="text-lg font-semibold">{{ principal()?.name }}</p>
+              <span class="text-sm text-muted-color">{{ principal()?.email }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-menu>
+      <p-avatar class="cursor-pointer" (click)="userMenu.toggle($event)" [image]="principal()?.image"
+                shape="circle"/>
+    </ng-template>
+  </p-menubar>
+</div>
