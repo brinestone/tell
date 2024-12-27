@@ -17,7 +17,7 @@ const db = drizzle({
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
-  callbackURL: `${process.env['BASE_URL']}/api/auth/google/callback`,
+  callbackURL: `${process.env['URL']}/api/auth/google/callback`,
 }, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
   let existingUser = await db.query.users.findFirst({
     where: eq(users.users.credentials, profile.id)
@@ -73,13 +73,16 @@ passport.deserializeUser<number>((id, done) => {
 });
 
 const router = Router();
-router.get('/', passport.authenticate('google', {
-  session: false,
-  scope: [
-    'profile',
-    'email',
-  ]
-}));
+router.get('/', (req,res,next) => {
+  console.debug(process.env['URL']);
+  passport.authenticate('google', {
+    session: false,
+    scope: [
+      'profile',
+      'email',
+    ]
+  })(req,res,next);
+});
 router.get('/callback', passport.authenticate('google', {
   failureRedirect: '/auth/login', session: false,
 }), (req: Request, res: Response) => {
