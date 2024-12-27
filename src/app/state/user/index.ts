@@ -16,10 +16,10 @@ import { Navigate } from '@ngxs/router-plugin';
 export * from './actions';
 
 export type Principal = {
-  displayName: string;
+  name: string;
   email: string;
-  userId: number;
-  avatar?: string;
+  sub: number;
+  image?: string;
 }
 
 export type UserStateModel = {

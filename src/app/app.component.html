@@ -1,1 +1,6 @@
-<router-outlet/>
+@if (isSignedIn()) {
+  <tm-top-bar/>
+}
+<main>
+  <router-outlet/>
+</main>
