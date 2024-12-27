@@ -73,13 +73,16 @@ passport.deserializeUser<number>((id, done) => {
 });
 
 const router = Router();
-router.get('/', passport.authenticate('google', {
-  session: false,
-  scope: [
-    'profile',
-    'email',
-  ]
-}));
+router.get('/', (req, res, next) => {
+  console.log(`${process.env['BASE_URL']}/api/auth/google/callback`);
+  passport.authenticate('google', {
+    session: false,
+    scope: [
+      'profile',
+      'email',
+    ]
+  })(req, res, next);
+});
 router.get('/callback', passport.authenticate('google', {
   failureRedirect: '/auth/login', session: false,
 }), (req: Request, res: Response) => {
