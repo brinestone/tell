@@ -17,7 +17,7 @@ const db = drizzle({
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
-  callbackURL: `${process.env['URL']}/api/auth/google/callback`,
+  callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
 }, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
   let existingUser = await db.query.users.findFirst({
     where: eq(users.users.credentials, profile.id)

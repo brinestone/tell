@@ -1,3 +1,3 @@
 export const environment = {
-  apiOrigin: location.origin
+  apiOrigin: 'https://next--tellthem.netlify.app'
 };
