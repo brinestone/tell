@@ -1,0 +1,17 @@
+<div class="flex justify-center items-center h-full">
+  <p-card styleClass="shadow">
+    <ng-template #header>
+      <div class="px-4 pt-2 pb-1">
+        <h1 class="font-light text-2xl text-center">{{ title.getTitle() }}</h1>
+      </div>
+      <p-divider/>
+    </ng-template>
+    <div class="space-y-3">
+      <p class="text-center text-muted-color text-sm m-0">Connect using your accounts from below</p>
+      <div class="flex justify-center gap-3 items-center">
+        <tm-google-button (onClick)="onGoogleButtonClicked()" />
+      </div>
+    </div>
+  </p-card>
+</div>
+

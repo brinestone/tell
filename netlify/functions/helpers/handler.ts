@@ -10,12 +10,7 @@ export function prepareHandler(prefix: string, router: Router) {
     json(),
     cookieParser(),
     urlencoded({ extended: true }),
-    session({
-      secret: 'some secret',
-      saveUninitialized: false,
-      resave: false,
-      cookie: {}
-    }),
+
     passport.initialize(),
     passport.session()
   );

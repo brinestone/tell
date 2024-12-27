@@ -1,4 +1,4 @@
-import { bigint, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { bigint, date, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createSelectSchema } from 'drizzle-zod';
 
 export const federatedCredentials = pgTable('federated_credentials', {
@@ -13,6 +13,8 @@ export const users = pgTable('users', {
   names: varchar({ length: 100 }).notNull(),
   imageUrl: varchar({ length: 255 }),
   email: varchar({ length: 100 }).notNull(),
+  dob: date({mode: 'date'}),
+  phone: varchar({ length: 255 }),
   credentials: varchar().notNull().references(() => federatedCredentials.id)
 });
 
