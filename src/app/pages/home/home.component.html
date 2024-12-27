@@ -1,1 +1,8 @@
-<p>home works!</p>
+<div class="p-1">
+  <p-menubar [model]="menuItems">
+    <ng-template #end>
+      <p-menu #userMenu [popup]="true" [model]="userMenuItems"/>
+      <p-avatar class="cursor-pointer" (click)="userMenu.toggle($event)" [image]="principal()?.avatar" shape="circle"/>
+    </ng-template>
+  </p-menubar>
+</div>
