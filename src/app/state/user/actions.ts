@@ -9,5 +9,11 @@ export class GoogleSignInFlow {
 
 export class FinishGoogleSignInFlow {
   static type = `${prefix} finish google sign-in flow`
-  constructor(readonly accessToken: string){}
+
+  constructor(readonly accessToken: string) {
+  }
+}
+
+export class SignOut {
+  static type = `${prefix} sign out`
 }

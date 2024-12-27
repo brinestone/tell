@@ -1,11 +1,17 @@
-import { Action, createSelector, provideStates, State, StateContext, StateToken } from '@ngxs/store';
+import {
+  Action,
+  createPropertySelectors,
+  createSelector,
+  provideStates,
+  State,
+  StateContext,
+  StateToken
+} from '@ngxs/store';
 import { EnvironmentProviders, Injectable } from '@angular/core';
-import { FinishGoogleSignInFlow, GoogleSignInFlow } from './actions';
+import { FinishGoogleSignInFlow, GoogleSignInFlow, SignOut } from './actions';
 import { jwtDecode } from 'jwt-decode';
-import { throwError } from 'rxjs';
 import { patch } from '@ngxs/store/operators';
 import { Navigate } from '@ngxs/router-plugin';
-
 
 export * from './actions';
 
@@ -33,6 +39,13 @@ type Context = StateContext<UserStateModel>;
 })
 @Injectable()
 class UserState {
+
+  @Action(SignOut)
+  signOut(ctx: Context) {
+    ctx.setState(defaultState);
+    ctx.dispatch(new Navigate(['/']));
+    location.reload();
+  }
 
   @Action(GoogleSignInFlow)
   googleSignInFlow(ctx: Context, { redirect, apiBase }: GoogleSignInFlow) {
@@ -64,4 +77,7 @@ export function provideUserState(...providers: EnvironmentProviders[]) {
   return provideStates([UserState], ...providers);
 }
 
+const slices = createPropertySelectors(USER);
+
 export const isUserSignedIn = createSelector([USER], state => state.signedIn);
+export const principal = slices.principal;
