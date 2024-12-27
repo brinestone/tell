@@ -1,11 +1,6 @@
 name: Branch Deploys for Netlify
 
 on:
-  pull_request:
-    branches:
-      - next
-    types:
-      - closed
   push:
     branches:
       - next
