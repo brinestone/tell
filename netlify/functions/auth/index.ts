@@ -1,24 +1,20 @@
-import * as users from '../config/db/schema/users';
-import { userSchema } from '../config/db/schema/users';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import { prepareHandler } from '../helpers/handler';
-import { Request, Response, Router } from 'express';
-import passport from 'passport';
+import * as users                                              from '../config/db/schema/users';
+import { userSchema }                                          from '../config/db/schema/users';
+import { prepareHandler }                                      from '../helpers/handler';
+import { Request, Response, Router }                           from 'express';
+import passport                                                from 'passport';
 import { Profile, Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
-import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
-import { eq } from 'drizzle-orm';
-import { sign } from 'jsonwebtoken';
-
-const db = drizzle({
-  schema: { ...users },
-  connection: String(process.env['DATABASE_URL'])
-})
+import { ExtractJwt, Strategy as JwtStrategy }                 from 'passport-jwt';
+import { eq }                                                  from 'drizzle-orm';
+import { sign }                                                from 'jsonwebtoken';
+import { useUsersDb }                                          from '../helpers/db';
 
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
-  callbackURL: `${process.env['URL']}/api/auth/google/callback`,
+  callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
 }, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
+  const db = useUsersDb();
   let existingUser = await db.query.users.findFirst({
     where: eq(users.users.credentials, profile.id)
   });
@@ -53,6 +49,7 @@ passport.use(new JwtStrategy(
   },
   async (payload, done) => {
     const { sub } = payload;
+    const db = useUsersDb();
     const user = await db.query.users.findFirst({
       where: eq(users.users.id, sub)
     });
@@ -69,21 +66,20 @@ passport.serializeUser<number>((user, done) => {
 });
 
 passport.deserializeUser<number>((id, done) => {
+  const db = useUsersDb();
+  db.query.users.findFirst({ where: eq(users.users.id, id) }).then(user => done(null, user ?? null), (err) => done(err, null))
   done(null, { id })
 });
 
 const router = Router();
-router.get('/', (req,res,next) => {
-  console.debug(process.env['URL']);
-  passport.authenticate('google', {
-    session: false,
-    scope: [
-      'profile',
-      'email',
-    ]
-  })(req,res,next);
-});
-router.get('/callback', passport.authenticate('google', {
+router.get('/google', passport.authenticate('google', {
+  session: false,
+  scope: [
+    'profile',
+    'email',
+  ]
+}));
+router.get('/google/callback', passport.authenticate('google', {
   failureRedirect: '/auth/login', session: false,
 }), (req: Request, res: Response) => {
   if (!req.user) {
@@ -97,8 +93,9 @@ router.get('/callback', passport.authenticate('google', {
     sub: user.id,
     name: user.names,
     image: user.imageUrl
-  }, String(process.env['JWT_SECRET']), { expiresIn: '1h' })
-  res.redirect(`/auth/oauth2/callback?access_token=${jwt}`);
+  }, String(process.env['JWT_SECRET']), { expiresIn: '1h' });
+
+  return res.redirect(`/auth/oauth2/callback?access_token=${jwt}`);
 });
 
-export const handler = prepareHandler('auth/google', router);
+export const handler = prepareHandler('auth', router);
