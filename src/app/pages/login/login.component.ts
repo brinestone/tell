@@ -5,7 +5,6 @@ import { Divider } from 'primeng/divider';
 import { GoogleButton } from '../../components/google-button.component';
 import { environment } from '../../../environments/environment.development';
 import { dispatch } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { GoogleSignInFlow } from '../../state/user';
 
@@ -22,7 +21,6 @@ import { GoogleSignInFlow } from '../../state/user';
 export class LoginComponent {
   readonly title = inject(Title);
   readonly route = inject(ActivatedRoute);
-  private readonly navigate = dispatch(Navigate);
   private readonly beginGoogleFlow = dispatch(GoogleSignInFlow);
 
   onGoogleButtonClicked() {
