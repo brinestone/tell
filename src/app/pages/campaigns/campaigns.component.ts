@@ -48,6 +48,10 @@ function newPhoneControl(defaultCode = 'CM') {
   }])
 }
 
+function newLinkControl() {
+  return new FormControl('', [Validators.pattern(/^((http|https|ftp):\/\/)?(([\w-]+\.)+[\w-]+)(:\d+)?(\/[\w-]*)*(\?[\w-=&]*)?(#[\w-]*)?$/)])
+}
+
 @Component({
   selector: 'tm-campaigns',
   imports: [
@@ -104,7 +108,7 @@ export class CampaignsComponent {
         code: FormControl<string>;
         number: FormControl<string | null>
       }>>([newPhoneControl()]),
-      links: new FormArray<FormControl<string>>([])
+      links: new FormArray<FormControl<string | null>>([newLinkControl()])
     })
   });
 
@@ -124,7 +128,21 @@ export class CampaignsComponent {
     this.newCampaignForm.controls.contactsAndLinks.controls.phones.removeAt(index);
   }
 
+  addLinkControl() {
+    this.newCampaignForm.controls.contactsAndLinks.controls.links.push(newLinkControl());
+  }
+
+  removeLinkControl(index: number) {
+    this.newCampaignForm.controls.contactsAndLinks.controls.links.removeAt(index);
+  }
+
   constructor() {
+    this.newCampaignForm.controls.contactsAndLinks.controls.links.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(values => {
+      if (!values.every(v => (v?.length ?? 0) > 0)) return;
+      this.addLinkControl();
+    })
     this.newCampaignForm.controls.contactsAndLinks.controls.phones.valueChanges.pipe(
       takeUntilDestroyed()
     ).subscribe(values => {

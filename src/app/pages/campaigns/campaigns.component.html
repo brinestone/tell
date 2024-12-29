@@ -168,12 +168,12 @@
                                     <span>+{{ item.callingCodes[0] }}</span>
                                   </div>
                                 </ng-template>
-<!--                                <ng-template #item let-item>-->
-<!--                                  <div class="flex gap-2 items-center w-20">-->
-<!--                                    <img [src]="item.flags.png" [alt]="item.nativeName" width="21">-->
-<!--                                    <span>{{ item.nativeName }}</span>-->
-<!--                                  </div>-->
-<!--                                </ng-template>-->
+                                <!--                                <ng-template #item let-item>-->
+                                <!--                                  <div class="flex gap-2 items-center w-20">-->
+                                <!--                                    <img [src]="item.flags.png" [alt]="item.nativeName" width="21">-->
+                                <!--                                    <span>{{ item.nativeName }}</span>-->
+                                <!--                                  </div>-->
+                                <!--                                </ng-template>-->
                               </p-select>
                             </div>
                             <p-fluid><input tmPhone [code]="group.controls.code.value" size="small" pInputText
@@ -201,6 +201,36 @@
                         }
                       </div>
                     </ng-container>
+                  }
+                </div>
+              </div>
+              <div>
+                <label class="font-medium">Links</label>
+              </div>
+              <div formArrayName="links">
+                <div class="grid grid-cols-2 gap-2">
+                  @for (control of newCampaignForm.controls.contactsAndLinks.controls.links.controls; track control) {
+                    <div class="flex gap-2 items-start">
+                      <div class="space-y-1">
+                        <p-fluid>
+                          <input type="url" pInputText placeholder="Link {{ $index + 1 }}" [formControl]="control">
+                        </p-fluid>
+                        @if (control.invalid && control.dirty) {
+                          <div>
+                            <p-message variant="simple" size="small" severity="error">
+                              @if (control.hasError('pattern')) {
+                                Invalid URL
+                              }
+                            </p-message>
+                          </div>
+                        }
+                      </div>
+                      @if (!$last) {
+                        <p-button size="small" severity="secondary" type="button" tabindex="-1"
+                                  (onClick)="removeLinkControl($index)"
+                                  icon="pi pi-trash" [rounded]="true"/>
+                      }
+                    </div>
                   }
                 </div>
               </div>
