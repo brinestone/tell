@@ -1,17 +1,17 @@
 import {
   Action,
   createPropertySelectors,
-  createSelector,
+  createSelector, NgxsOnInit,
   provideStates,
   State,
   StateContext,
   StateToken
-} from '@ngxs/store';
-import { EnvironmentProviders, Injectable } from '@angular/core';
+}                                                            from '@ngxs/store';
+import { EnvironmentProviders, Injectable }                  from '@angular/core';
 import { FinishGoogleSignInFlow, GoogleSignInFlow, SignOut } from './actions';
-import { jwtDecode } from 'jwt-decode';
-import { patch } from '@ngxs/store/operators';
-import { Navigate } from '@ngxs/router-plugin';
+import { jwtDecode }                                         from 'jwt-decode';
+import { patch }                                             from '@ngxs/store/operators';
+import { Navigate }                                          from '@ngxs/router-plugin';
 
 export * from './actions';
 
@@ -38,7 +38,7 @@ type Context = StateContext<UserStateModel>;
   defaults: defaultState
 })
 @Injectable()
-class UserState {
+class UserState implements NgxsOnInit {
 
   @Action(SignOut)
   signOut(ctx: Context) {
@@ -71,6 +71,17 @@ class UserState {
       throw error;
     }
   }
+
+  ngxsOnInit(ctx: Context) {
+    const { token } = ctx.getState();
+    if (!token) return;
+    const { exp } = jwtDecode(token);
+    const now = Date.now();
+    if (now > Number(exp)*1000) {
+      ctx.setState(defaultState);
+      location.reload();
+    }
+  }
 }
 
 export function provideUserState(...providers: EnvironmentProviders[]) {
@@ -79,5 +90,5 @@ export function provideUserState(...providers: EnvironmentProviders[]) {
 
 const slices = createPropertySelectors(USER);
 
-export const isUserSignedIn = createSelector([USER], state => state.signedIn);
+export const isUserSignedIn = createSelector([USER], state => state?.signedIn);
 export const principal = slices.principal;

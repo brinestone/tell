@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import serverless from 'serverless-http';
 import passport from 'passport';
 import context from 'express-http-context'
+import { errorHandler }                      from '../middleware/error';
 
 export function prepareHandler(prefix: string, router: Router) {
   const app = express();
@@ -12,6 +13,7 @@ export function prepareHandler(prefix: string, router: Router) {
     cookieParser(),
     urlencoded({ extended: true }),
     passport.initialize(),
+    errorHandler
   );
   app.use(`/api/${prefix}`, router);
   return serverless(app);

@@ -1,6 +1,9 @@
-@if (isSignedIn()) {
-  <tm-top-bar/>
-}
+<div>
+  @if (isSignedIn()) {
+    <tm-top-bar/>
+  }
+</div>
 <main>
   <router-outlet/>
 </main>
+<p-toast [position]="(isSmallDisplay | async) ? 'top-center' : 'bottom-right'"/>
