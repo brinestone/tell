@@ -92,3 +92,4 @@ const slices = createPropertySelectors(USER);
 
 export const isUserSignedIn = createSelector([USER], state => state?.signedIn);
 export const principal = slices.principal;
+export const accessToken = slices.token;

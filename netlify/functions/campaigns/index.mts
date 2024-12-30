@@ -1,5 +1,5 @@
 import {Router, Request, Response} from 'express';
-import {prepareHandler} from '../helpers/handler';
+import {prepareHandler} from '../helpers/handler.mjs';
 
 function ping(req: Request, res: Response) {
 
@@ -9,4 +9,4 @@ function ping(req: Request, res: Response) {
 const router = Router();
 router.get('/', ping);
 
-export const handler = prepareHandler('posts', router);
+export const handler = prepareHandler('campaigns', router);

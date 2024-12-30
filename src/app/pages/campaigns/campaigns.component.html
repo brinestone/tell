@@ -244,6 +244,26 @@
             </div>
           </ng-template>
         </p-step-panel>
+        <p-step-panel [value]="3">
+          <ng-template #content let-advanceTo="activateCallback">
+            <div class="mb-3">
+              <p-fileupload url="/api/blob/upload" name="uploads"
+                accept="image/*,video/*" [multiple]="true" maxFileSize="10485760" mode="advanced">
+                <!--10 MB for max file size-->
+                <ng-template #empty>
+                  <p>Drag and drop a file here to upload.</p>
+                </ng-template>
+              </p-fileupload>
+            </div>
+            <div class="flex justify-between items-center">
+              <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(2)">Back
+              </p-button>
+              <p-button size="small" type="button"
+                        [outlined]="true" (onClick)="advanceTo(4)">Next
+              </p-button>
+            </div>
+          </ng-template>
+        </p-step-panel>
       </p-step-panels>
     </p-stepper>
   </form>

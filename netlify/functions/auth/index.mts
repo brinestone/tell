@@ -1,13 +1,13 @@
-import * as users                                              from '../config/db/schema/users';
-import { userSchema }                                          from '../config/db/schema/users';
-import { prepareHandler }                                      from '../helpers/handler';
+import * as users                                              from '../config/db/schema/users.mjs';
+import { userSchema }                                          from '../config/db/schema/users.mjs';
+import { prepareHandler }                                      from '../helpers/handler.mjs';
 import { Request, Response, Router }                           from 'express';
 import passport                                                from 'passport';
 import { Profile, Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 import { ExtractJwt, Strategy as JwtStrategy }                 from 'passport-jwt';
 import { eq }                                                  from 'drizzle-orm';
 import { sign }                                                from 'jsonwebtoken';
-import { useUsersDb }                                          from '../helpers/db';
+import { useUsersDb }                                          from '../helpers/db.mjs';
 
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),

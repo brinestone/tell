@@ -9,13 +9,16 @@ import { provideStore }                from '@ngxs/store'
 import { withNgxsLoggerPlugin }        from '@ngxs/logger-plugin';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { withNgxsStoragePlugin }       from '@ngxs/storage-plugin'
-import { withNgxsRouterPlugin, }       from '@ngxs/router-plugin'
+import { withNgxsRouterPlugin, }               from '@ngxs/router-plugin'
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { accessTokenInterceptor } from './interceptors/access-token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes, withViewTransitions()),
     provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([accessTokenInterceptor])),
     provideStore([],
       withNgxsStoragePlugin({ keys: [] }),
       withNgxsLoggerPlugin({ disabled: !isDevMode() }),

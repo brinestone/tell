@@ -1,24 +1,29 @@
-import { Component, effect, inject, model, resource }                         from '@angular/core';
-import { TableModule }                                                        from 'primeng/table';
-import { Button }                                                             from 'primeng/button';
-import { InputText }                                                          from 'primeng/inputtext';
-import { IconField }                                                          from 'primeng/iconfield';
-import { InputIcon }                                                          from 'primeng/inputicon';
-import { Drawer }                                                             from 'primeng/drawer';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Message }                                                            from 'primeng/message';
-import { Fluid }                                                              from 'primeng/fluid';
-import { Textarea }                                                           from 'primeng/textarea';
-import { Step, StepList, StepPanel, StepPanels, Stepper }                     from 'primeng/stepper';
-import { NgTemplateOutlet }                                                   from '@angular/common';
-import { MultiSelect }                                                        from 'primeng/multiselect';
-import { Category }                                                           from '@lib/category';
-import { MessageService }                                                     from 'primeng/api';
-import { takeUntilDestroyed }                                                 from '@angular/core/rxjs-interop';
-import { Select }                                                             from 'primeng/select';
-import { PhoneDirective }                                                     from '@app/directives/phone.directive';
-import { PhoneNumberUtil }                                                    from 'google-libphonenumber';
-import { CountryData }                                                        from '@lib/country-data';
+import { Component, effect, inject, model, resource }                           from '@angular/core';
+import { TableModule }                                                          from 'primeng/table';
+import { Button }                                                               from 'primeng/button';
+import { InputText }                                                            from 'primeng/inputtext';
+import { IconField }                                                            from 'primeng/iconfield';
+import { InputIcon }                                                            from 'primeng/inputicon';
+import { Drawer }                                                               from 'primeng/drawer';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators }   from '@angular/forms';
+import { Message }                                                              from 'primeng/message';
+import { Fluid }                                                                from 'primeng/fluid';
+import { Textarea }                                                             from 'primeng/textarea';
+import { Step, StepList, StepPanel, StepPanels, Stepper }                       from 'primeng/stepper';
+import { NgTemplateOutlet }                                                     from '@angular/common';
+import { MultiSelect }                                                          from 'primeng/multiselect';
+import { MessageService }                                                       from 'primeng/api';
+import { takeUntilDestroyed }                                                   from '@angular/core/rxjs-interop';
+import { Select }                                                               from 'primeng/select';
+import { PhoneNumberUtil }                                                      from 'google-libphonenumber';
+import { FileRemoveEvent, FileSelectEvent, FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
+import { PhoneDirective }                                                       from '@app/directives/phone.directive';
+import { CountryData }                                                          from '@lib/country-data';
+import { Category }                                                             from '@lib/category';
+
+function newMediaControl() {
+  return new FormControl<string>('', { nonNullable: true });
+}
 
 function newEmailControl() {
   return new FormControl<string>('', {
@@ -73,7 +78,8 @@ function newLinkControl() {
     NgTemplateOutlet,
     MultiSelect,
     Select,
-    PhoneDirective
+    PhoneDirective,
+    FileUpload
   ],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.scss'
@@ -81,7 +87,7 @@ function newLinkControl() {
 export class CampaignsComponent {
   private messageService = inject(MessageService);
   showNewCampaignModal = model(true);
-  newCampaignFormStep = model(2);
+  newCampaignFormStep = model(3);
   readonly categories = resource({
     loader: async ({ abortSignal }) => {
       const res = await fetch('/api/categories', { signal: abortSignal });
@@ -109,8 +115,36 @@ export class CampaignsComponent {
         number: FormControl<string | null>
       }>>([newPhoneControl()]),
       links: new FormArray<FormControl<string | null>>([newLinkControl()])
-    })
+    }),
+    media: new FormArray<FormControl<string>>([])
   });
+
+  onMediaUploadQueueCleared() {
+    this.newCampaignForm.controls.media.clear();
+  }
+
+  onMediaFileSelected(event: FileSelectEvent) {
+
+  }
+
+  onMediaFileRemoved(event: FileRemoveEvent) {
+
+  }
+
+  async handleFileUpload(event: FileUploadHandlerEvent) {
+    console.log(event);
+    for await (const file of event.files) {
+      const formData = new FormData();
+      formData.append('upload', file, file.name);
+      const response = await fetch('/api/blob/upload', {
+        method: 'POST',
+        body: formData,
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      const { url } = await response.json();
+      console.log(url);
+    }
+  }
 
   addEmailControl() {
     this.newCampaignForm.controls.contactsAndLinks.controls.emails.push(newEmailControl());

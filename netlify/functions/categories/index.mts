@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { prepareHandler }            from '../helpers/handler';
-import { useCategoriesDb }           from '../helpers/db';
+import { prepareHandler }            from '../helpers/handler.mjs';
+import { useCategoriesDb }           from '../helpers/db.mjs';
 
 async function findCategories(_: Request, res: Response) {
   const db = useCategoriesDb();

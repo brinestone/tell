@@ -1,6 +1,6 @@
 import { drizzle }     from 'drizzle-orm/neon-serverless';
-import * as users      from '../config/db/schema/users';
-import * as categories from '../config/db/schema/categories';
+import * as users      from '../config/db/schema/users.mjs';
+import * as categories from '../config/db/schema/categories.mjs';
 import { neonConfig }  from '@neondatabase/serverless';
 import ws              from 'ws';
 
