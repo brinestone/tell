@@ -1,9 +1,14 @@
 <div class="p-2">
-  <p-table [showGridlines]="true" [scrollable]="true" scrollHeight="flex">
+  <p-table [showGridlines]="true" [scrollable]="true" scrollHeight="flex" dataKey="id"
+           [value]="campaigns.value()?.data ?? []"
+           [loading]="campaigns.isLoading()">
     <ng-template #caption>
       <div class="flex justify-between items-start">
         <h1 class="text-lg font-bold">Campaigns</h1>
-        <div class="inline-flex gap-3 items-baseline">
+        <div class="inline-flex gap-3 items-end">
+          <p-button (onClick)="showNewCampaignModal.set(true)" [outlined]="true" title="New Campaign"
+                    label="New Campaign" icon="pi pi-plus"
+          />
           <p-icon-field>
             <p-inputicon>
               <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
@@ -11,18 +16,23 @@
             </p-inputicon>
             <input size="small" #filterInput pInputText type="search" placeholder="Filter">
           </p-icon-field>
-          <p-button (onClick)="showNewCampaignModal.set(true)" [outlined]="true" title="New Campaign" icon="pi pi-plus"
-                    size="small"/>
         </div>
       </div>
     </ng-template>
     <ng-template #header>
       <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Channels</th>
-        <th>Constraints</th>
+        <th>Title</th>
+        <th>Categories</th>
+        <th>Created</th>
         <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-campaign>
+      <tr>
+        <td>{{ campaign.title }}</td>
+        <td>{{ campaign.categories.length }} categories</td>
+        <td>{{ campaign.createdAt | date }}</td>
+        <td></td>
       </tr>
     </ng-template>
   </p-table>
@@ -32,13 +42,12 @@
   <ng-template #header>
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
-  <form [formGroup]="newCampaignForm" class="space-y-3 new-campaign-form">
+  <form (ngSubmit)="onFormSubmit($event)" [formGroup]="newCampaignForm" class="space-y-3 new-campaign-form">
     <p-stepper [(value)]="newCampaignFormStep" [linear]="true">
       <p-step-list>
         <p-step [value]="1">Basic</p-step>
         <p-step [value]="2">Contacts & Links</p-step>
         <p-step [value]="3">Media</p-step>
-        <p-step [value]="4">Finish</p-step>
       </p-step-list>
       <p-step-panels>
         <p-step-panel [value]="1">
@@ -91,7 +100,7 @@
               <div class="space-y-1">
                 <p-fluid>
                   <p-multi-select formControlName="categories" [loading]="categories.isLoading()"
-                                  [options]="categories.value()" optionValue="id" optionLabel="name"/>
+                                  [options]="categories.value()" optionValue="id" optionLabel="title"/>
                 </p-fluid>
               </div>
             </div>
@@ -246,20 +255,73 @@
         </p-step-panel>
         <p-step-panel [value]="3">
           <ng-template #content let-advanceTo="activateCallback">
-            <div class="mb-3">
-              <p-fileupload url="/api/blob/upload" name="uploads"
-                accept="image/*,video/*" [multiple]="true" maxFileSize="10485760" mode="advanced">
-                <!--10 MB for max file size-->
-                <ng-template #empty>
-                  <p>Drag and drop a file here to upload.</p>
-                </ng-template>
-              </p-fileupload>
+            <div class="mb-3 space-y-2">
+              <div>
+                <p-fileupload url="/api/blob/upload" name="uploads" (onUpload)="onMediaFilesUploaded($event)"
+                              accept="image/*,video/*" (onSelect)="onMediaFileSelected($event)" [multiple]="true"
+                              [maxFileSize]="maxFileSize()" [fileLimit]="maxUploadCount()"
+                              (onClear)="onMediaFilesCleared()"
+                              (onRemove)="onMediaFileRemoved($event)"
+                              mode="advanced">
+                  <!--10 MB for max file size-->
+                  <ng-template #empty>
+                    <p>Drag and drop a file here to upload.</p>
+                  </ng-template>
+                  <ng-template #header let-pickFile="chooseCallback" let-clear="clearCallback"
+                               let-doUpload="uploadCallback">
+                    <div class="w-full">
+                      <div>
+                        <p-fluid>
+                          <p-meter-group [value]="uploadConstraints()" [max]="6291456"/>
+                        </p-fluid>
+                      </div>
+                      <div class="flex items-center gap-3 mt-3">
+                        <p-button type="button" size="small" [outlined]="true" [rounded]="true" icon="pi pi-file-import"
+                                  severity="secondary"
+                                  label="Add media file" (onClick)="pickFile()"/>
+                        <p-button (onClick)="doUpload()" type="button" size="small" [outlined]="true" [rounded]="true"
+                                  icon="pi pi-upload"
+                                  label="upload"/>
+                        <p-button (onClick)="clear()" type="button" size="small" [outlined]="true" [rounded]="true"
+                                  icon="pi pi-trash" severity="danger"
+                                  label="Clear"/>
+                      </div>
+                      <p-divider/>
+                    </div>
+                  </ng-template>
+                  <ng-template #content>
+                    @if (newCampaignForm.controls.media.length > 0) {
+                      <h1 class="text-lg font-semibold">Uploaded files</h1>
+                      <div class="grid grid-cols-4 gap-2 pt-2">
+                        @for (url of newCampaignForm.controls.media.value; track url) {
+                          <div class="relative rounded-md overflow-hidden group">
+                            <div class="relative rounded-md overflow-hidden group">
+                              @if (url.endsWith('.mp4')) {
+                                <video loop autoplay muted [src]="url" class="w-full h-full object-cover"></video>
+                              } @else {
+                                <img [src]="url" alt="media-{{$index}}" class="w-full h-full object-cover">
+                              }
+                              <div
+                                class="z-10 bg-black bg-opacity-0 transition-opacity group-hover:bg-opacity-20 absolute left-0 top-0 w-full h-full flex justify-center gap-3 items-center">
+                                <p-button (onClick)="removeMediaControl($index)" styleClass="hidden group-hover:inline"
+                                          [rounded]="true" size="small"
+                                          severity="secondary" [text]="true"
+                                          icon="pi pi-trash"/>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </ng-template>
+                </p-fileupload>
+              </div>
             </div>
             <div class="flex justify-between items-center">
               <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(2)">Back
               </p-button>
-              <p-button size="small" type="button"
-                        [outlined]="true" (onClick)="advanceTo(4)">Next
+              <p-button size="small" type="submit"
+                        [outlined]="true" (onClick)="onFinishButtonClicked()">Finish
               </p-button>
             </div>
           </ng-template>

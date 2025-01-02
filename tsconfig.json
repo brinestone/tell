@@ -18,7 +18,8 @@
     "baseUrl": "./",
     "paths": {
       "@lib/*": ["lib/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@functions/*": ["netlify/functions/*"]
     }
   },
   "angularCompilerOptions": {

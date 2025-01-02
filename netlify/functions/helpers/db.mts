@@ -1,6 +1,7 @@
 import { drizzle }     from 'drizzle-orm/neon-serverless';
-import * as users      from '../config/db/schema/users.mjs';
-import * as categories from '../config/db/schema/categories.mjs';
+import * as users      from '../config/db/schema/users';
+import * as categories from '../config/db/schema/categories';
+import * as campaigns  from '../config/db/schema/campaigns';
 import { neonConfig }  from '@neondatabase/serverless';
 import ws              from 'ws';
 
@@ -18,4 +19,11 @@ export function useCategoriesDb() {
     schema: { ...categories },
     connection: String(process.env['DATABASE_URL'])
   })
+}
+
+export function useCampaignsDb() {
+  return drizzle({
+    schema: { ...campaigns },
+    connection: String(process.env['DATABASE_URL'])
+  });
 }
