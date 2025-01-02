@@ -17,6 +17,7 @@ jobs:
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      DATABASE_URL: ${{ secrets.STAGING_DB }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -43,5 +44,7 @@ jobs:
       - name: Install Dependencies 📦
         if: steps.setup-cache.outputs.cache-hit != 'true'
         run: pnpm i
+      - name: Migrate Database Schema
+        run: pnpm migrate.dev
       - name: Build ⚙️ & Deploy ⬆️
         run: netlify deploy --alias="${{ github.ref_name }}" --build --context deploy-preview --message="${{ github.event.head_commit.message }}"
