@@ -1,11 +1,11 @@
-import { Request, Response, Router }    from 'express';
-import { prepareHandler }               from '@functions/helpers/handler.mjs';
-import { useCampaignsDb }               from '@functions/helpers/db.mjs';
-import { auth }                         from '@functions/middleware/auth.mjs';
-import { campaigns, newCampaignSchema } from '@functions/config/db/schema/campaigns';
-import { extractUser }                  from '@functions/helpers/auth.mjs';
-import { count, eq }                    from 'drizzle-orm';
-import { LookupCampaingsResponse }      from '@lib/campaign';
+import { Request, Response, Router } from 'express';
+import { prepareHandler }            from '@functions/helpers/handler.mjs';
+import { useCampaignsDb }            from '@functions/helpers/db.mjs';
+import { auth }                      from '@functions/middleware/auth.mjs';
+import { campaigns }                 from '@functions/config/db/schema/campaigns';
+import { extractUser }               from '@functions/helpers/auth.mjs';
+import { count, eq }                 from 'drizzle-orm';
+import { LookupCampaingsResponse }   from '@lib/campaign';
 
 async function createCampaign(req: Request, res: Response) {
   const dto = req.body;
