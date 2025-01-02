@@ -22,7 +22,7 @@ export class TopBarComponent {
   readonly menuItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/', icon: 'pi pi-gauge', routerLinkActiveOptions: { match: true } },
     {
-      label: 'Posts', icon: 'pi pi-list', routerLink: '/posts', routerLinkActiveOptions: { match: true }
+      label: 'Campaigns', icon: 'pi pi-list', routerLink: '/campaigns', routerLinkActiveOptions: { match: true }
     },
     { label: 'Wallet', icon: 'pi pi-wallet', routerLink: '/wallet', routerLinkActiveOptions: { match: true } },
   ];

@@ -1,0 +1,13 @@
+:host {
+  @apply block w-full h-full;
+}
+
+.new-campaign-form {
+  td:nth-child(2n+1) {
+    @apply lg:w-[8rem];
+  }
+
+  td:nth-child(2n) {
+    @apply lg:w-[30rem]
+  }
+}

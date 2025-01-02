@@ -1,13 +1,12 @@
 import * as users                                              from '../config/db/schema/users';
 import { userSchema }                                          from '../config/db/schema/users';
-import { prepareHandler }                                      from '../helpers/handler';
+import { prepareHandler }                                      from '../helpers/handler.mjs';
 import { Request, Response, Router }                           from 'express';
 import passport                                                from 'passport';
 import { Profile, Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
-import { ExtractJwt, Strategy as JwtStrategy }                 from 'passport-jwt';
 import { eq }                                                  from 'drizzle-orm';
 import { sign }                                                from 'jsonwebtoken';
-import { useUsersDb }                                          from '../helpers/db';
+import { useUsersDb }                                          from '../helpers/db.mjs';
 
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
@@ -42,33 +41,14 @@ passport.use(new GoogleStrategy({
   return done(null, existingUser);
 }));
 
-passport.use(new JwtStrategy(
-  {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: String(process.env['JWT_SECRET'])
-  },
-  async (payload, done) => {
-    const { sub } = payload;
-    const db = useUsersDb();
-    const user = await db.query.users.findFirst({
-      where: eq(users.users.id, sub)
-    });
-    if (!user) {
-      done(new Error('Account not found'));
-      return
-    }
-    done(null, user);
-  }
-))
-
 passport.serializeUser<number>((user, done) => {
   return done(null, userSchema.parse(user).id);
 });
 
 passport.deserializeUser<number>((id, done) => {
   const db = useUsersDb();
-  db.query.users.findFirst({ where: eq(users.users.id, id) }).then(user => done(null, user ?? null), (err) => done(err, null))
-  done(null, { id })
+  db.query.users.findFirst({ where: eq(users.users.id, id) })
+    .then(user => done(null, user ?? null), (err) => done(err, null));
 });
 
 const router = Router();

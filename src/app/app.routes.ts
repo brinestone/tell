@@ -8,6 +8,8 @@ const userState = provideUserState(withStorageFeature([
   { key: USER, engine: SESSION_STORAGE_ENGINE }
 ]));
 
+const signedInGuard = authGuard('/auth/login');
+
 export const appRoutes: Routes = [
   {
     providers: [userState],
@@ -15,13 +17,15 @@ export const appRoutes: Routes = [
     loadChildren: () => import('./auth.routes').then(m => m.authRoutes)
   },
   {
-    path: 'posts',
-    loadComponent: () => import('./pages/posts/posts.component').then(m => m.PostsComponent),
-    title: 'Posts'
+    path: 'campaigns',
+    canActivate: [signedInGuard],
+    providers: [userState],
+    loadComponent: () => import('./pages/campaigns/campaigns.component').then(m => m.CampaignsComponent),
+    title: 'Campaigns'
   },
   {
     providers: [userState],
-    canActivate: [authGuard('/auth/login')],
+    canActivate: [signedInGuard],
     title: 'Dashboard',
     path: '',
     pathMatch: 'full',
