@@ -10,9 +10,20 @@ export interface Campaign {
   categories: number[];
 }
 
-export interface LookupCampaingsResponse {
+export interface LookupCampaignResponse {
   total: number;
   page: number;
   size: number;
   data: Campaign[];
+}
+
+export interface CampaignPublication {
+  id: number;
+  campaign: number;
+  createdAt: Date;
+  updatedAt: Date;
+  channels: string[];
+  assignedTokens: number;
+  publishAfter: Date;
+  publishBefore?: Date;
 }

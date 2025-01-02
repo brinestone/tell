@@ -1,336 +1,74 @@
-<div class="p-2">
-  <p-table [showGridlines]="true" [scrollable]="true" scrollHeight="flex" dataKey="id"
-           [value]="campaigns.value()?.data ?? []"
-           [loading]="campaigns.isLoading()">
-    <ng-template #caption>
-      <div class="flex justify-between items-start">
-        <h1 class="text-lg font-bold">Campaigns</h1>
-        <div class="inline-flex gap-3 items-end">
-          <p-button (onClick)="showNewCampaignModal.set(true)" [outlined]="true" title="New Campaign"
-                    label="New Campaign" icon="pi pi-plus"
-          />
-          <p-icon-field>
-            <p-inputicon>
-              <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
-                 [class.pi-filter-fill]="filterInput.value.length > 0"></i>
-            </p-inputicon>
-            <input size="small" #filterInput pInputText type="search" placeholder="Filter">
-          </p-icon-field>
+<div class="p-2 md:grid md:grid-cols-[1fr_auto] md:gap-x-3">
+  <p-panel>
+    <p-table [scrollable]="true" scrollHeight="flex" dataKey="id"
+             [value]="campaigns.value()?.data ?? []" [paginator]="(campaigns.value()?.data?.length ?? 0) > 10"
+             [rows]="10" selectionMode="single" [(selection)]="selectedCampaign"
+             [loading]="campaigns.isLoading()" [totalRecords]="campaigns.value()?.total ?? 0">
+      <ng-template #caption>
+        <div class="flex justify-between items-start">
+          <h1 class="text-lg font-bold">Campaigns</h1>
+          <div class="inline-flex gap-3 items-end">
+            <p-button (onClick)="showNewCampaignModal.set(true)" [outlined]="true" title="New Campaign"
+                      label="New Campaign" icon="pi pi-plus"
+            />
+            <p-icon-field>
+              <p-inputicon>
+                <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
+                   [class.pi-filter-fill]="filterInput.value.length > 0"></i>
+              </p-inputicon>
+              <input size="small" #filterInput pInputText type="search" placeholder="Filter">
+            </p-icon-field>
+          </div>
         </div>
-      </div>
-    </ng-template>
-    <ng-template #header>
-      <tr>
-        <th>Title</th>
-        <th>Categories</th>
-        <th>Created</th>
-        <th></th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-campaign>
-      <tr>
-        <td>{{ campaign.title }}</td>
-        <td>{{ campaign.categories.length }} categories</td>
-        <td>{{ campaign.createdAt | date }}</td>
-        <td></td>
-      </tr>
-    </ng-template>
-  </p-table>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th>Title</th>
+          <th>Categories</th>
+          <th>Created</th>
+          <th class="w-[1rem]"></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-campaign>
+        <tr [pSelectableRow]="campaign">
+          <td><p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p></td>
+          <td>{{ campaign.categories.length }} categories</td>
+          <td>{{ campaign.createdAt | date }}</td>
+          <td class="w-[1rem]">
+            <div class="flex gap-3 items-center">
+              <p-menu appendTo="body" [popup]="true" #campaignActions [model]="[
+              { label:'Publish', icon: 'pi pi-megaphone' },
+              { label:'Edit', icon: 'pi pi-pencil' },
+              { separator: true },
+              {label:'Delete', icon:'pi pi-trash' }
+              ]"/>
+              <p-button (onClick)="campaignActions.toggle($event)" size="small" [text]="true" severity="secondary"
+                        icon="pi pi-ellipsis-v"/>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+  @if (selectedCampaign()) {
+    <div class="w-[20rem]">
+      <p-panel>
+        <ng-template #header>
+          <h1 class="text-lg font-bold"><i class="pi pi-megaphone"></i> Publications</h1>
+        </ng-template>
+        <tm-campaign-publications [campaignId]="selectedCampaign()?.id"/>
+      </p-panel>
+    </div>
+  }
 </div>
 
 <p-drawer styleClass="w-full md:w-80 lg:w-[45rem]" [modal]="true" [(visible)]="showNewCampaignModal" position="right">
   <ng-template #header>
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
-  <form (ngSubmit)="onFormSubmit($event)" [formGroup]="newCampaignForm" class="space-y-3 new-campaign-form">
-    <p-stepper [(value)]="newCampaignFormStep" [linear]="true">
-      <p-step-list>
-        <p-step [value]="1">Basic</p-step>
-        <p-step [value]="2">Contacts & Links</p-step>
-        <p-step [value]="3">Media</p-step>
-      </p-step-list>
-      <p-step-panels>
-        <p-step-panel [value]="1">
-          <ng-template #content let-advanceTo="activateCallback">
-            <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 mb-3" formGroupName="basic">
-              <div>
-                <label for="new_campaign_title" class="font-medium">Title <span class="text-red-500">*</span></label>
-              </div>
-              <div class="space-y-1">
-                <p-fluid>
-                  <input pInputText formControlName="title" id="new_campaign_title">
-                </p-fluid>
-                <div>
-                  @if (newCampaignForm.controls.basic.controls.title.invalid && newCampaignForm.controls.basic.controls.title.dirty) {
-                    <p-message variant="simple" size="small" severity="error">
-                      @if (newCampaignForm.controls.basic.controls.title.hasError('required')) {
-                        This field is required
-                      } @else if (newCampaignForm.controls.basic.controls.title.hasError('maxlength')) {
-                        <ng-container
-                          *ngTemplateOutlet="maxLengthError;context: {$implicit: newCampaignForm.controls.basic.controls.title.getError('maxlength')}"/>
-                      }
-                    </p-message>
-                  }
-                </div>
-              </div>
-              <div>
-                <label for="new_campaign_description" class="font-medium">Description <span
-                  class="text-red-500">*</span></label>
-              </div>
-              <div class="space-y-1">
-                <p-fluid>
-                  <textarea id="new_campaign_description" pTextarea rows="8" formControlName="description"></textarea>
-                </p-fluid>
-                <div>
-                  @if (newCampaignForm.controls.basic.controls.description.invalid && newCampaignForm.controls.basic.controls.description.dirty) {
-                    <p-message variant="simple" size="small" severity="error">
-                      @if (newCampaignForm.controls.basic.controls.description.hasError('required')) {
-                        This field is required
-                      } @else if (newCampaignForm.controls.basic.controls.description.hasError('maxlength')) {
-                        <ng-container
-                          *ngTemplateOutlet="maxLengthError;context: {$implicit: newCampaignForm.controls.basic.controls.description.getError('maxlength')}"/>
-                      }
-                    </p-message>
-                  }
-                </div>
-              </div>
-              <div>
-                <label class="font-medium">Categories <span class="text-red-500">*</span></label>
-              </div>
-              <div class="space-y-1">
-                <p-fluid>
-                  <p-multi-select formControlName="categories" [loading]="categories.isLoading()"
-                                  [options]="categories.value()" optionValue="id" optionLabel="title"/>
-                </p-fluid>
-              </div>
-            </div>
-
-            <div class="flex justify-end">
-              <p-button type="button" [disabled]="newCampaignForm.controls.basic.invalid" [outlined]="true" size="small"
-                        (onClick)="advanceTo(2)">Next
-              </p-button>
-            </div>
-          </ng-template>
-        </p-step-panel>
-        <p-step-panel [value]="2">
-          <ng-template #content let-advanceTo="activateCallback">
-            <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 mb-3" formGroupName="contactsAndLinks">
-              <div>
-                <label class="font-medium">Emails</label>
-              </div>
-              <div formArrayName="emails">
-                <div class="grid grid-cols-2 gap-2">
-                  @for (control of newCampaignForm.controls.contactsAndLinks.controls.emails.controls; track control) {
-                    <ng-container>
-                      <div class="flex items-start gap-2">
-                        <div class="space-y-1">
-                          <p-fluid>
-                            <input placeholder="Email address {{$index + 1}}" type="email" pInputText
-                                   [formControl]="control">
-                          </p-fluid>
-                          @if (control.invalid && control.dirty) {
-                            <div>
-                              <p-message variant="simple" size="small" severity="error">
-                                @if (control.hasError('required')) {
-                                  This field is required
-                                } @else if (control.hasError('email')) {
-                                  Invalid email address
-                                }
-                              </p-message>
-                            </div>
-                          }
-                        </div>
-                        @if ($count > 1 && !$last) {
-                          <p-button (onClick)="removeEmailControl($index)" icon="pi pi-trash" severity="secondary"
-                                    size="small" [rounded]="true" [text]="true" tabindex="-1"
-                                    type="button"/>
-                        }
-                      </div>
-                    </ng-container>
-                  }
-                </div>
-              </div>
-              <div>
-                <label class="font-medium">Phone numbers</label>
-              </div>
-              <div formArrayName="phones">
-                <div class="grid grid-cols-2 gap-2">
-                  @for (group of newCampaignForm.controls.contactsAndLinks.controls.phones.controls; track group) {
-                    <ng-container [formGroup]="group">
-                      <div class="flex items-start gap-2">
-                        <div class="space-y-1">
-                          <div class="flex gap-x-2">
-                            <div>
-                              <p-select placeholder="Select Country" [filter]="true"
-                                        [filterFields]="['alpha2Code','alpha3Code','nativeName','name']"
-                                        filterMatchMode="contains"
-                                        optionLabel="nativeName"
-                                        optionValue="alpha2Code"
-                                        formControlName="code" [options]="countries.value()"
-                                        appendTo="body" [virtualScroll]="true" [checkmark]="true"
-                                        [virtualScrollItemSize]="38"
-                                        [loading]="countries.isLoading()">
-                                <ng-template #selectedItem let-item>
-                                  <div class="flex justify-between gap-1 items-center w-[3rem]">
-                                    <img [src]="item.flags.png" width="21" class="m-0"
-                                         [alt]="item.nativeName">
-                                    <span>+{{ item.callingCodes[0] }}</span>
-                                  </div>
-                                </ng-template>
-                                <!--                                <ng-template #item let-item>-->
-                                <!--                                  <div class="flex gap-2 items-center w-20">-->
-                                <!--                                    <img [src]="item.flags.png" [alt]="item.nativeName" width="21">-->
-                                <!--                                    <span>{{ item.nativeName }}</span>-->
-                                <!--                                  </div>-->
-                                <!--                                </ng-template>-->
-                              </p-select>
-                            </div>
-                            <p-fluid><input tmPhone [code]="group.controls.code.value" size="small" pInputText
-                                            type="tel" placeholder="Phone {{ $index + 1}}"
-                                            formControlName="number"></p-fluid>
-                          </div>
-                          @if (group.invalid && group.dirty) {
-                            <div>
-                              <p-message variant="simple" size="small" severity="error">
-                                @if (group.controls.code.hasError('required')) {
-                                  The country code is required
-                                } @else if (group.controls.number.hasError('number')) {
-                                  Invalid national number value
-                                } @else if (group.hasError('phoneInvalid')) {
-                                  Invalid phone number
-                                }
-                              </p-message>
-                            </div>
-                          }
-                        </div>
-                        @if ($count > 1 && !$last) {
-                          <p-button (onClick)="removePhoneControl($index)" icon="pi pi-trash" severity="secondary"
-                                    size="small" [rounded]="true" [text]="true" tabindex="-1"
-                                    type="button"/>
-                        }
-                      </div>
-                    </ng-container>
-                  }
-                </div>
-              </div>
-              <div>
-                <label class="font-medium">Links</label>
-              </div>
-              <div formArrayName="links">
-                <div class="grid grid-cols-2 gap-2">
-                  @for (control of newCampaignForm.controls.contactsAndLinks.controls.links.controls; track control) {
-                    <div class="flex gap-2 items-start">
-                      <div class="space-y-1">
-                        <p-fluid>
-                          <input type="url" pInputText placeholder="Link {{ $index + 1 }}" [formControl]="control">
-                        </p-fluid>
-                        @if (control.invalid && control.dirty) {
-                          <div>
-                            <p-message variant="simple" size="small" severity="error">
-                              @if (control.hasError('pattern')) {
-                                Invalid URL
-                              }
-                            </p-message>
-                          </div>
-                        }
-                      </div>
-                      @if (!$last) {
-                        <p-button size="small" severity="secondary" type="button" tabindex="-1"
-                                  (onClick)="removeLinkControl($index)"
-                                  icon="pi pi-trash" [rounded]="true"/>
-                      }
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-between items-center">
-              <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(1)">Back
-              </p-button>
-              <p-button size="small" [disabled]="newCampaignForm.controls.contactsAndLinks.invalid" type="button"
-                        [outlined]="true" (onClick)="advanceTo(3)">Next
-              </p-button>
-            </div>
-          </ng-template>
-        </p-step-panel>
-        <p-step-panel [value]="3">
-          <ng-template #content let-advanceTo="activateCallback">
-            <div class="mb-3 space-y-2">
-              <div>
-                <p-fileupload url="/api/blob/upload" name="uploads" (onUpload)="onMediaFilesUploaded($event)"
-                              accept="image/*,video/*" (onSelect)="onMediaFileSelected($event)" [multiple]="true"
-                              [maxFileSize]="maxFileSize()" [fileLimit]="maxUploadCount()"
-                              (onClear)="onMediaFilesCleared()"
-                              (onRemove)="onMediaFileRemoved($event)"
-                              mode="advanced">
-                  <!--10 MB for max file size-->
-                  <ng-template #empty>
-                    <p>Drag and drop a file here to upload.</p>
-                  </ng-template>
-                  <ng-template #header let-pickFile="chooseCallback" let-clear="clearCallback"
-                               let-doUpload="uploadCallback">
-                    <div class="w-full">
-                      <div>
-                        <p-fluid>
-                          <p-meter-group [value]="uploadConstraints()" [max]="6291456"/>
-                        </p-fluid>
-                      </div>
-                      <div class="flex items-center gap-3 mt-3">
-                        <p-button type="button" size="small" [outlined]="true" [rounded]="true" icon="pi pi-file-import"
-                                  severity="secondary"
-                                  label="Add media file" (onClick)="pickFile()"/>
-                        <p-button (onClick)="doUpload()" type="button" size="small" [outlined]="true" [rounded]="true"
-                                  icon="pi pi-upload"
-                                  label="upload"/>
-                        <p-button (onClick)="clear()" type="button" size="small" [outlined]="true" [rounded]="true"
-                                  icon="pi pi-trash" severity="danger"
-                                  label="Clear"/>
-                      </div>
-                      <p-divider/>
-                    </div>
-                  </ng-template>
-                  <ng-template #content>
-                    @if (newCampaignForm.controls.media.length > 0) {
-                      <h1 class="text-lg font-semibold">Uploaded files</h1>
-                      <div class="grid grid-cols-4 gap-2 pt-2">
-                        @for (url of newCampaignForm.controls.media.value; track url) {
-                          <div class="relative rounded-md overflow-hidden group">
-                            <div class="relative rounded-md overflow-hidden group">
-                              @if (url.endsWith('.mp4')) {
-                                <video loop autoplay muted [src]="url" class="w-full h-full object-cover"></video>
-                              } @else {
-                                <img [src]="url" alt="media-{{$index}}" class="w-full h-full object-cover">
-                              }
-                              <div
-                                class="z-10 bg-black bg-opacity-0 transition-opacity group-hover:bg-opacity-20 absolute left-0 top-0 w-full h-full flex justify-center gap-3 items-center">
-                                <p-button (onClick)="removeMediaControl($index)" styleClass="hidden group-hover:inline"
-                                          [rounded]="true" size="small"
-                                          severity="secondary" [text]="true"
-                                          icon="pi pi-trash"/>
-                              </div>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    }
-                  </ng-template>
-                </p-fileupload>
-              </div>
-            </div>
-            <div class="flex justify-between items-center">
-              <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(2)">Back
-              </p-button>
-              <p-button size="small" type="submit"
-                        [outlined]="true" (onClick)="onFinishButtonClicked()">Finish
-              </p-button>
-            </div>
-          </ng-template>
-        </p-step-panel>
-      </p-step-panels>
-    </p-stepper>
-  </form>
+  <tm-campaign-form (onSubmit)="onCampaignFormSubmitted()" [countries]="countries.value() ?? []"
+                    [categoriesLoading]="categories.isLoading()"
+                    [countriesLoading]="countries.isLoading()" [categories]="categories.value() ?? []"/>
 </p-drawer>
 
-<ng-template #maxLengthError let-error>
-  {{ error.actualLength }}/{{ error.requiredLength }} characters
-</ng-template>
+

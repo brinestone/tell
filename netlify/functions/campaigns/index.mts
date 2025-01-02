@@ -1,23 +1,37 @@
-import { Request, Response, Router } from 'express';
-import { prepareHandler }            from '@functions/helpers/handler.mjs';
-import { useCampaignsDb }            from '@functions/helpers/db.mjs';
-import { auth }                      from '@functions/middleware/auth.mjs';
-import { campaigns }                 from '@functions/config/db/schema/campaigns';
-import { extractUser }               from '@functions/helpers/auth.mjs';
-import { count, eq }                 from 'drizzle-orm';
-import { LookupCampaingsResponse }   from '@lib/campaign';
+import { Request, Response, Router }    from 'express';
+import { prepareHandler }               from '@functions/helpers/handler.mjs';
+import { useCampaignsDb }               from '@functions/helpers/db.mjs';
+import { auth }                         from '@functions/middleware/auth.mjs';
+import { campaigns, newCampaignSchema } from '@functions/config/db/schema/campaigns';
+import { extractUser }                  from '@functions/helpers/auth.mjs';
+import { count, eq }                    from 'drizzle-orm';
+import { LookupCampaignResponse }       from '@lib/campaign';
+
+async function findPublications(req: Request, res: Response) {
+  const { campaign } = req.params;
+  const db = useCampaignsDb();
+  try {
+    const publications = await db.query.campaignPublications.findMany({
+      where: (publication, { eq }) => eq(publication.campaign, Number(campaign)),
+      orderBy: (publication, { desc }) => [desc(publication.createdAt)]
+    });
+    res.status(200).json(publications);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: (e as Error).message })
+  }
+}
 
 async function createCampaign(req: Request, res: Response) {
   const dto = req.body;
   const db = useCampaignsDb();
   const user = extractUser(req);
   try {
-    await db.insert(campaigns).values({ ...dto, createdBy: user.id });
+    await db.insert(campaigns).values(newCampaignSchema.parse({ ...dto, createdBy: user.id }));
     res.status(201).json({});
-    console.log('end');
   } catch (e) {
     console.error(e);
-    res.status(500).send({ message: (e as Error).message });
+    res.status(500).json({ message: (e as Error).message });
   }
 }
 
@@ -40,7 +54,7 @@ async function findAll(req: Request, res: Response) {
     page,
     total: total[0].count,
     size
-  } as LookupCampaingsResponse;
+  } as LookupCampaignResponse;
 
   res.json(responseData);
 }
@@ -48,5 +62,6 @@ async function findAll(req: Request, res: Response) {
 const router = Router();
 router.get('/', auth, findAll);
 router.post('/', auth, createCampaign);
+router.get('/:campaign/publications', auth, findPublications);
 
 export const handler = prepareHandler('campaigns', router);
