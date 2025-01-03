@@ -25,7 +25,7 @@ CREATE TABLE "campaigns" (
 CREATE TABLE "categories" (
 	"id" bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "categories_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 CACHE 1),
 	"title" varchar(255) NOT NULL,
-	"description" varchar(500) NOT NULL,
+	"description" text NOT NULL,
 	"image" varchar(500)
 );
 --> statement-breakpoint

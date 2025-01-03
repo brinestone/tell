@@ -1,8 +1,6 @@
+import 'dotenv/config'
 import * as categories          from './categories';
 import { concatMap, from, map } from 'rxjs';
-import {config} from 'dotenv'
-
-config();
 
 type Seeder = { name: string, seed: () => Promise<void> }
 const seeders: Seeder[] = [categories];

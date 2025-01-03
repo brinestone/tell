@@ -6,24 +6,24 @@ import { neonConfig }  from '@neondatabase/serverless';
 import ws              from 'ws';
 
 neonConfig.webSocketConstructor = global.WebSocket ?? ws;
+const connection = String(process.env['DATABASE_URL']);
+const casing = 'snake_case';
+const logger = String(process.env['NODE_ENV']) == 'development';
 
 export function useUsersDb() {
   return drizzle({
-    schema: { ...users }, casing: 'snake_case',
-    connection: String(process.env['DATABASE_URL'])
+    schema: { ...users }, casing, connection, logger
   })
 }
 
 export function useCategoriesDb() {
   return drizzle({
-    schema: { ...categories }, casing: 'snake_case',
-    connection: String(process.env['DATABASE_URL'])
+    schema: { ...categories }, casing, connection, logger
   })
 }
 
 export function useCampaignsDb() {
   return drizzle({
-    schema: { ...campaigns }, casing: 'snake_case',
-    connection: String(process.env['DATABASE_URL'])
+    schema: { ...campaigns }, casing, connection, logger
   });
 }

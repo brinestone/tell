@@ -1,7 +1,11 @@
 import { Request, Response, Router } from 'express';
-import { prepareHandler }            from '@functions/helpers/handler.mjs';
+import {
+  prepareHandler
+}                                    from '@functions/helpers/handler.mjs';
 import { useCampaignsDb }            from '@functions/helpers/db.mjs';
-import { auth }                      from '@functions/middleware/auth.mjs';
+import {
+  auth
+}                                    from '@functions/middleware/auth.mjs';
 import {
   campaignPublications,
   campaigns,
