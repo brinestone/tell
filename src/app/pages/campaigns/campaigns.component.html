@@ -29,19 +29,14 @@
           <th class="w-[1rem]"></th>
         </tr>
       </ng-template>
-      <ng-template #body let-campaign>
+      <ng-template #body let-campaign let-index="rowIndex">
         <tr [pSelectableRow]="campaign">
           <td><p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p></td>
           <td>{{ campaign.categories.length }} categories</td>
           <td>{{ campaign.createdAt | date }}</td>
           <td class="w-[1rem]">
             <div class="flex gap-3 items-center">
-              <p-menu appendTo="body" [popup]="true" #campaignActions [model]="[
-              { label:'Publish', icon: 'pi pi-megaphone', command: startPublicationCreationFn(campaign.id)},
-              { label:'Edit', icon: 'pi pi-pencil' },
-              { separator: true },
-              {label:'Delete', icon:'pi pi-trash' }
-              ]"/>
+              <p-menu appendTo="body" [popup]="true" #campaignActions [model]="campaignOptions()[index]"/>
               <p-button (onClick)="campaignActions.toggle($event)" size="small" [text]="true" severity="secondary"
                         icon="pi pi-ellipsis-v"/>
             </div>

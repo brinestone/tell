@@ -78,14 +78,15 @@
       {{ campaignLookup()?.title }} will be available to publishers until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
       <strong
         class="font-medium">{{ form.value.tokens | number }}</strong> token{{ (form.value.tokens ?? 0) == 1 ? '' : 's' }} you've allocated {{ (form.value.tokens ?? 0) == 1 ? 'has' : 'have' }} been exhausted.
-    } @else if (form.controls.publishBefore.value && (form.value?.tokens ?? 0) > 0) {
+    } @else if (form.controls.publishBefore.value && (form.value.tokens ?? 0) > 0) {
       {{ campaignLookup()?.title }} will be available to publishers until <strong
-        class="font-medium">{{ form.value?.publishBefore | date }}</strong> or until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
+        class="font-medium">{{ form.value.publishBefore | date }}</strong> or until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
       <strong
         class="font-medium">{{ form.value.tokens | number }}</strong> token{{ (form.value.tokens ?? 0) == 1 ? '' : 's' }} allocated {{ (form.value.tokens ?? 0) == 1 ? 'has' : 'have' }} been exhausted.
     }
   </p>
   <div class="col-span-2 flex justify-end">
-    <p-button [disabled]="form.invalid || campaignsLoading()" type="submit" label="Publish" icon="pi pi-megaphone"/>
+    <p-button [disabled]="form.invalid || campaignsLoading() || submitting()" [loading]="submitting()" type="submit"
+              label="Publish" icon="pi pi-megaphone"/>
   </div>
 </form>

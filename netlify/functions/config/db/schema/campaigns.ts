@@ -23,17 +23,18 @@ export const campaigns = pgTable('campaigns', {
 export const newCampaignSchema = createInsertSchema(campaigns);
 export const channelEnum = pgEnum('publish_channels', ['telegram']);
 
-export const campaignPublications = pgTable('campaignPublications', {
+export const campaignPublications = pgTable('campaign_publications', {
     id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' }).defaultNow(),
     campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
-    assignedTokens: integer().notNull(),
-    publishAfter: date({ mode: 'date' }).defaultNow(),
-    publishBefore: date({ mode: 'date' })
+    tokens: integer().notNull(),
+    publishAfter: date({ mode: 'string' }).defaultNow(),
+    publishBefore: date({ mode: 'string' })
   },
   table => [{
-    checkConstraint: check('tokens_check', sql`${table.assignedTokens} > 0`)
+    checkConstraint: check('tokens_check', sql`${table.tokens}
+    > 0`)
   }]);
 
-export const newPublicationSchema = createInsertSchema(campaignPublications)
+export const newPublicationSchema = createInsertSchema(campaignPublications).refine(data => data.tokens > 0);

@@ -1,30 +1,32 @@
-import { Component, effect, inject, linkedSignal, model, ResourceRef, signal } from '@angular/core';
-import { TableModule }                                                         from 'primeng/table';
-import { Button }                                                              from 'primeng/button';
-import { InputText }                                                           from 'primeng/inputtext';
-import { IconField }                                                           from 'primeng/iconfield';
-import { InputIcon }                                                           from 'primeng/inputicon';
-import { Drawer }                                                              from 'primeng/drawer';
-import { ReactiveFormsModule }                                                 from '@angular/forms';
-import { DatePipe }                                                            from '@angular/common';
-import { MessageService }                                                      from 'primeng/api';
-import { rxResource }                                                          from '@angular/core/rxjs-interop';
-import { CountryData }                                                         from '@lib/country-data';
-import { Category }                                                            from '@lib/category';
-import { HttpClient }                                                          from '@angular/common/http';
-import { Campaign, LookupCampaignResponse }                                    from '@lib/campaign';
-import { Panel }                                                               from 'primeng/panel';
-import { Menu }                                                                from 'primeng/menu';
-import { DataViewModule }                                                      from 'primeng/dataview';
+import { Component, computed, effect, inject, linkedSignal, model, ResourceRef, signal } from '@angular/core';
+import { TableModule }                                                                   from 'primeng/table';
+import { Button }                                                                        from 'primeng/button';
+import { InputText }                                                                     from 'primeng/inputtext';
+import { IconField }                                                                     from 'primeng/iconfield';
+import { InputIcon }                                                                     from 'primeng/inputicon';
+import { Drawer }                                                                        from 'primeng/drawer';
+import { ReactiveFormsModule }                                                           from '@angular/forms';
+import { DatePipe }                                                                      from '@angular/common';
+import { MenuItem, MessageService }                                                      from 'primeng/api';
+import {
+  rxResource
+}                                                                                        from '@angular/core/rxjs-interop';
+import { CountryData }                                                                   from '@lib/country-data';
+import { Category }                                                                      from '@lib/category';
+import { HttpClient }                                                                    from '@angular/common/http';
+import { Campaign, LookupCampaignResponse }                                              from '@lib/campaign';
+import { Panel }                                                                         from 'primeng/panel';
+import { Menu }                                                                          from 'primeng/menu';
+import { DataViewModule }                                                                from 'primeng/dataview';
 import {
   CampaignFormComponent
-}                                                                              from '@app/components/campaign-form/campaign-form.component';
+}                                                                                        from '@app/components/campaign-form/campaign-form.component';
 import {
   CampaignPublicationsComponent
-}                                                                              from '@app/components/campaign-publications/campaign-publications.component';
+}                                                                                        from '@app/components/campaign-publications/campaign-publications.component';
 import {
   PublicationFormComponent
-}                                                                              from '@app/components/publication-form/publication-form.component';
+}                                                                                        from '@app/components/publication-form/publication-form.component';
 
 @Component({
   selector: 'tm-campaigns',
@@ -51,9 +53,9 @@ export class CampaignsComponent {
   private messageService = inject(MessageService);
   private http = inject(HttpClient);
   readonly selectedCampaign = model<Campaign>();
-  readonly targetCampaignId = linkedSignal(() => this.selectedCampaign()?.id ?? 8)
+  readonly targetCampaignId = linkedSignal(() => this.selectedCampaign()?.id)
   showCampaignModal = model(false);
-  showPublicationModal = model(true);
+  showPublicationModal = model(false);
   currentPage = model(0);
   currentPageSize = model(20);
   readonly tokens = signal(500);
@@ -75,16 +77,27 @@ export class CampaignsComponent {
     })
   });
 
+  readonly campaignOptions = computed(() => {
+    return (this.campaigns.value()?.data ?? []).map((campaign: Campaign) => {
+      return [
+        {
+          label: 'Publish',
+          icon: 'pi pi-megaphone',
+          command: () => {
+            this.targetCampaignId.set(campaign.id);
+            this.showPublicationModal.set(true);
+          }
+        },
+        { label: 'Edit', icon: 'pi pi-pencil' },
+        { separator: true },
+        { label: 'Delete', icon: 'pi pi-trash' }
+      ] as MenuItem[];
+    })
+  })
+
   onCampaignFormSubmitted() {
     this.campaigns.reload();
     this.showCampaignModal.set(false);
-  }
-
-  startPublicationCreationFn(campaignId: number) {
-    return () => {
-      this.targetCampaignId.set(campaignId);
-      this.showPublicationModal.set(true);
-    }
   }
 
   constructor() {

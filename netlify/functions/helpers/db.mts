@@ -9,21 +9,21 @@ neonConfig.webSocketConstructor = global.WebSocket ?? ws;
 
 export function useUsersDb() {
   return drizzle({
-    schema: { ...users },
+    schema: { ...users }, casing: 'snake_case',
     connection: String(process.env['DATABASE_URL'])
   })
 }
 
 export function useCategoriesDb() {
   return drizzle({
-    schema: { ...categories },
+    schema: { ...categories }, casing: 'snake_case',
     connection: String(process.env['DATABASE_URL'])
   })
 }
 
 export function useCampaignsDb() {
   return drizzle({
-    schema: { ...campaigns },
+    schema: { ...campaigns }, casing: 'snake_case',
     connection: String(process.env['DATABASE_URL'])
   });
 }
