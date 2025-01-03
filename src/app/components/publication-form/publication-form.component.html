@@ -1,0 +1,91 @@
+@if (errorMessage()) {
+  <div class="my-3">
+    <p-message severity="error" size="small">{{ errorMessage() }}</p-message>
+  </div>
+}
+<form (ngSubmit)="onFormSubmit()" [formGroup]="form" class="grid grid-cols-[auto_1fr] gap-3">
+  <div>
+    <label class="font-medium">Campaign <span class="text-red-500">*</span></label>
+  </div>
+  <div class="space-y-1">
+    <p-fluid>
+      <p-select [loading]="campaignsLoading()" formControlName="campaign" styleClass="w-full" appendTo="body"
+                [options]="campaigns()"
+                optionLabel="title" optionValue="id"/>
+    </p-fluid>
+    @if (form.controls.campaign.dirty && form.controls.campaign.invalid) {
+      <p-message variant="simple" severity="error" size="small">
+        @if (form.controls.campaign.hasError('required')) {
+          This field is required
+        }
+      </p-message>
+    }
+  </div>
+  <div>
+    <label class="font-medium">Token allocation <span class="text-red-500">*</span></label>
+  </div>
+  <div class="space-y-3">
+    @if (totalTokens() > 0) {
+      <div class="space-y-1">
+        <div>
+          <p-fluid>
+            <p-inputnumber [min]="1" size="small" formControlName="tokens" [showButtons]="true"
+                           buttonLayout="horizontal"
+                           spinnerMode="horizontal" [step]="1" [max]="totalTokens()">
+              <ng-template #incrementbuttonicon>
+                <span class="pi pi-plus"></span>
+              </ng-template>
+              <ng-template #decrementbuttonicon>
+                <span class="pi pi-minus"></span>
+              </ng-template>
+            </p-inputnumber>
+          </p-fluid>
+        </div>
+        @if (form.controls.tokens.dirty && form.controls.tokens.invalid) {
+          <p-message variant="simple" severity="error" size="small">
+            @if (form.controls.tokens.hasError('required')) {
+              This field is required
+            } @else if (form.controls.tokens.hasError('min')) {
+              Minimum value should be {{ form.controls.tokens.getError('min').min }}
+            }
+          </p-message>
+        }
+      </div>
+      <p class="text-sm text-muted-color">Allocating <span class="font-medium">{{ form.value.tokens | number }}</span>
+        of your <span
+          class="font-medium">{{ totalTokens() | number }}</span> tokens</p>
+    } @else {
+      <p><i class="pi pi-info-circle"></i> Your out of tokens. <a class="font-medium text-primary"
+                                                                  routerLink="/wallet/top-up">Top up account</a>
+      </p>
+    }
+  </div>
+  <div>
+    <label class="font-medium">Time Window</label>
+  </div>
+  <div class="flex gap-3 justify-stretch">
+    <p-fluid>
+      <p-date-picker formControlName="publishAfter" [minDate]="publishAfterMin" appendTo="body"
+                     placeholder="Start date"/>
+    </p-fluid>
+    <p-fluid>
+      <p-date-picker formControlName="publishBefore" [minDate]="publishBeforeMin" appendTo="body"
+                     placeholder="End date"/>
+    </p-fluid>
+  </div>
+  <p class="col-span-2 text-muted-color text-sm">
+    @if (!form.controls.publishBefore.value && (form.value?.tokens ?? 0) > 0) {
+      {{ campaignLookup()?.title }} will be available to publishers until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
+      <strong
+        class="font-medium">{{ form.value.tokens | number }}</strong> token{{ (form.value.tokens ?? 0) == 1 ? '' : 's' }} you've allocated {{ (form.value.tokens ?? 0) == 1 ? 'has' : 'have' }} been exhausted.
+    } @else if (form.controls.publishBefore.value && (form.value?.tokens ?? 0) > 0) {
+      {{ campaignLookup()?.title }} will be available to publishers until <strong
+        class="font-medium">{{ form.value?.publishBefore | date }}</strong> or until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
+      <strong
+        class="font-medium">{{ form.value.tokens | number }}</strong> token{{ (form.value.tokens ?? 0) == 1 ? '' : 's' }} allocated {{ (form.value.tokens ?? 0) == 1 ? 'has' : 'have' }} been exhausted.
+    }
+  </p>
+  <div class="col-span-2 flex justify-end">
+    <p-button [disabled]="form.invalid || campaignsLoading()" type="submit" label="Publish" icon="pi pi-megaphone"/>
+  </div>
+</form>

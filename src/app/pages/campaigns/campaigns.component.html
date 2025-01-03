@@ -8,7 +8,7 @@
         <div class="flex justify-between items-start">
           <h1 class="text-lg font-bold">Campaigns</h1>
           <div class="inline-flex gap-3 items-end">
-            <p-button (onClick)="showNewCampaignModal.set(true)" [outlined]="true" title="New Campaign"
+            <p-button (onClick)="showCampaignModal.set(true)" [outlined]="true" title="New Campaign"
                       label="New Campaign" icon="pi pi-plus"
             />
             <p-icon-field>
@@ -37,7 +37,7 @@
           <td class="w-[1rem]">
             <div class="flex gap-3 items-center">
               <p-menu appendTo="body" [popup]="true" #campaignActions [model]="[
-              { label:'Publish', icon: 'pi pi-megaphone' },
+              { label:'Publish', icon: 'pi pi-megaphone', command: startPublicationCreationFn(campaign.id)},
               { label:'Edit', icon: 'pi pi-pencil' },
               { separator: true },
               {label:'Delete', icon:'pi pi-trash' }
@@ -62,7 +62,7 @@
   }
 </div>
 
-<p-drawer styleClass="w-full md:w-80 lg:w-[45rem]" [modal]="true" [(visible)]="showNewCampaignModal" position="right">
+<p-drawer styleClass="w-full md:w-80 lg:w-[45rem]" [modal]="true" [(visible)]="showCampaignModal" position="right">
   <ng-template #header>
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
@@ -71,4 +71,12 @@
                     [countriesLoading]="countries.isLoading()" [categories]="categories.value() ?? []"/>
 </p-drawer>
 
-
+<p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" [modal]="true" [(visible)]="showPublicationModal" position="right">
+  <ng-template #header>
+    <h1 class="text-lg font-bold"><i class="pi pi-megaphone"></i> Publish Campaign</h1>
+  </ng-template>
+  <tm-publication-form [campaignsLoading]="campaigns.isLoading()" [totalTokens]="tokens()"
+                       [campaigns]="campaigns.value()?.data ?? []"
+                       [campaign]="targetCampaignId()"
+                       (onSubmit)="onPublicationFormSubmitted()"/>
+</p-drawer>

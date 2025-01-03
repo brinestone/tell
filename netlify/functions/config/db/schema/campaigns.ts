@@ -28,11 +28,12 @@ export const campaignPublications = pgTable('campaignPublications', {
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' }).defaultNow(),
     campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
-    channels: channelEnum().default('telegram').array(),
     assignedTokens: integer().notNull(),
     publishAfter: date({ mode: 'date' }).defaultNow(),
     publishBefore: date({ mode: 'date' })
   },
   table => [{
     checkConstraint: check('tokens_check', sql`${table.assignedTokens} > 0`)
-  }])
+  }]);
+
+export const newPublicationSchema = createInsertSchema(campaignPublications)
