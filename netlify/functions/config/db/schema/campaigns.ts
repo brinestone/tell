@@ -16,7 +16,7 @@ export const campaigns = pgTable('campaigns', {
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow(),
   categories: bigint({ mode: 'number' }).array().notNull(),
-  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id)
+  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' })
   // channels: varchar({ length: 100 }).array().notNull()
 });
 
@@ -27,7 +27,7 @@ export const campaignPublications = pgTable('campaign_publications', {
     id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' }).defaultNow(),
-    campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
+    campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id, { onDelete: 'cascade' }),
     tokens: integer().notNull(),
     publishAfter: date({ mode: 'string' }).defaultNow(),
     publishBefore: date({ mode: 'string' })

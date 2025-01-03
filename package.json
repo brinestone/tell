@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "netlify dev --no-open",
-    "migrate.dev": "npx drizzle-kit push --config=netlify/functions/config/drizzle-dev.config.ts",
+    "migrate.dev": "npx drizzle-kit generate --config=netlify/functions/config/drizzle-dev.config.ts && npx drizzle-kit migrate --config=netlify/functions/config/drizzle-dev.config.ts",
     "migrate.prod": "npx drizzle-kit push --config=netlify/functions/config/drizzle-prod.config.ts",
     "migrate.ci": "npx drizzle-kit push --config=netlify/functions/config/drizzle-dev.config.ts --force",
     "prestart": "pnpm migrate.dev",
