@@ -1,9 +1,7 @@
-import { bigint, check, date, integer, pgEnum, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import {
-  users
-}                                                                                  from '@functions/config/db/schema/users';
-import { sql }                                                                     from 'drizzle-orm';
-import { createInsertSchema }                                                      from 'drizzle-zod';
+import { bigint, check, date, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { users }                                                           from '@functions/config/db/schema/users';
+import { sql }                                                             from 'drizzle-orm';
+import { createInsertSchema }                                              from 'drizzle-zod';
 
 export const campaigns = pgTable('campaigns', {
   id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
@@ -17,11 +15,9 @@ export const campaigns = pgTable('campaigns', {
   updatedAt: timestamp({ mode: 'date' }).defaultNow(),
   categories: bigint({ mode: 'number' }).array().notNull(),
   createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' })
-  // channels: varchar({ length: 100 }).array().notNull()
 });
 
 export const newCampaignSchema = createInsertSchema(campaigns);
-export const channelEnum = pgEnum('publish_channels', ['telegram']);
 
 export const campaignPublications = pgTable('campaign_publications', {
     id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),

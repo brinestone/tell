@@ -1,5 +1,5 @@
 {
-  "id": "44646d83-fd97-4bf8-b504-4aefbff50a9e",
+  "id": "91c90baf-68d8-4a78-9504-b5021aafd097",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,7 +77,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -183,7 +183,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -381,15 +381,7 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {
-    "public.publish_channels": {
-      "name": "publish_channels",
-      "schema": "public",
-      "values": [
-        "telegram"
-      ]
-    }
-  },
+  "enums": {},
   "schemas": {},
   "sequences": {},
   "roles": {},

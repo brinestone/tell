@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735911945504,
-      "tag": "0000_fearless_meltdown",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1735912229068,
-      "tag": "0001_amazing_scorpion",
+      "when": 1735913596060,
+      "tag": "0000_strong_saracen",
       "breakpoints": true
     }
   ]

@@ -74,7 +74,7 @@
     </p-fluid>
   </div>
   <p class="col-span-2 text-muted-color text-sm">
-    @if (!form.controls.publishBefore.value && (form.value?.tokens ?? 0) > 0) {
+    @if (!form.controls.publishBefore.value && (form.value.tokens ?? 0) > 0) {
       {{ campaignLookup()?.title }} will be available to publishers until{{ (form.value.tokens ?? 0) == 1 ? '' : ' all' }} the
       <strong
         class="font-medium">{{ form.value.tokens | number }}</strong> token{{ (form.value.tokens ?? 0) == 1 ? '' : 's' }} you've allocated {{ (form.value.tokens ?? 0) == 1 ? 'has' : 'have' }} been exhausted.
