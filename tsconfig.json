@@ -17,9 +17,30 @@
     "module": "ES2022",
     "baseUrl": "./",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@app/*": ["src/app/*"],
-      "@functions/*": ["netlify/functions/*"]
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@functions/*": [
+        "netlify/functions/*"
+      ],
+      "@helpers/*": [
+        "netlify/helpers/*"
+      ],
+      "@handlers/*": [
+        "netlify/handlers/*"
+      ],
+      "@events/*": [
+        "netlify/events/*"
+      ],
+      "@schemas/*": [
+        "db/schema/*"
+      ],
+      "@middleware/*": [
+        "netlify/middleware/*"
+      ]
     }
   },
   "angularCompilerOptions": {

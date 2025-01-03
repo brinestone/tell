@@ -1,7 +1,7 @@
 import { bigint, check, date, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { users }                                                           from '@functions/config/db/schema/users';
 import { sql }                                                             from 'drizzle-orm';
 import { createInsertSchema }                                              from 'drizzle-zod';
+import { users } from './users';
 
 export const campaigns = pgTable('campaigns', {
   id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),

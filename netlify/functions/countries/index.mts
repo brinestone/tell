@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import AllCountries                  from '../../../assets/countries.json';
-import { prepareHandler }            from '../helpers/handler.mjs';
+import AllCountries       from '../../../assets/countries.json';
+import { prepareHandler } from '../../helpers/handler.mjs';
 
 function getAllCountries(_: Request, res: Response) {
   res.json(AllCountries);

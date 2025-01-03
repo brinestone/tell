@@ -1,19 +1,8 @@
-import { Request, Response, Router } from 'express';
-import { prepareHandler }            from '../helpers/handler.mjs';
-import { useCategoriesDb }           from '../helpers/db.mjs';
-import { handleError }               from '@functions/helpers/error.mjs';
-
-async function findCategories(_: Request, res: Response) {
-  const db = useCategoriesDb();
-  try {
-    const categories = await db.query.categories.findMany();
-    res.json(categories);
-  } catch (e) {
-    handleError(e as Error, res);
-  }
-}
+import { findAllCategories } from '@handlers/category.mjs';
+import { prepareHandler } from '@helpers/handler.mjs';
+import { Router } from 'express';
 
 const router = Router();
-router.get('/', findCategories);
+router.get('/', findAllCategories);
 
 export const handler = prepareHandler('categories', router);

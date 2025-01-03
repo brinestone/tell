@@ -1,6 +1,6 @@
-import { useCategoriesDb } from '@functions/helpers/db.mjs';
+import { categories } from 'db/schema/categories';
+import { useCategoriesDb } from '../../netlify/helpers/db.mjs';
 import data                from './categories.json';
-import { categories }      from '@functions/config/db/schema/categories';
 import { sql }             from 'drizzle-orm';
 
 export async function seed() {
