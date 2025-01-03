@@ -1,18 +1,19 @@
-import passport                                from 'passport';
-import express                                 from 'express';
+import passport                 from 'passport';
+import express                  from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { useUsersDb }                          from '@functions/helpers/db.mjs';
+import { useUsersDb }           from '@functions/helpers/db.mjs';
 
 passport.use(new Strategy(
   {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: String(process.env['JWT_SECRET'])
+    secretOrKey: String(process.env['JWT_SECRET']),
+    audience: String(process.env['ORIGIN'])
   },
   async (payload, done) => {
     const { sub } = payload;
     const db = useUsersDb();
     const user = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(sub, users.id),
+      where: (users, { eq }) => eq(sub, users.id),
     });
     if (!user) {
       done(new Error('Account not found'));

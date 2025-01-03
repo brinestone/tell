@@ -72,7 +72,8 @@ router.get('/google/callback', passport.authenticate('google', {
     email: user.email,
     sub: user.id,
     name: user.names,
-    image: user.imageUrl
+    image: user.imageUrl,
+    aud: String(process.env['ORIGIN'])
   }, String(process.env['JWT_SECRET']), { expiresIn: '1h' });
 
   return res.redirect(`/auth/oauth2/callback?access_token=${jwt}`);

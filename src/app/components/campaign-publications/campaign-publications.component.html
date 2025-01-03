@@ -1,0 +1,12 @@
+<p-dataView [value]="publications.value()" layout="list">
+  <ng-template #empty>
+    Nothing published yet
+  </ng-template>
+  <ng-template #list let-pubs>
+    <div>
+      @for (pub of pubs; track pub) {
+        {{ pub }}
+      }
+    </div>
+  </ng-template>
+</p-dataView>
