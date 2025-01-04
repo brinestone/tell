@@ -9,6 +9,7 @@ on:
       - "src/**/*.*"
       - "lib/**/*.*"
       - "netlify.toml"
+      - ".github/workflows/branch-deploys.yml"
 
 jobs:
   build_and_deploy:
@@ -18,6 +19,8 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       DATABASE_URL: ${{ secrets.STAGING_DB }}
+      SYSTEM_WALLET: ${{ secrets.STAGING_SYSTEM_WALLET }}
+      SYSTEM_STARTING_BALANCE: ${{ secrets.STAGING_SYSTEM_STARTING_BALANCE }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
