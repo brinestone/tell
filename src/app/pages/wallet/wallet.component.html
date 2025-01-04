@@ -1,1 +1,72 @@
-<p>wallet works!</p>
+<h1 class="font-bold text-xl mx-4 mt-4">Wallet</h1>
+<section class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] px-4 gap-5">
+  <p-card>
+    <p class="text-muted-color text-sm">Funding</p>
+    <h1 class="text-xl font-semibold">
+      <span>
+        @if(balances.isLoading()){
+        <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+          [style]="{ width: '20px', height: '20px' }" />
+        }@else{
+        {{ balances.value()?.funding?.balance | number }}
+        } credits
+      </span>
+    </h1>
+  </p-card>
+  <p-card>
+    <p class="text-muted-color text-sm">Rewards</p>
+    <h1 class="text-xl font-semibold">
+      <span>
+        @if(balances.isLoading()){
+        <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+          [style]="{ width: '20px', height: '20px' }" />
+        }@else{
+        {{ balances.value()?.rewards?.balance | number }}
+        } credits
+      </span>
+    </h1>
+  </p-card>
+</section>
+<section class="px-4">
+  <p-panel>
+    <p-table>
+      <ng-template #header>
+        <tr>
+          <th>Wallet</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Type</th>
+          <th>Date</th>
+        </tr>
+      </ng-template>
+      <ng-template #caption>
+        <div class="flex justify-between items-start">
+          <h1 class="font-semibold text-lg">Transactions</h1>
+          <div class="flex gap-3">
+            <p-button (onClick)="showTopupFormModal.set(true)" label="Top up" icon="pi pi-plus" [outlined]="true"
+              severity="secondary" size="small" />
+            @if((balances.value()?.rewards?.balance ?? 0) > 0) {
+            <p-button label="Withdraw" icon="pi pi-minus" [outlined]="true" severity="secondary" size="small" />
+            }
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #body let-transaction>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</section>
+
+<p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" [(visible)]="showTopupFormModal" [modal]="true" position="right">
+  <ng-template #header>
+    <h1 class="text-lg font-bold">Top up your Account</h1>
+  </ng-template>
+  <tm-top-up-form />
+</p-drawer>

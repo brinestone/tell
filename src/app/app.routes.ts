@@ -31,5 +31,12 @@ export const appRoutes: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
+  {
+    providers: [userState],
+    canActivate: [signedInGuard],
+    title: 'Wallet',
+    path: 'wallet',
+    loadComponent: () => import('./pages/wallet/wallet.component').then(m => m.WalletComponent),
+  },
   { path: '**', component: NotFoundComponent, title: '404 - Resource not found' }
 ];
