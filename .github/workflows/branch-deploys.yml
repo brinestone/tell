@@ -44,6 +44,7 @@ jobs:
           path: |
             node_modules
             ${{ steps.get-store-path.outputs.store-path }}
+            .netlify
       - name: Install Dependencies 📦
         if: steps.setup-cache.outputs.cache-hit != 'true'
         run: pnpm i
