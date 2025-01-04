@@ -1,6 +1,6 @@
 {
-  "id": "aa5975bf-3ed7-45d9-ad42-7689c685b1ce",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e59c83c3-1db9-4607-836b-725b42d8a495",
+  "prevId": "13af4f77-e2fd-4796-9043-e9279d96826d",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -335,12 +335,6 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "wallet": {
-          "name": "wallet",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "value": {
           "name": "value",
           "type": "bigint",
@@ -386,6 +380,13 @@
           "notNull": false,
           "default": "'pending'"
         },
+        "type": {
+          "name": "type",
+          "type": "wallet_transaction_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
         "account_transaction": {
           "name": "account_transaction",
           "type": "uuid",
@@ -395,19 +396,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "wallet_transactions_wallet_wallets_id_fk": {
-          "name": "wallet_transactions_wallet_wallets_id_fk",
-          "tableFrom": "wallet_transactions",
-          "tableTo": "wallets",
-          "columnsFrom": [
-            "wallet"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "wallet_transactions_from_wallets_id_fk": {
           "name": "wallet_transactions_from_wallets_id_fk",
           "tableFrom": "wallet_transactions",
@@ -671,13 +659,79 @@
         "cancelled",
         "complete"
       ]
+    },
+    "public.wallet_transaction_type": {
+      "name": "wallet_transaction_type",
+      "schema": "public",
+      "values": [
+        "funding",
+        "reward",
+        "withdrawal"
+      ]
     }
   },
   "schemas": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
+  "views": {
+    "public.vw_funding_balances": {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ownedBy": {
+          "name": "ownedBy",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "names": {
+          "name": "names",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "definition": "select \"wallets\".\"id\", \"wallets\".\"starting_balance\" + SUM(\n      CASE\n        WHEN (\"wallet_transactions\".\"from\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'funding' and \"wallet_transactions\".\"status\" = 'complete') THEN -\"wallet_transactions\".\"value\"\n        WHEN (\"wallet_transactions\".\"to\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'funding' and \"wallet_transactions\".\"status\" = 'complete') THEN \"wallet_transactions\".\"value\"\n        ELSE 0\n      END\n    )::BIGINT as \"balance\", \"wallets\".\"owned_by\", \"users\".\"names\" from \"wallets\" left join \"wallet_transactions\" on (\"wallets\".\"id\" = \"wallet_transactions\".\"from\" or \"wallets\".\"id\" = \"wallet_transactions\".\"to\") left join \"users\" on \"wallets\".\"owned_by\" = \"users\".\"id\" group by \"wallets\".\"id\", \"wallets\".\"owned_by\", \"users\".\"names\"",
+      "name": "vw_funding_balances",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": false
+    },
+    "public.vw_reward_balances": {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ownedBy": {
+          "name": "ownedBy",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "names": {
+          "name": "names",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "definition": "select \"wallets\".\"id\", \"wallets\".\"starting_balance\" + SUM(\n    CASE\n      WHEN (\"wallet_transactions\".\"from\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN -\"wallet_transactions\".\"value\"\n      WHEN (\"wallet_transactions\".\"to\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN \"wallet_transactions\".\"value\"\n      ELSE 0\n    END\n  )::BIGINT as \"balance\", \"wallets\".\"owned_by\", \"users\".\"names\" from \"wallets\" left join \"wallet_transactions\" on (\"wallets\".\"id\" = \"wallet_transactions\".\"from\" or \"wallets\".\"id\" = \"wallet_transactions\".\"to\") left join \"users\" on \"wallets\".\"owned_by\" = \"users\".\"id\" group by \"wallets\".\"id\", \"wallets\".\"owned_by\", \"users\".\"names\"",
+      "name": "vw_reward_balances",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": false
+    }
+  },
   "_meta": {
     "columns": {},
     "schemas": {},

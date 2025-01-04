@@ -10,7 +10,7 @@ export const federatedCredentials = pgTable('federated_credentials', {
 });
 
 export const users = pgTable('users', {
-  id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
+  id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity({ startWith: 100 }).primaryKey(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   names: varchar({ length: 100 }).notNull(),
@@ -18,7 +18,7 @@ export const users = pgTable('users', {
   email: varchar({ length: 100 }).notNull(),
   dob: date({ mode: 'date' }),
   phone: varchar({ length: 255 }),
-  credentials: varchar().notNull().references(() => federatedCredentials.id)
+  credentials: varchar().references(() => federatedCredentials.id)
 });
 
 export const userSchema = createSelectSchema(users);

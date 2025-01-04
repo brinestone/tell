@@ -4,9 +4,11 @@ import serverless                            from 'serverless-http';
 import passport                              from 'passport';
 import context                               from 'express-http-context'
 import { errorHandler }                      from '../middleware/error.mjs';
+import pino from 'pino-http';
 
 export function prepareHandler(prefix: string, router: Router) {
   const app = express();
+  app.use(pino());
   app.use(errorHandler);
   app.use(
     context.middleware as unknown as express.Handler,

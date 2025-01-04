@@ -12,7 +12,7 @@ export const campaigns = pgTable('campaigns', {
   emails: text().array(),
   phones: text().array(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
-  updatedAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   categories: bigint({ mode: 'number' }).array().notNull(),
   createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' })
 });

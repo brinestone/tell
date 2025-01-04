@@ -1,6 +1,6 @@
 {
-  "id": "aa5975bf-3ed7-45d9-ad42-7689c685b1ce",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e523f8ab-b092-4819-afbb-ec2cdfa33948",
+  "prevId": "aa5975bf-3ed7-45d9-ad42-7689c685b1ce",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -335,12 +335,6 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "wallet": {
-          "name": "wallet",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "value": {
           "name": "value",
           "type": "bigint",
@@ -395,19 +389,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "wallet_transactions_wallet_wallets_id_fk": {
-          "name": "wallet_transactions_wallet_wallets_id_fk",
-          "tableFrom": "wallet_transactions",
-          "tableTo": "wallets",
-          "columnsFrom": [
-            "wallet"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "wallet_transactions_from_wallets_id_fk": {
           "name": "wallet_transactions_from_wallets_id_fk",
           "tableFrom": "wallet_transactions",
