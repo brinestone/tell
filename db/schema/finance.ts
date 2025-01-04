@@ -1,6 +1,6 @@
+import { and, eq, or, sql } from "drizzle-orm";
 import { bigint, boolean, json, pgEnum, pgTable, pgView, real, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { users } from "./users";
-import { and, desc, eq, not, or, sql } from "drizzle-orm";
 
 export const wallets = pgTable('wallets', {
   id: uuid().primaryKey().defaultRandom(),
@@ -49,12 +49,11 @@ export const fundingBalances = pgView('vw_funding_balances')
         ELSE 0
       END
     )::BIGINT`.as('balance'),
-    ownerId: wallets.ownedBy,
-    ownerName: users.names
+    ownerId: wallets.ownedBy
   }).from(wallets)
     .leftJoin(walletTransactions, (wallet) => or(eq(wallet.id, walletTransactions.from), eq(wallet.id, walletTransactions.to)))
     .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
-    .groupBy(wallets.id, wallets.ownedBy, users.names)
+    .groupBy(wallets.id, wallets.ownedBy)
   );
 
 export const rewardBalances = pgView('vw_reward_balances')
@@ -67,10 +66,9 @@ export const rewardBalances = pgView('vw_reward_balances')
       ELSE 0
     END
   )::BIGINT`.as('balance'),
-  ownerId: wallets.ownedBy,
-  ownerName: users.names
+  ownerId: wallets.ownedBy
 }).from(wallets)
   .leftJoin(walletTransactions, (wallet) => or(eq(wallet.id, walletTransactions.from), eq(wallet.id, walletTransactions.to)))
   .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
-  .groupBy(wallets.id, wallets.ownedBy, users.names)
+  .groupBy(wallets.id, wallets.ownedBy)
 );

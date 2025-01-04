@@ -24,22 +24,25 @@
         "src/app/*"
       ],
       "@functions/*": [
-        "netlify/functions/*"
+        "server/functions/*"
       ],
       "@helpers/*": [
-        "netlify/helpers/*"
+        "server/helpers/*"
       ],
       "@handlers/*": [
-        "netlify/handlers/*"
+        "server/handlers/*"
       ],
       "@events/*": [
-        "netlify/events/*"
+        "server/events/*"
       ],
       "@schemas/*": [
         "db/schema/*"
       ],
       "@middleware/*": [
-        "netlify/middleware/*"
+        "server/middleware/*"
+      ],
+      "@logging/*": [
+        "logging/*"
       ]
     }
   },

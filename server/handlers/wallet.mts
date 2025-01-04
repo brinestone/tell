@@ -9,10 +9,9 @@ export async function getUserWalletBalances(req: Request, res: Response) {
   const db = useFinanceDb();
   const user = extractUser(req);
   try {
-    const [fundingWallet] = await db.select().from(fundingBalances).where(balance => eq(balance.ownerId, user.id));
-    const [rewardsWallet] = await db.select().from(rewardBalances).where(balance => eq(balance.ownerId, user.id));
-
-    res.json({ fundingWallet, rewardsWallet });
+    const [funding] = await db.select().from(fundingBalances).where(balance => eq(balance.ownerId, user.id));
+    const [rewards] = await db.select().from(rewardBalances).where(balance => eq(balance.ownerId, user.id));
+    res.json({ funding, rewards });
   } catch (e) {
     handleError(e as Error, res);
   }
