@@ -64,7 +64,7 @@ export class CampaignsComponent {
     loader: () => this.http.get<Category[]>('/api/categories')
   });
   readonly countries = rxResource({
-    loader: () => this.http.get<CountryData[]>('/api/countries/all')
+    loader: () => this.http.get<CountryData[]>('/api/countries')
   });
 
   readonly campaigns: ResourceRef<LookupCampaignResponse> = rxResource({

@@ -7,7 +7,7 @@ import serverless from 'serverless-http';
 
 export function prepareHandler(prefix: string, router: Router) {
   const app = express();
-  app.use(pino());
+  // app.use(pino());
   app.use(
     context.middleware as unknown as express.Handler,
     json(),

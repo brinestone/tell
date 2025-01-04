@@ -64,3 +64,13 @@ export type Translations = {
   it: string;
   hu: string;
 }
+
+export type ExchangeRateResponse = {
+  base: string;
+  date: Date;
+  rates: ExchangeRates;
+  success: boolean;
+  timestamp: number;
+}
+
+export type ExchangeRates = Record<string, number>;
