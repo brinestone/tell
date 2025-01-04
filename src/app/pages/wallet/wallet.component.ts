@@ -32,5 +32,5 @@ export class WalletComponent {
     loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
   });
 
-  readonly showTopupFormModal = model(true);
+  readonly showTopupFormModal = model(false);
 }
