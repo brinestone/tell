@@ -5,5 +5,6 @@ export interface SignedUpEvent extends CustomAsyncWorkloadEvent {
   eventData: {
     userId: number;
     email: string;
+    countryCode: string;
   }
 }

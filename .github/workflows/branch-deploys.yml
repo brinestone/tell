@@ -51,4 +51,4 @@ jobs:
       - name: Migrate Database Schema
         run: pnpm migrate.staging
       - name: Build ⚙️ & Deploy ⬆️
-        run: netlify deploy --alias="staging" --build --context deploy-preview --message="${{ github.event.head_commit.message }}"
+        run: netlify deploy --alias="next" --build --context branch-deploy --message="${{ github.event.head_commit.message }}"

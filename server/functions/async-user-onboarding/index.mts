@@ -1,6 +1,7 @@
 import { SignedUpEvent }                        from '@events/user';
 import { doCreateUserWallet }                   from '@handlers/wallet.mjs';
 import { AsyncWorkloadConfig, asyncWorkloadFn } from '@netlify/async-workloads';
+import { doCreateUserPreferences }              from '@handlers/user.mjs';
 
 // Performs user onboarding tasks on sign-up
 export default asyncWorkloadFn<SignedUpEvent>(async ({ step, eventData }) => {
@@ -8,6 +9,10 @@ export default asyncWorkloadFn<SignedUpEvent>(async ({ step, eventData }) => {
     await doCreateUserWallet(eventData.userId);
     console.log(`Wallet created for ${eventData.email}`);
   });
+  await step.run('setup-preferences', async () => {
+    await doCreateUserPreferences(eventData.userId, eventData.countryCode);
+    console.log(`Preferences setup for ${eventData.email}`)
+  })
 });
 
 export const asyncWorkloadConfig: AsyncWorkloadConfig<SignedUpEvent> = {

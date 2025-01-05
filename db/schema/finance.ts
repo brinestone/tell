@@ -1,5 +1,5 @@
 import { and, eq, or, sql } from "drizzle-orm";
-import { bigint, boolean, json, pgEnum, pgTable, pgView, real, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { bigint, boolean, json, pgEnum, pgTable, pgView, real, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { users } from "./users";
 
 export const wallets = pgTable('wallets', {
@@ -23,6 +23,7 @@ export const walletTransactions = pgTable('wallet_transactions', {
   cancelledAt: timestamp({ mode: 'date' }),
   status: transactionStatus().default('pending'),
   type: walletTransactionType().notNull(),
+  notes: text(),
   accountTransaction: uuid().references(() => paymentTransactions.id)
 });
 export const paymentTransactions = pgTable('account_transactions', {
@@ -34,6 +35,7 @@ export const paymentTransactions = pgTable('account_transactions', {
   completedAt: timestamp({ mode: 'date' }),
   cancelledAt: timestamp({ mode: 'date' }),
   value: real().notNull(),
+  notes: text(),
   currency: varchar({ length: 10 }).notNull(),
   paymentMethodExtras: json(),
   inbound: boolean().notNull()

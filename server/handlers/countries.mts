@@ -1,9 +1,9 @@
-import { ExchangeRateResponse } from "@lib/country-data";
-import { getStore } from "@netlify/blobs";
-import { Context } from "@netlify/functions";
-import _ from 'lodash';
-import { z } from "zod";
-import AllCountries from '../../assets/countries.json';
+import { ExchangeRateResponse } from '@lib/country-data';
+import { getStore }             from '@netlify/blobs';
+import { Context }              from '@netlify/functions';
+import _                        from 'lodash';
+import { z }                    from 'zod';
+import AllCountries             from '../../assets/countries.json';
 
 const exchangeRateQuerySchema = z.object({
   src: z.string().length(3),
@@ -20,14 +20,17 @@ export async function getAllCountries(_: Request, ctx: Context) {
   return ctx.json(AllCountries);
 }
 
-export function findCountryByIso2Code(req: Request, ctx: Context) {
+export function handleFindCountryByIso2Code(req: Request, ctx: Context) {
   const params = [...ctx.url.searchParams.entries()].reduce((acc, [k, v]) => {
     acc[k] = v;
     return acc
   }, {} as Record<string, string>);
-  const { alpha2Code: code } = getCountryByIso2CodeSchema.parse(params);
-  const country = AllCountries.find(({ alpha2Code }) => alpha2Code == code)
-  return ctx.json(country);
+  const { alpha2Code } = getCountryByIso2CodeSchema.parse(params);
+  return ctx.json(findCountryByIso2Code(alpha2Code));
+}
+
+export function findCountryByIso2Code(countryCode: string) {
+  return AllCountries.find(({ alpha2Code }) => alpha2Code == countryCode);
 }
 
 export async function findExchangeRates(req: Request, ctx: Context) {
@@ -85,4 +88,10 @@ async function getLatestExchangeRates(src: string, dest: string[]) {
   url.searchParams.set('base', src);
 
   return fetch(url, { headers: { apikey: String(process.env['API_LAYER_KEY']) } }).then(res => res.json()).then(d => d as ExchangeRateResponse)
+}
+
+export function getUserCountry(req: Request, ctx: Context) {
+  const { country } = ctx.geo;
+  if (!country) return new Response(undefined, { status: 404 });
+  return ctx.json(AllCountries.find(({ alpha2Code }) => country.code == alpha2Code));
 }

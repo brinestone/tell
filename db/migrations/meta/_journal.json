@@ -36,6 +36,27 @@
       "when": 1735994501332,
       "tag": "0004_bright_abomination",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1736081680386,
+      "tag": "0005_hard_overlord",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1736082913811,
+      "tag": "0006_aromatic_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1736086612115,
+      "tag": "0007_grey_centennial",
+      "breakpoints": true
     }
   ]
 }

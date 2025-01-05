@@ -1,5 +1,5 @@
-import { bigint, date, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { createSelectSchema } from 'drizzle-zod';
+import { bigint, date, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { createSelectSchema }                                      from 'drizzle-zod';
 
 export const federatedCredentials = pgTable('federated_credentials', {
   id: varchar({ length: 255 }).notNull().primaryKey(),
@@ -19,6 +19,18 @@ export const users = pgTable('users', {
   dob: date({ mode: 'date' }),
   phone: varchar({ length: 255 }),
   credentials: varchar().references(() => federatedCredentials.id)
+});
+
+export const themePrefs = pgEnum('theme_pref', ['system', 'dark', 'light']);
+export const userPrefs = pgTable('user_prefs', {
+  id: uuid().primaryKey().defaultRandom(),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
+  user: bigint({ mode: 'number' }).notNull().references(() => users.id),
+  country: varchar({ length: 2 }).notNull(),
+  theme: themePrefs().default('light'),
+  currency: varchar({ length: 3 }).notNull(),
+  language: varchar({length: 2}).notNull()
 });
 
 export const userSchema = createSelectSchema(users);
