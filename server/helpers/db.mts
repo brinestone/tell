@@ -1,19 +1,19 @@
-import { neonConfig } from '@neondatabase/serverless';
-import * as campaigns from '@schemas/campaigns';
-import * as categories from '@schemas/categories';
-import * as finance from '@schemas/finance';
-import * as users from '@schemas/users';
+import { neonConfig }    from '@neondatabase/serverless';
+import * as campaigns    from '@schemas/campaigns';
+import * as categories   from '@schemas/categories';
+import * as finance      from '@schemas/finance';
+import * as users        from '@schemas/users';
 import { DefaultLogger } from 'drizzle-orm/logger';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from 'ws';
-import { PinoWriter } from '../../db/log-writer';
+import { drizzle }       from 'drizzle-orm/neon-serverless';
+import ws                from 'ws';
+import { DefaultWriter } from '../../db/log-writer';
 
 neonConfig.webSocketConstructor = global.WebSocket ?? ws;
 const connection = String(process.env['DATABASE_URL']);
 const casing = 'snake_case';
 const logger = new DefaultLogger({
-  writer: new PinoWriter()
-})
+  writer: new DefaultWriter()
+});
 
 export function useFinanceDb() {
   return drizzle({

@@ -41,7 +41,7 @@
       "@middleware/*": [
         "server/middleware/*"
       ],
-      "@logging/*": [
+      "@logger/*": [
         "logging/*"
       ]
     }
