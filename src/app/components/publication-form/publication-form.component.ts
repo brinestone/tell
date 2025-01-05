@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import { Campaign }                                                   from '@lib/campaign';
+import { Campaign }                                                   from '@lib/models/campaign';
 import { Fluid }                                                      from 'primeng/fluid';
 import { Select }                                                     from 'primeng/select';
 import { InputNumberModule }                                          from 'primeng/inputnumber';

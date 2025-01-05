@@ -1,4 +1,4 @@
-import { ExchangeRateResponse } from '@lib/country-data';
+import { ExchangeRateResponse } from '@lib/models/country-data';
 import { getStore }             from '@netlify/blobs';
 import { Context }              from '@netlify/functions';
 import _                        from 'lodash';
@@ -46,7 +46,7 @@ export async function findExchangeRates(req: Request, ctx: Context) {
 
   const result = await ratesStore.getWithMetadata(src, { type: 'json' })
   if (!result) {
-    const { rates, date } = await getLatestExchangeRates(src, dest);
+    const { rates } = await getLatestExchangeRates(src, dest);
     await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
     return ctx.json(pickFields(rates, ...dest));
   } else {
@@ -55,7 +55,7 @@ export async function findExchangeRates(req: Request, ctx: Context) {
     const then = new Date(fetchDate as number).valueOf();
 
     if (now > then + 6 * 3_600_000) { // Data is stale
-      const { rates, date } = await getLatestExchangeRates(src, dest);
+      const { rates } = await getLatestExchangeRates(src, dest);
       await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
       return ctx.json(pickFields(rates, ...dest));
     }

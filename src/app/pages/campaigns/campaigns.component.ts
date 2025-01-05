@@ -11,10 +11,10 @@ import { MenuItem, MessageService }                                             
 import {
   rxResource
 }                                                                                        from '@angular/core/rxjs-interop';
-import { CountryData }                                                                   from '@lib/country-data';
-import { Category }                                                                      from '@lib/category';
+import { CountryData }                                                                   from '@lib/models/country-data';
+import { Category }                                                                      from '@lib/models/category';
 import { HttpClient }                                                                    from '@angular/common/http';
-import { Campaign, LookupCampaignResponse }                                              from '@lib/campaign';
+import { Campaign, LookupCampaignResponse }                                              from '@lib/models/campaign';
 import { Panel }                                                                         from 'primeng/panel';
 import { Menu }                                                                          from 'primeng/menu';
 import { DataViewModule }                                                                from 'primeng/dataview';

@@ -12,8 +12,8 @@ export default asyncWorkloadFn<SignedUpEvent>(async ({ step, eventData }) => {
   });
   await step.run('setup-preferences', async () => {
     await doCreateUserPreferences(eventData.userId, eventData.countryCode);
-    console.log(`Preferences setup for ${eventData.email}`)
-  })
+    defaultLogger.info(`Preferences setup for ${eventData.email}`);
+  });
 });
 
 export const asyncWorkloadConfig: AsyncWorkloadConfig<SignedUpEvent> = {

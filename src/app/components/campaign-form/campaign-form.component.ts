@@ -13,9 +13,9 @@ import { MeterGroup }                                                         fr
 import { HttpClient, HttpErrorResponse, HttpResponse }                        from '@angular/common/http';
 import { PhoneNumberFormat, PhoneNumberUtil }                                 from 'google-libphonenumber';
 import { takeUntilDestroyed }                                                 from '@angular/core/rxjs-interop';
-import { Category }                                                           from '@lib/category';
+import { Category }                                                           from '@lib/models/category';
 import { Divider }                                                            from 'primeng/divider';
-import { CountryData }                                                        from '@lib/country-data';
+import { CountryData }                                                        from '@lib/models/country-data';
 import { Textarea }                                                           from 'primeng/textarea';
 
 function newMediaControl(url: string) {

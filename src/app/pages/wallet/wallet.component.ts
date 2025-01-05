@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, model } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { WalletBalanceResponse } from '@lib/wallet';
+import { WalletBalanceResponse } from '@lib/models/wallet';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Panel } from 'primeng/panel';

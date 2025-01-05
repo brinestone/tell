@@ -1,5 +1,5 @@
 export type UserPrefs = {
-  theme: 'dark' | 'light' | 'system' | null;
+  theme: 'dark' | 'light' | 'system';
   country: string;
   currency: string;
   id: string;
