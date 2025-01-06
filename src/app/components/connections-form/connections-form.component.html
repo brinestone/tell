@@ -1,0 +1,29 @@
+<p class="text-muted-color text-sm">In order to promote campaigns, you must connect at least one of your social
+  media accounts from the provider
+  platforms from below</p>
+<div class="space-y-2">
+  <div class="inline-flex items-center gap-3 p-2">
+    <div class="flex items-center gap-2">
+      <img width="25" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
+           alt="telegram logo">
+      <div class="space-y-1">
+        <h2 class="font-medium">Telegram&trade;
+          <p-tag [severity]="isTelegramAccountConnected() ? 'success' : 'warn'"
+                 [value]="telegramConnectionStatusText()"
+                 styleClass="text-sm"/>
+        </h2>
+        <p class="text-sm text-muted-color max-w-[300px]">Receive campaign posts for your Telegram account's status</p>
+      </div>
+    </div>
+    @defer (when !connections.isLoading()) {
+      @if (!isTelegramAccountConnected()) {
+        <p-button [text]="true" size="small" label="Connect" (onClick)="onConnectTelegramAccountButtonClicked()"/>
+      } @else {
+        <p-button [text]="true" size="small" label="Disconnect" severity="danger"/>
+      }
+    } @placeholder {
+      <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+                          [style]="{ width: '20px', height: '20px' }"/>
+    }
+  </div>
+</div>

@@ -43,6 +43,9 @@
       ],
       "@logger/*": [
         "logging/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
       ]
     }
   },

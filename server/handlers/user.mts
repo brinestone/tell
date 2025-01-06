@@ -5,6 +5,22 @@ import { findCountryByIso2Code }       from './countries.mjs';
 import { extractUser }                 from '@helpers/auth.mjs';
 import { eq }                          from 'drizzle-orm';
 
+export async function findUserConnections(req: Request, res: Response) {
+  const db = useUsersDb();
+  const user = extractUser(req);
+  const connections = await db.query.accountConnections.findMany({
+    columns: {
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      provider: true,
+      status: true
+    },
+    where: (connections, { eq }) => eq(connections.user, user.id)
+  });
+  res.json(connections);
+}
+
 export async function updateUserPreferences(req: Request, res: Response) {
   const db = useUsersDb();
   const user = extractUser(req);
@@ -13,7 +29,7 @@ export async function updateUserPreferences(req: Request, res: Response) {
     return t.update(userPrefs).set(input).where(eq(userPrefs.user, user.id)).returning({ id: userPrefs.id });
   });
 
-  const prefs =  await db.query.userPrefs.findFirst({
+  const prefs = await db.query.userPrefs.findFirst({
     where: (pref, { eq }) => eq(pref.id, id)
   });
   res.json(prefs);

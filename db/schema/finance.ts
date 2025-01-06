@@ -1,6 +1,18 @@
-import { and, eq, or, sql } from "drizzle-orm";
-import { bigint, boolean, json, pgEnum, pgTable, pgView, real, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { users } from "./users";
+import { and, eq, or, sql } from 'drizzle-orm';
+import {
+  bigint,
+  boolean,
+  jsonb,
+  pgEnum,
+  pgTable,
+  pgView,
+  real,
+  text,
+  timestamp,
+  uuid,
+  varchar
+}                           from 'drizzle-orm/pg-core';
+import { users }            from './users';
 
 export const wallets = pgTable('wallets', {
   id: uuid().primaryKey().defaultRandom(),
@@ -26,7 +38,7 @@ export const walletTransactions = pgTable('wallet_transactions', {
   notes: text(),
   accountTransaction: uuid().references(() => paymentTransactions.id)
 });
-export const paymentTransactions = pgTable('account_transactions', {
+export const paymentTransactions = pgTable('payment_transactions', {
   id: uuid().primaryKey().defaultRandom(),
   paymentMethod: paymentMethods().notNull(),
   status: transactionStatus().notNull(),
@@ -37,7 +49,7 @@ export const paymentTransactions = pgTable('account_transactions', {
   value: real().notNull(),
   notes: text(),
   currency: varchar({ length: 10 }).notNull(),
-  paymentMethodExtras: json(),
+  params: jsonb(),
   inbound: boolean().notNull()
 });
 

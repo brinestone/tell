@@ -3,6 +3,7 @@ import { Panel }              from 'primeng/panel';
 import { Divider }            from 'primeng/divider';
 import { Button }             from 'primeng/button';
 import { PrefsFormComponent } from '@app/components/prefs-form/prefs-form.component';
+import { ConnectionsFormComponent } from '@app/components/connections-form/connections-form.component';
 
 @Component({
   selector: 'tm-settings',
@@ -10,7 +11,8 @@ import { PrefsFormComponent } from '@app/components/prefs-form/prefs-form.compon
     Panel,
     Divider,
     Button,
-    PrefsFormComponent
+    PrefsFormComponent,
+    ConnectionsFormComponent
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'

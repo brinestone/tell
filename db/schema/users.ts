@@ -1,5 +1,17 @@
-import { bigint, date, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { createSelectSchema, createUpdateSchema }                  from 'drizzle-zod';
+import { bigint, date, jsonb, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { createSelectSchema, createUpdateSchema }                         from 'drizzle-zod';
+
+export const accountConnectionProviders = pgEnum('account_connection_providers', ['telegram']);
+export const accountConnectionStatus = pgEnum('account_connection_status', ['active', 'inactive', 'reconnect_required']);
+export const accountConnections = pgTable('account_connections', {
+  id: uuid().primaryKey().defaultRandom(),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
+  user: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  provider: accountConnectionProviders().notNull(),
+  params: jsonb().notNull(),
+  status: accountConnectionStatus().notNull().default('active')
+});
 
 export const federatedCredentials = pgTable('federated_credentials', {
   id: varchar({ length: 255 }).notNull().primaryKey(),

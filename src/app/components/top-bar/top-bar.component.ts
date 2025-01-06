@@ -20,11 +20,11 @@ export class TopBarComponent {
   private readonly signOut = dispatch(SignOut);
   readonly principal = select(principal);
   readonly menuItems: MenuItem[] = [
-    { label: 'Dashboard', routerLink: '/', icon: 'pi pi-gauge', routerLinkActiveOptions: { match: true } },
+    // { label: 'Dashboard', routerLink: '/', icon: 'pi pi-gauge', routerLinkActiveOptions: { match: true } },
     {
       label: 'Campaigns', icon: 'pi pi-list', routerLink: '/campaigns', routerLinkActiveOptions: { match: true }
     },
-    { label: 'Wallet', icon: 'pi pi-wallet', routerLink: '/wallet', routerLinkActiveOptions: { match: true } },
+    { label: 'Wallets', icon: 'pi pi-wallet', routerLink: '/wallet', routerLinkActiveOptions: { match: true } },
   ];
   readonly userMenuItems: MenuItem[] = [
     { label: 'Settings', icon: 'pi pi-cog', routerLink: '/settings' },

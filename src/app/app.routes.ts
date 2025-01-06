@@ -27,14 +27,13 @@ export const appRoutes: Routes = [
     providers: [userState],
     canActivate: [signedInGuard],
     title: 'Dashboard',
-    path: '',
-    pathMatch: 'full',
+    path: 'dashboard',
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
     providers: [userState],
     canActivate: [signedInGuard],
-    title: 'Wallet',
+    title: 'Wallets',
     path: 'wallet',
     loadComponent: () => import('./pages/wallet/wallet.component').then(m => m.WalletComponent),
   },
@@ -44,6 +43,9 @@ export const appRoutes: Routes = [
     title: 'Settings',
     path: 'settings',
     loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent)
+  },
+  {
+    path: '', pathMatch: 'full', redirectTo: 'campaigns'
   },
   { path: '**', component: NotFoundComponent, title: '404 - Resource not found' }
 ];
