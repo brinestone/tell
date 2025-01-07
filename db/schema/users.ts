@@ -1,5 +1,34 @@
-import { bigint, date, jsonb, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { createSelectSchema, createUpdateSchema }                         from 'drizzle-zod';
+import { relations, sql } from 'drizzle-orm';
+import { bigint, date, interval, jsonb, pgEnum, pgTable, pgView, timestamp, unique, uuid, varchar } from 'drizzle-orm/pg-core';
+import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
+
+export const verificationCodes = pgTable('verification_codes', {
+  id: uuid().primaryKey().defaultRandom(),
+  created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  window: interval().notNull(),
+  hash: varchar({ length: 32 }).notNull().unique(),
+  confirmed_at: timestamp({ mode: 'date' }),
+  data: jsonb()
+});
+
+export const newVerificationSchema = createInsertSchema(verificationCodes);
+
+export const verificationCodesView = pgView('vw_verification_codes').as(qb => {
+  return qb.select({
+    code: verificationCodes.hash,
+    createdAt: verificationCodes.created_at,
+    expiresAt: sql<Date>`
+      (${verificationCodes.created_at} + ${verificationCodes.window})::TIMESTAMP
+    `.as('expires_at'),
+    isExpired: sql<boolean>`
+      (CASE
+        WHEN ${verificationCodes.confirmed_at} IS NOT NULL THEN true
+        ELSE NOW() > (${verificationCodes.created_at} + ${verificationCodes.window})
+      END)::BOOlEAN
+    `.as('is_expired'),
+    data: verificationCodes.data
+  }).from(verificationCodes)
+})
 
 export const accountConnectionProviders = pgEnum('account_connection_providers', ['telegram']);
 export const accountConnectionStatus = pgEnum('account_connection_status', ['active', 'inactive', 'reconnect_required']);
@@ -7,10 +36,11 @@ export const accountConnections = pgTable('account_connections', {
   id: uuid().primaryKey().defaultRandom(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
-  user: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  user: bigint({ mode: 'number' }).notNull().references(() => users.id),
   provider: accountConnectionProviders().notNull(),
   params: jsonb().notNull(),
-  status: accountConnectionStatus().notNull().default('active')
+  status: accountConnectionStatus().notNull().default('active'),
+  providerId: varchar({ length: 255 }).notNull()
 });
 
 export const federatedCredentials = pgTable('federated_credentials', {
@@ -40,7 +70,7 @@ export const userPrefs = pgTable('user_prefs', {
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   user: bigint({ mode: 'number' }).notNull().references(() => users.id),
   country: varchar({ length: 2 }).notNull(),
-  theme: themePrefs().notNull().default('light'),
+  theme: themePrefs().notNull().default('system'),
   currency: varchar({ length: 3 }).notNull(),
   language: varchar({ length: 2 }).notNull()
 });

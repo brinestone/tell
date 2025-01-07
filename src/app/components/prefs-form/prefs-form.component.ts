@@ -7,6 +7,7 @@ import { distinct, from, mergeMap, of, toArray }                   from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserPrefs }                                               from '@lib/models/user';
 import { Button }                                                  from 'primeng/button';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'tm-prefs-form',
@@ -20,6 +21,7 @@ import { Button }                                                  from 'primeng
 })
 export class PrefsFormComponent implements OnInit {
   private http = inject(HttpClient);
+  private messageService = inject(MessageService);
   readonly submitting = signal(false);
   readonly loadingPrefs = signal(false);
   readonly countries = rxResource({

@@ -1,6 +1,6 @@
 import { Request, Response }                                   from 'express';
 import { SignedUpEvent }                                       from '@events/user';
-import { useAwlClient }                                        from '@helpers/awl-client';
+import { useAwlClient }                                        from '@helpers/awl-client.mjs';
 import { useUsersDb }                                          from '@helpers/db.mjs';
 import * as users                                              from '@schemas/users';
 import { userSchema }                                          from '@schemas/users';

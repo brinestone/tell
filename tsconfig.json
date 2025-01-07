@@ -46,6 +46,12 @@
       ],
       "@env/*": [
         "src/environments/*"
+      ],
+      "@zod-schemas/*": [
+        "server/schemas/*"
+      ],
+      "@constants/*": [
+        "server/constants/*"
       ]
     }
   },

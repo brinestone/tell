@@ -1,50 +1,79 @@
-import { Component, computed, inject } from '@angular/core';
-import { Button }                      from 'primeng/button';
-import { Tag }                         from 'primeng/tag';
-import { rxResource }                  from '@angular/core/rxjs-interop';
-import { HttpClient }                  from '@angular/common/http';
-import { ConnectedAccount }            from '@lib/models/user';
-import { ProgressSpinner }             from 'primeng/progressspinner';
-import { environment }                 from '@env/environment.development';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, computed, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { environment } from '@env/environment.development';
+import { ConnectedAccount } from '@lib/models/user';
+import { TelegramConnectionFormComponent, VerificationSubmission } from '../connection-forms/telegram-connection-form/telegram-connection-form.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'tm-connections-form',
   imports: [
-    Button,
-    Tag,
-    ProgressSpinner
+    TelegramConnectionFormComponent
   ],
   templateUrl: './connections-form.component.html',
   styleUrl: './connections-form.component.scss'
 })
 export class ConnectionsFormComponent {
+  private messageService = inject(MessageService);
   private http = inject(HttpClient);
+  readonly verifyingTelegramCode = signal(false);
+  readonly disconnectingTelegram = signal(false);
   readonly connections = rxResource({
     loader: () => this.http.get<ConnectedAccount[]>('/api/users/connections')
   });
   readonly telegramConnection = computed(() => {
     return this.connections.value()?.find(({ provider }) => provider == 'telegram');
   });
-  readonly telegramConnectionStatusText = computed(() => {
-    const conn = this.telegramConnection();
-    switch (conn?.status) {
-      case 'active':
-        return 'connected';
-      case 'inactive':
-        return 'inactive';
-      case 'reconnect_required':
-        return 'attention required';
-      default:
-        return 'not connected';
-    }
-  })
-  readonly isTelegramAccountConnected = computed(() => {
-    const connections = this.connections.value();
-    return connections?.some(({ provider, status }) => status == 'active' && provider == 'telegram') ?? false;
-  });
+  readonly telegramBotLink = environment.telegramBot;
 
-  onConnectTelegramAccountButtonClicked() {
-    // location.href = environment.telegramBot;
-    window.open(environment.telegramBot, '_blank')
+  onTelegramVerificationCodeSubmitted({ code }: VerificationSubmission) {
+    this.verifyingTelegramCode.set(true);
+    this.http.get('/api/users/connections/verify/tm', {
+      params: {
+        code
+      }
+    }).subscribe({
+      complete: () => {
+        this.verifyingTelegramCode.set(false);
+        this.connections.reload();
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Notification',
+          detail: 'Your telegram account has been successfully linked.'
+        })
+      },
+      error: (error: HttpErrorResponse) => {
+        this.verifyingTelegramCode.set(false);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error?.message ?? error.message
+        });
+      }
+    });
+  }
+
+  onDisconnectTelegramConnectionRequested() {
+    this.disconnectingTelegram.set(true);
+    this.http.get('/api/users/connections/disconnect/tm').subscribe({
+      error: (error: HttpErrorResponse) => {
+        this.disconnectingTelegram.set(false);
+        this.messageService.add({
+          summary: 'Error',
+          severity: 'error',
+          detail: error.error?.message ?? error.message
+        });
+      },
+      complete: () => {
+        this.disconnectingTelegram.set(false);
+        this.connections.reload();
+        this.messageService.add({
+          summary: 'Info',
+          severity: 'info',
+          detail: 'Your Telegram account was disconnected successfully.'
+        });
+      }
+    })
   }
 }

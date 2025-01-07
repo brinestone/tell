@@ -1,11 +1,13 @@
-import { prepareHandler }                                                 from '@helpers/handler.mjs';
-import { auth }                                                           from '@middleware/auth.mjs';
-import { Router }                                                         from 'express';
-import { findUserConnections, getUserPreferences, updateUserPreferences } from '@handlers/user.mjs';
+import { findUserConnections, getUserPreferences, removeTelegramAccountConnection, updateUserPreferences, verifyTelegramVerificationCode } from '@handlers/user.mjs';
+import { prepareHandler } from '@helpers/handler.mjs';
+import { jwtAuth } from '@middleware/auth.mjs';
+import { Router } from 'express';
 
 const router = Router();
-router.get('/prefs', auth, getUserPreferences);
-router.put('/prefs', auth, updateUserPreferences);
-router.get('/connections', auth, findUserConnections);
+router.get('/prefs', jwtAuth, getUserPreferences);
+router.put('/prefs', jwtAuth, updateUserPreferences);
+router.get('/connections', jwtAuth, findUserConnections);
+router.get('/connections/verify/tm', jwtAuth, verifyTelegramVerificationCode);
+router.get('/connections/disconnect/tm', jwtAuth, removeTelegramAccountConnection);
 
 export const handler = prepareHandler('users', router);

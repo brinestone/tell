@@ -1,0 +1,44 @@
+<div class="flex items-center gap-2">
+  <img width="25" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="telegram logo">
+  <div class="space-y-1">
+    <h2 class="font-medium">Telegram&trade;
+      <p-tag [rounded]="true" styleClass="capitalize" [severity]="isTelegramAccountConnected() ? 'success' : 'warn'"
+        [value]="telegramConnectionStatusText()" styleClass="text-sm" />
+    </h2>
+    @if(showVerificationCodeInput() && !isTelegramAccountConnected()) {
+    <div>
+      <p-input-group>
+        <input [disabled]="submitting() ?? false" [(ngModel)]="verificationCode" pInputText size="small"
+          placeholder="Enter verification code">
+        <p-inputgroup-addon>
+          <p-button [text]="true" [disabled]="verificationCode()?.length != 6 || submitting()" [loading]="submitting()"
+            label="Verify" severity="success" (onClick)="onVerifyCodeButtonClicked()" />
+        </p-inputgroup-addon>
+        <p-inputgroup-addon>
+          <p-button (onClick)="onCancelButtonClicked()" [text]="true" [disabled]="submitting()" severity="danger"
+            label="Cancel" />
+        </p-inputgroup-addon>
+      </p-input-group>
+    </div>
+
+    <p class="text-sm text-muted-color max-w-[300px]">Don't have the code? Go to the <a [href]="telegramBotUrl()"
+        class="text-primary" target="_blank">telegram bot</a> and obtain a code by sending the <strong>/start</strong>
+      command</p>
+    } @else {
+    <p class="text-sm text-muted-color max-w-[300px]">Receive campaign posts for your Telegram account's status</p>
+    }
+  </div>
+</div>
+@defer (when !acountLoading()) {
+@if (!isTelegramAccountConnected()) {
+@if(!showVerificationCodeInput()) {
+<p-button [text]="true" size="small" label="Connect" (onClick)="showVerificationCodeInput.set(true)" />
+}
+} @else {
+<p-button [disabled]="disconnecting()" [loading]="disconnecting()" [text]="true" size="small" label="Disconnect"
+  severity="danger" (onClick)="onDisconnectButtonClicked()" />
+}
+} @placeholder {
+<p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+  [style]="{ width: '20px', height: '20px' }" />
+}
