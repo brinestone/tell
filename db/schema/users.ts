@@ -70,7 +70,7 @@ export const userPrefs = pgTable('user_prefs', {
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   user: bigint({ mode: 'number' }).notNull().references(() => users.id),
   country: varchar({ length: 2 }).notNull(),
-  theme: themePrefs().notNull().default('system'),
+  theme: themePrefs().notNull().default('light'),
   currency: varchar({ length: 3 }).notNull(),
   language: varchar({ length: 2 }).notNull()
 });

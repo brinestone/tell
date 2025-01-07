@@ -8,6 +8,7 @@ export type UserPrefs = {
   updatedAt: Date | null;
   user: number;
 }
+export type DisplayPrefs = Pick<UserPrefs, 'theme'|'country'|'currency'|'language'>;
 
 export type ConnectedAccount = {
   id: string

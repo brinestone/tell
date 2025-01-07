@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
-import { useUsersDb } from '@helpers/db.mjs';
-import { accountConnections, updatePrefSchema, userPrefs, verificationCodes, verificationCodesView } from '@schemas/users';
-import { findCountryByIso2Code } from './countries.mjs';
-import { extractUser } from '@helpers/auth.mjs';
-import { and, eq } from 'drizzle-orm';
-import { z } from 'zod';
-import { hashThese } from 'server/util';
-import defaultLogger from '@logger/common';
-import { sendTelegramBotMessage } from '@helpers/telegram.mjs';
-import { TelegramAccountConnectionDataSchema } from '@zod-schemas/telegram.mjs';
 import { TM_USER_ACCOUNT_CONNECTION_VERIFIED_MSG, TM_USER_ACCOUNT_DISCONNECTION_MSG } from '@constants/messages/user.mjs';
+import { extractUser } from '@helpers/auth.mjs';
+import { useUsersDb } from '@helpers/db.mjs';
+import { sendTelegramBotMessage } from '@helpers/telegram.mjs';
+import defaultLogger from '@logger/common';
+import { accountConnections, updatePrefSchema, userPrefs, verificationCodes, verificationCodesView } from '@schemas/users';
+import { TelegramAccountConnectionDataSchema } from '@zod-schemas/telegram.mjs';
+import { and, eq } from 'drizzle-orm';
+import { Request, Response } from 'express';
+import { hashThese } from 'server/util';
+import { z } from 'zod';
+import { findCountryByIso2Code } from './countries.mjs';
 
 const codeVerificationSchema = z.object({
   code: z.string().length(6).transform(arg => hashThese(arg))
@@ -92,11 +92,7 @@ export async function updateUserPreferences(req: Request, res: Response) {
   const [{ id }] = await db.transaction(async t => {
     return t.update(userPrefs).set(input).where(eq(userPrefs.user, user.id)).returning({ id: userPrefs.id });
   });
-
-  const prefs = await db.query.userPrefs.findFirst({
-    where: (pref, { eq }) => eq(pref.id, id)
-  });
-  res.json(prefs);
+  res.status(202).json({});
 }
 
 export async function getUserPreferences(req: Request, res: Response) {

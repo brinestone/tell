@@ -27,6 +27,7 @@ import {
 import {
   PublicationFormComponent
 }                                                                                        from '@app/components/publication-form/publication-form.component';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   selector: 'tm-campaigns',
@@ -44,7 +45,8 @@ import {
     DataViewModule,
     CampaignFormComponent,
     CampaignPublicationsComponent,
-    PublicationFormComponent
+    PublicationFormComponent,
+    Ripple
   ],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.scss'
@@ -58,7 +60,7 @@ export class CampaignsComponent {
   showPublicationModal = model(false);
   currentPage = model(0);
   currentPageSize = model(20);
-  readonly tokens = signal(500);
+  readonly tokens = signal(0);
 
   readonly categories = rxResource({
     loader: () => this.http.get<Category[]>('/api/categories')

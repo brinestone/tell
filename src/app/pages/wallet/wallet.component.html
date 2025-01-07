@@ -4,27 +4,27 @@
     <p-card>
       <p class="text-muted-color text-sm">Funding</p>
       <h1 class="text-xl font-semibold">
-      <span>
-        @if (balances.isLoading()) {
+        <span>
+          @if (balances.isLoading()) {
           <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-                              [style]="{ width: '20px', height: '20px' }"/>
-        } @else {
+            [style]="{ width: '20px', height: '20px' }" />
+          } @else {
           {{ balances.value()?.funding?.balance | number }}
-        } credits
-      </span>
+          } credits
+        </span>
       </h1>
     </p-card>
     <p-card>
       <p class="text-muted-color text-sm">Rewards</p>
       <h1 class="text-xl font-semibold">
-      <span>
-        @if (balances.isLoading()) {
+        <span>
+          @if (balances.isLoading()) {
           <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-                              [style]="{ width: '20px', height: '20px' }"/>
-        } @else {
+            [style]="{ width: '20px', height: '20px' }" />
+          } @else {
           {{ balances.value()?.rewards?.balance | number }}
-        } credits
-      </span>
+          } credits
+        </span>
       </h1>
     </p-card>
   </section>
@@ -45,9 +45,9 @@
             <h1 class="font-semibold text-lg">Transactions</h1>
             <div class="flex gap-3">
               <p-button (onClick)="showTopupFormModal.set(true)" label="Top up" icon="pi pi-plus" [outlined]="true"
-                        severity="secondary" size="small"/>
+                severity="secondary" size="small" />
               @if ((balances.value()?.rewards?.balance ?? 0) > 0) {
-                <p-button label="Withdraw" icon="pi pi-minus" [outlined]="true" severity="secondary" size="small"/>
+              <p-button label="Withdraw" icon="pi pi-minus" [outlined]="true" severity="secondary" size="small" />
               }
             </div>
           </div>
@@ -65,11 +65,12 @@
     </p-panel>
   </section>
 
-  <p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" [(visible)]="showTopupFormModal" [modal]="true" position="right">
+  <p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" (onHide)="publicationModalHidden()"
+    [(visible)]="showTopupFormModal" [modal]="true" position="right">
     <ng-template #header>
       <h1 class="text-lg font-bold">Top up your Account</h1>
     </ng-template>
-    <tm-top-up-form/>
+    <tm-top-up-form />
   </p-drawer>
 
 </div>

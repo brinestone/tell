@@ -31,7 +31,7 @@
           </tr>
         </ng-template>
         <ng-template #body let-campaign let-index="rowIndex">
-          <tr [pSelectableRow]="campaign">
+          <tr [pSelectableRow]="campaign" pRipple>
             <td><p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p></td>
             <td>{{ campaign.categories.length }} categories</td>
             <td>{{ campaign.createdAt | date }}</td>

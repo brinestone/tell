@@ -1,4 +1,4 @@
-<form (ngSubmit)="onFormSubmit()" [formGroup]="form" class="grid grid-cols-[auto_1fr] gap-2">
+<form [formGroup]="form" class="grid grid-cols-[auto_1fr] gap-2">
   <div>
     <label for="pref-theme" class="font-medium">Theme</label>
   </div>
@@ -53,12 +53,12 @@
       </ng-template>
     </p-select>
   </div>
-  @if (form.dirty) {
+  <!-- @if (form.dirty) {
     <div class="col-span-2 flex items-center gap-3">
       <p-button size="small" type="submit" label="Save" [disabled]="form.invalid || submitting()"
                 [loading]="submitting()"/>
       <p-button [disabled]="submitting()" size="small" type="reset" label="Discard changes" [outlined]="true"
                 severity="secondary"/>
     </div>
-  }
+  } -->
 </form>

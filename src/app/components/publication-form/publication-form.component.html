@@ -52,8 +52,8 @@
     <p class="text-sm text-muted-color">Allocating <span class="font-medium">{{ form.value.tokens | number }}</span>
       of your <span class="font-medium">{{ totalTokens() | number }}</span> tokens</p>
     } @else {
-    <p><i class="pi pi-info-circle"></i> Your out of tokens. <a class="font-medium text-primary"
-        routerLink="/wallet?top-up">Top up account</a>
+    <p><i class="pi pi-info-circle"></i> Your out of tokens. <a class="font-medium text-primary" routerLink="/wallet"
+        [queryParams]="{'top-up': 'true'}">Top up account</a>
     </p>
     }
   </div>

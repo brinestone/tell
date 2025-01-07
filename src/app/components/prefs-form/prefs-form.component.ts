@@ -1,27 +1,26 @@
-import { Component, inject, OnInit, output, signal }               from '@angular/core';
-import { Select }                                                  from 'primeng/select';
-import { rxResource }                                              from '@angular/core/rxjs-interop';
-import { HttpClient }                                              from '@angular/common/http';
-import { CountryData, Currency, Language }                         from '@lib/models/country-data';
-import { distinct, from, mergeMap, of, toArray }                   from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit, output, signal } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserPrefs }                                               from '@lib/models/user';
-import { Button }                                                  from 'primeng/button';
-import { MessageService } from 'primeng/api';
+import { preferences, PrefsUpdated, UpdatePrefs } from '@app/state/user';
+import { CountryData, Currency, Language } from '@lib/models/country-data';
+import { Actions, dispatch, ofActionCompleted, ofActionDispatched, select } from '@ngxs/store';
+import { Select } from 'primeng/select';
+import { distinct, filter, from, map, merge, mergeMap, of, tap, toArray } from 'rxjs';
 
 @Component({
   selector: 'tm-prefs-form',
   imports: [
     Select,
-    ReactiveFormsModule,
-    Button
+    ReactiveFormsModule
   ],
   templateUrl: './prefs-form.component.html',
   styleUrl: './prefs-form.component.scss'
 })
 export class PrefsFormComponent implements OnInit {
   private http = inject(HttpClient);
-  private messageService = inject(MessageService);
+  private prefsUpdated = dispatch(PrefsUpdated);
+  private updatePrefs = dispatch(UpdatePrefs);
   readonly submitting = signal(false);
   readonly loadingPrefs = signal(false);
   readonly countries = rxResource({
@@ -51,10 +50,7 @@ export class PrefsFormComponent implements OnInit {
   });
   readonly themeOptions = [
     { label: 'Dark', value: 'dark' },
-    { label: 'Light', value: 'light' }, {
-      label: 'System',
-      value: 'system'
-    }
+    { label: 'Light', value: 'light' },
   ];
   readonly form = new FormGroup({
     theme: new FormControl<'light' | 'dark' | 'system'>('system', {
@@ -66,41 +62,46 @@ export class PrefsFormComponent implements OnInit {
     currency: new FormControl('USD', { nonNullable: true, validators: [Validators.required] }),
   });
   readonly error = output<Error>();
+  readonly currentPrefs = select(preferences);
 
   ngOnInit() {
-    this.loadingPrefs.set(true);
-    this.http.get<UserPrefs>('/api/users/prefs').subscribe({
-      complete: () => this.loadingPrefs.set(false),
-      error: (error: Error) => {
-        this.error.emit(error);
-        this.loadingPrefs.set(false);
-      },
-      next: ({ language, currency, theme, country }) => {
-        this.form.patchValue({
-          language, currency, theme, country
-        });
-        this.form.markAsUntouched();
-        this.form.markAsPristine();
-      }
-    })
+    this.setConfiguredPreferences();
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
   }
 
-  onFormSubmit() {
-    this.submitting.set(true);
-    this.http.put<UserPrefs>('/api/users/prefs', this.form.value)
-      .subscribe({
-        error: (error: Error) => {
-          this.submitting.set(false);
-          this.error.emit(error);
-        },
-        next: ({ language, currency, theme, country }) => {
-          this.form.patchValue({
-            language, currency, theme, country
-          });
-          this.form.markAsUntouched();
-          this.form.markAsPristine();
-        },
-        complete: () => this.submitting.set(false)
+  private setConfiguredPreferences() {
+    const { language, country, currency, theme } = this.currentPrefs();
+    this.form.patchValue({
+      language, currency, theme, country
+    });
+  }
+
+  constructor(actions: Actions) {
+    merge(
+      actions.pipe(ofActionDispatched(UpdatePrefs), map(() => true)),
+      actions.pipe(ofActionCompleted(UpdatePrefs), map(() => false))
+    ).pipe(
+      takeUntilDestroyed(),
+      tap(() => {
+        this.ngOnInit();
       })
+    ).subscribe(v => this.submitting.set(v));
+
+    this.form.valueChanges.pipe(
+      takeUntilDestroyed(),
+      filter(() => this.form.dirty),
+      mergeMap(({ country, currency, language, theme }) => this.updatePrefs(theme!, country!, currency!, language!))
+    ).subscribe({
+      error: (error: Error) => {
+        this.submitting.set(false);
+        this.error.emit(error);
+        this.setConfiguredPreferences();
+      },
+      complete: () => {
+        this.submitting.set(false);
+        this.prefsUpdated();
+      }
+    })
   }
 }

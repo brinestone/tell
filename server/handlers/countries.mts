@@ -1,9 +1,10 @@
 import { ExchangeRateResponse } from '@lib/models/country-data';
-import { getStore }             from '@netlify/blobs';
-import { Context }              from '@netlify/functions';
-import _                        from 'lodash';
-import { z }                    from 'zod';
-import AllCountries             from '../../assets/countries.json';
+import { getStore } from '@netlify/blobs';
+import { Context } from '@netlify/functions';
+import _ from 'lodash';
+import { z } from 'zod';
+import AllCountries from '../../assets/countries.json';
+import defaultLogger from '@logger/common';
 
 const exchangeRateQuerySchema = z.object({
   src: z.string().length(3),
@@ -44,17 +45,21 @@ export async function findExchangeRates(req: Request, ctx: Context) {
     consistency: 'strong'
   });
 
+  defaultLogger.debug(`looking up exchange rate from cache for ${src} -> ${dest.join(',')}`);
   const result = await ratesStore.getWithMetadata(src, { type: 'json' })
   if (!result) {
+    defaultLogger.debug(`cache miss for ${src} -> ${dest.join(',')}`);
     const { rates } = await getLatestExchangeRates(src, dest);
     await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
     return ctx.json(pickFields(rates, ...dest));
   } else {
+    defaultLogger.debug(`cache hit for ${src} -> ${dest.join(',')}`);
     const { data, metadata: { fetchDate } } = result;
     const now = new Date().valueOf();
     const then = new Date(fetchDate as number).valueOf();
 
     if (now > then + 6 * 3_600_000) { // Data is stale
+      defaultLogger.debug(`updating stale exchange rate for ${src} -> ${dest.join(',')}`);
       const { rates } = await getLatestExchangeRates(src, dest);
       await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
       return ctx.json(pickFields(rates, ...dest));
@@ -87,7 +92,10 @@ async function getLatestExchangeRates(src: string, dest: string[]) {
   url.searchParams.set('symbols', dest.join(','));
   url.searchParams.set('base', src);
 
-  return fetch(url, { headers: { apikey: String(process.env['API_LAYER_KEY']) } }).then(res => res.json()).then(d => d as ExchangeRateResponse)
+  defaultLogger.debug(`Looking up exchange rates for ${src} -> ${dest.join(',')} from APILayer`);
+  return fetch(url, { headers: { apikey: String(process.env['API_LAYER_KEY']) } })
+  .then(res => res.json())
+  .then(d => d as ExchangeRateResponse);
 }
 
 export function getUserCountry(req: Request, ctx: Context) {
