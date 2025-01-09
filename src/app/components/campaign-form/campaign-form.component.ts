@@ -1,22 +1,23 @@
-import { Component, computed, inject, input, model, output, signal }          from '@angular/core';
+import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Step, StepList, StepPanel, StepPanels, Stepper }                     from 'primeng/stepper';
-import { Fluid }                                                              from 'primeng/fluid';
-import { InputText }                                                          from 'primeng/inputtext';
-import { Message }                                                            from 'primeng/message';
-import { MultiSelect }                                                        from 'primeng/multiselect';
-import { Button }                                                             from 'primeng/button';
-import { Select }                                                             from 'primeng/select';
-import { PhoneDirective }                                                     from '@app/directives/phone.directive';
-import { FileRemoveEvent, FileSelectEvent, FileUpload, FileUploadEvent }      from 'primeng/fileupload';
-import { MeterGroup }                                                         from 'primeng/metergroup';
-import { HttpClient, HttpErrorResponse, HttpResponse }                        from '@angular/common/http';
-import { PhoneNumberFormat, PhoneNumberUtil }                                 from 'google-libphonenumber';
-import { takeUntilDestroyed }                                                 from '@angular/core/rxjs-interop';
-import { Category }                                                           from '@lib/category';
-import { Divider }                                                            from 'primeng/divider';
-import { CountryData }                                                        from '@lib/country-data';
-import { Textarea }                                                           from 'primeng/textarea';
+import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper';
+import { Fluid } from 'primeng/fluid';
+import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
+import { MultiSelect } from 'primeng/multiselect';
+import { Button } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { PhoneDirective } from '@app/directives/phone.directive';
+import { FileRemoveEvent, FileSelectEvent, FileUpload, FileUploadEvent } from 'primeng/fileupload';
+import { MeterGroup } from 'primeng/metergroup';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Category } from '@lib/models/category';
+import { Divider } from 'primeng/divider';
+import { CountryData } from '@lib/models/country-data';
+import { Textarea } from 'primeng/textarea';
+import { phoneValidator } from '@app/util/phone-valiator';
 
 function newMediaControl(url: string) {
   return new FormControl<string>(url, { nonNullable: true });
@@ -35,19 +36,7 @@ function newPhoneControl(defaultCode = 'CM') {
       nonNullable: true,
     }),
     number: new FormControl('', { nonNullable: false })
-  }, [(group) => {
-    try {
-      const codeControl = group.get('code');
-      const numberControl = group.get('number');
-      if (codeControl?.value && !numberControl?.value) return null;
-      else if (!codeControl?.value || !numberControl?.value) return { phoneInvalid: true };
-      const phoneUtil = PhoneNumberUtil.getInstance();
-      const parsed = phoneUtil.parseAndKeepRawInput(numberControl.value, codeControl.value);
-      return phoneUtil.isValidNumberForRegion(parsed, codeControl.value) ? null : { phoneInvalid: true };
-    } catch (e) {
-      return { phoneInvalid: true };
-    }
-  }])
+  }, [phoneValidator()])
 }
 
 function newLinkControl() {

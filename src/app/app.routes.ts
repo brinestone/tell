@@ -1,8 +1,8 @@
-import { Routes }                                     from '@angular/router';
-import { authGuard }                                  from './guards/auth.guard';
-import { provideUserState, USER }                     from './state/user';
+import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { provideUserState, USER } from './state/user';
 import { SESSION_STORAGE_ENGINE, withStorageFeature } from '@ngxs/storage-plugin';
-import { NotFoundComponent }                          from './pages/not-found/not-found.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const userState = provideUserState(withStorageFeature([
   { key: USER, engine: SESSION_STORAGE_ENGINE }
@@ -27,16 +27,25 @@ export const appRoutes: Routes = [
     providers: [userState],
     canActivate: [signedInGuard],
     title: 'Dashboard',
-    path: '',
-    pathMatch: 'full',
+    path: 'dashboard',
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
     providers: [userState],
     canActivate: [signedInGuard],
-    title: 'Wallet',
+    title: 'Wallets',
     path: 'wallet',
     loadComponent: () => import('./pages/wallet/wallet.component').then(m => m.WalletComponent),
+  },
+  {
+    providers: [userState],
+    canActivate: [signedInGuard],
+    title: 'Settings',
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent)
+  },
+  {
+    path: '', pathMatch: 'full', redirectTo: 'campaigns'
   },
   { path: '**', component: NotFoundComponent, title: '404 - Resource not found' }
 ];

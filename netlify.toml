@@ -6,7 +6,7 @@ directory = "server/functions"
 from = "/api/*"
 to = "/.netlify/functions/:splat"
 status = 200
-[context.deploy-preview]
+[context.branch-deploy]
 command = "pnpm build --configuration staging"
 [[redirects]]
 from = "/*"

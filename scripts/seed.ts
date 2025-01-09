@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import { drizzle }       from 'drizzle-orm/neon-serverless';
 import { PgTransaction } from 'drizzle-orm/pg-core';
-import * as categories   from './categories';
-import * as users        from './users';
-import * as wallets      from './wallets';
-import { DefaultWriter } from '../log-writer';
+import * as categories   from '../db/seed/categories';
+import * as users        from '../db/seed/users';
+import * as wallets      from '../db/seed/wallets';
+import { DefaultWriter } from '../db/log-writer';
 import { DefaultLogger } from 'drizzle-orm/logger';
 
 type Seeder = { name: string, seed: (t: PgTransaction<any>) => Promise<void> }

@@ -1,7 +1,7 @@
 import { extractUser } from '@helpers/auth.mjs';
 import { useCampaignsDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
-import { LookupCampaignResponse } from '@lib/campaign';
+import { LookupCampaignResponse } from '@lib/models/campaign';
 import { campaignPublications, campaigns, newCampaignSchema, newPublicationSchema } from '@schemas/campaigns';
 import { count, eq } from 'drizzle-orm';
 import express from 'express';

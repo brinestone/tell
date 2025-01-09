@@ -1,11 +1,20 @@
 import passport from 'passport';
-import express from 'express';
+import express, { NextFunction } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { useUsersDb } from '../helpers/db.mjs';
 import { Context } from '@netlify/functions';
 import jwt from 'jsonwebtoken';
 
 const { verify } = jwt;
+
+export function telegramWebhookAuth(req: express.Request, res: express.Response, next: NextFunction) {
+  const authHeaderValue = req.header('x-telegram-bot-api-secret-token');
+  if (!authHeaderValue || authHeaderValue != String(process.env['TM_WEBHOOK_SECRET'])) {
+    res.status(401).send();
+    return;
+  }
+  next();
+}
 
 passport.use(new Strategy(
   {
@@ -27,7 +36,7 @@ passport.use(new Strategy(
   }
 ));
 
-export const auth = passport.authenticate('jwt', { session: false }) as express.Handler;
+export const jwtAuth = passport.authenticate('jwt', { session: false }) as express.Handler;
 
 export const rawAuth = async (req: Request, ctx: Context, next: (req: Request, ctx: Context) => Promise<Response>) => {
   const headerValue = req.headers.get('authorization')?.split(' ');

@@ -2,7 +2,7 @@ import { Component, inject, input, ResourceRef } from '@angular/core';
 import { rxResource }                            from '@angular/core/rxjs-interop';
 import { DataView }                 from 'primeng/dataview';
 import { HttpClient }               from '@angular/common/http';
-import { CampaignPublication }      from '@lib/campaign';
+import { CampaignPublication }      from '@lib/models/campaign';
 import { of }                       from 'rxjs';
 
 @Component({

@@ -1,1 +1,45 @@
-<p>settings works!</p>
+<div class="container py-10 mx-auto space-y-4">
+  <h1 class="text-3xl font-bold">Settings</h1>
+  <p-divider />
+  <section class="max-w-[600px] space-y-3">
+    <h1 class="text-2xl font-bold text-color">General</h1>
+    <div>
+      <tm-prefs-form />
+    </div>
+  </section>
+  <p-divider />
+  <section class="max-w-[600px] space-y-3">
+    <h1 class="text-2xl font-bold text-color">Connected Accounts</h1>
+    <div>
+      <tm-connections-form />
+    </div>
+  </section>
+  <p-divider />
+  <section class="max-w-[600px]">
+    <h1 class="text-2xl font-bold text-color">Payment Methods</h1>
+    <div>
+      <tm-payment-method-registration />
+    </div>
+  </section>
+  <p-divider />
+  <section class="md:max-w-[700px]">
+    <p-panel styleClass="border-red-500">
+      <ng-template #header>
+        <h1 class="text-2xl font-bold">Account Deletion - Danger zone</h1>
+      </ng-template>
+      <div class="space-y-3">
+        <p>Deleting your account would:</p>
+        <ol class="list-inside">
+          <li class="text-sm">- Make all your <strong>campaigns unavailable</strong> to posters</li>
+          <li class="text-sm">- Make you <strong>lose all accumulated rewards</strong></li>
+        </ol>
+        <p-divider />
+        <div>
+          <p-confirm-dialog />
+          <p-button (onClick)="onDeleteAccountButtonClicked($event)" size="small" label="Delete my account"
+            severity="danger" [outlined]="true" />
+        </div>
+      </div>
+    </p-panel>
+  </section>
+</div>

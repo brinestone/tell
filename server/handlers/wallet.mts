@@ -17,9 +17,16 @@ export async function getUserWalletBalances(req: Request, res: Response) {
   }
 }
 
+export async function doDeleteUserWallet(userId: number) {
+  const db = useFinanceDb();
+  await db.transaction(t => {
+    return t.delete(wallets).where(eq(wallets.ownedBy, userId));
+  });
+}
+
 export async function doCreateUserWallet(userId: number) {
   const db = useFinanceDb();
-  await db.insert(wallets).values({
+  await db.transaction(t => t.insert(wallets).values({
     ownedBy: userId
-  });
+  }));
 }

@@ -5,5 +5,15 @@ export interface SignedUpEvent extends CustomAsyncWorkloadEvent {
   eventData: {
     userId: number;
     email: string;
+    countryCode: string;
+  }
+}
+
+export interface UserDeletedEvent extends CustomAsyncWorkloadEvent {
+  eventName: 'accounts.deleted';
+  eventData: {
+    userId: number;
+    email: string;
+    credentials: string;
   }
 }

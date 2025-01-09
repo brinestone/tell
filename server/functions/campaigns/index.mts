@@ -5,13 +5,13 @@ import {
   findUserCampaigns
 }                         from '@handlers/campaign.mjs';
 import { prepareHandler } from '@helpers/handler.mjs';
-import { auth }           from '@middleware/auth.mjs';
+import { jwtAuth }           from '@middleware/auth.mjs';
 import { Router }         from 'express';
 
 const router = Router();
-router.get('/', auth, findUserCampaigns);
-router.post('/', auth, createCampaign);
-router.get('/:campaign/publications', auth, findCampaignPublications);
-router.post('/:campaign/publications', auth, createCampaignPublication);
+router.get('/', jwtAuth, findUserCampaigns);
+router.post('/', jwtAuth, createCampaign);
+router.get('/:campaign/publications', jwtAuth, findCampaignPublications);
+router.post('/:campaign/publications', jwtAuth, createCampaignPublication);
 
 export const handler = prepareHandler('campaigns', router);

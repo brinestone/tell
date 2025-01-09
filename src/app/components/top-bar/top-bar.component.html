@@ -5,7 +5,7 @@
         <ng-template #start>
           <div class="p-3 flex gap-3">
             <div>
-              <p-avatar shape="circle" size="large" [image]="principal()?.image"/>
+              <p-avatar shape="circle" size="large" [image]="principal()?.image" />
             </div>
             <div class="space-y-2">
               <p class="text-lg font-semibold">{{ principal()?.name }}</p>
@@ -14,8 +14,22 @@
           </div>
         </ng-template>
       </p-menu>
-      <p-avatar class="cursor-pointer" (click)="userMenu.toggle($event)" [image]="principal()?.image"
-                shape="circle"/>
+      <div class="flex items-center gap-3">
+        <div>
+          <p-toggle-switch [(ngModel)]="darkMode" (onChange)="onDarkModeChanged($event)">
+            <ng-template #handle let-checked="checked">
+              <i class="pi text-sm" [ngClass]="{
+                'pi-sun': !checked,
+                'pi-moon': checked
+              }"></i>
+            </ng-template>
+          </p-toggle-switch>
+        </div>
+        <div>
+          <p-avatar class="cursor-pointer" (click)="userMenu.toggle($event)" [image]="principal()?.image"
+            shape="circle" />
+        </div>
+      </div>
     </ng-template>
   </p-menubar>
 </div>

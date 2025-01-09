@@ -11,10 +11,10 @@ import { MenuItem, MessageService }                                             
 import {
   rxResource
 }                                                                                        from '@angular/core/rxjs-interop';
-import { CountryData }                                                                   from '@lib/country-data';
-import { Category }                                                                      from '@lib/category';
+import { CountryData }                                                                   from '@lib/models/country-data';
+import { Category }                                                                      from '@lib/models/category';
 import { HttpClient }                                                                    from '@angular/common/http';
-import { Campaign, LookupCampaignResponse }                                              from '@lib/campaign';
+import { Campaign, LookupCampaignResponse }                                              from '@lib/models/campaign';
 import { Panel }                                                                         from 'primeng/panel';
 import { Menu }                                                                          from 'primeng/menu';
 import { DataViewModule }                                                                from 'primeng/dataview';
@@ -27,6 +27,7 @@ import {
 import {
   PublicationFormComponent
 }                                                                                        from '@app/components/publication-form/publication-form.component';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   selector: 'tm-campaigns',
@@ -44,7 +45,8 @@ import {
     DataViewModule,
     CampaignFormComponent,
     CampaignPublicationsComponent,
-    PublicationFormComponent
+    PublicationFormComponent,
+    Ripple
   ],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.scss'
@@ -58,7 +60,7 @@ export class CampaignsComponent {
   showPublicationModal = model(false);
   currentPage = model(0);
   currentPageSize = model(20);
-  readonly tokens = signal(500);
+  readonly tokens = signal(0);
 
   readonly categories = rxResource({
     loader: () => this.http.get<Category[]>('/api/categories')
