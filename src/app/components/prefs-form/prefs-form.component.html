@@ -14,7 +14,7 @@
   <div>
     <p-select formControlName="country" [loading]="countries.isLoading() || loadingPrefs()"
               filterBy="nativeName,name,alpha3Code,alpha2Code"
-              [filter]="true"
+              [filter]="true" [virtualScroll]="true" [virtualScrollItemSize]="38"
               [options]="countries.value()" dataKey="alpha2Code" optionValue="alpha2Code"
               inputId="pref-country"
               size="small" styleClass="min-w-60">

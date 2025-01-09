@@ -1,15 +1,11 @@
-import { computed, Directive, ElementRef, HostListener, inject, input } from '@angular/core';
-import { AsYouTypeFormatter, PhoneNumberUtil }                          from 'google-libphonenumber';
-import { DefaultValueAccessor }                                         from '@angular/forms';
+import { computed, Directive, HostListener, input } from '@angular/core';
+import { AsYouTypeFormatter } from 'google-libphonenumber';
 
 @Directive({
   selector: '[tmPhone]'
 })
 export class PhoneDirective {
-  private phoneUtil = PhoneNumberUtil.getInstance();
   readonly code = input<string>();
-  private readonly el: ElementRef<HTMLInputElement> = inject(ElementRef);
-  readonly renderer = inject(DefaultValueAccessor);
   private formatter = computed(() => new AsYouTypeFormatter(this.code() ?? 'CM'));
 
   @HostListener('input', ['$event'])
@@ -30,7 +26,7 @@ export class PhoneDirective {
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    if (event.key != 'Delete' && event.key != 'Backspace' && !/[0-9]/.test(event.key) && event.key != 'Tab') {
+    if (event.key != 'Delete' && event.key != 'Backspace' && !/[0-9]/.test(event.key) && event.key != 'Tab' && event.key != 'Shift' && event.key != 'End' && event.key != 'Home' && event.key != 'Alt') {
       event.preventDefault();
       return;
     }

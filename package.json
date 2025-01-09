@@ -64,6 +64,7 @@
     "winston-transport": "^4.9.0",
     "ws": "^8.18.0",
     "zod": "^3.24.1",
+    "zod-validation-error": "^3.4.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

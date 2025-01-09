@@ -14,7 +14,8 @@ import {
 import { patch } from '@ngxs/store/operators';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, tap, throwError } from 'rxjs';
-import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
+import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshPaymentMethod, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
+import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
 
 export * from './actions';
 
@@ -30,10 +31,11 @@ export type UserStateModel = {
   signedIn: boolean;
   principal?: Principal;
   prefs?: UserPrefs;
+  paymentMethods: PaymentMethodLookup[]
 }
 
 export const USER = new StateToken<UserStateModel>('user');
-const defaultState: UserStateModel = { signedIn: false }
+const defaultState: UserStateModel = { signedIn: false, paymentMethods: [] };
 
 type Context = StateContext<UserStateModel>;
 
@@ -44,6 +46,20 @@ type Context = StateContext<UserStateModel>;
 @Injectable()
 class UserState implements NgxsOnInit {
   private http = inject(HttpClient);
+
+  @Action(RefreshPaymentMethod)
+  onRefreshPaymentMethod(ctx: Context) {
+    return this.http.get<PaymentMethodLookup[]>('/api/payment/methods').pipe(
+      tap(paymentMethods => ctx.setState(patch({
+        paymentMethods
+      })))
+    );
+  }
+
+  @Action(SignedIn)
+  updatePaymentMethodsOnSignIn(ctx: Context) {
+    ctx.dispatch(RefreshPaymentMethod);
+  }
 
   @Action(SetColorMode, { cancelUncompleted: true })
   onSetColorMode(ctx: Context, { mode }: SetColorMode) {
@@ -149,4 +165,11 @@ export const preferences = createSelector([slices.prefs], prefs => {
   const { country, currency, language, theme } = prefs;
   return { country, currency, language, theme };
 });
+export const preferredLanguage = createSelector([preferences], ({ language }) => {
+  return language;
+})
 export const darkMode = createSelector([preferences], ({ theme }) => theme == 'dark')
+export const paymentMethods = slices.paymentMethods;
+export const pmMomo = createSelector([paymentMethods], (methods) => {
+  return methods.find(({ provider }) => provider == 'momo');
+})

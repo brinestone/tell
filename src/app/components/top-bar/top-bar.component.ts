@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
-import { Component, linkedSignal } from '@angular/core';
+import { Component, inject, linkedSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { dispatch, select } from '@ngxs/store';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Avatar } from 'primeng/avatar';
 import { Menu } from 'primeng/menu';
 import { Menubar } from 'primeng/menubar';
@@ -23,6 +23,7 @@ import { preferences, principal, SetColorMode, SignOut } from '../../state/user'
   styleUrl: './top-bar.component.scss'
 })
 export class TopBarComponent {
+  private messageService = inject(MessageService);
   private readonly signOut = dispatch(SignOut);
   readonly principal = select(principal);
   readonly preferences = select(preferences);
@@ -45,6 +46,14 @@ export class TopBarComponent {
 
   onDarkModeChanged({ checked }: ToggleSwitchChangeEvent) {
     this.darkMode.set(checked);
-    this.updateMode(checked ? 'dark' : 'light');
+    this.updateMode(checked ? 'dark' : 'light').subscribe({
+      error: (error: Error) => {
+        this.messageService.add({
+          detail: error.message,
+          summary: 'Error',
+          severity: 'error'
+        });
+      }
+    });
   }
 }

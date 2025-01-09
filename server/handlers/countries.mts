@@ -14,14 +14,21 @@ const exchangeRateQuerySchema = z.object({
 });
 
 const getCountryByIso2CodeSchema = z.object({
-  alpha2Code: z.string().length(2)
+  alpha2Code: z.string()
+    .length(2)
+    .transform(val => val.toUpperCase())
+    .or(
+      z.string()
+        .transform(val => val.toUpperCase().split(','))
+        .pipe(z.string().length(2).array())
+    )
 });
 
 export async function getAllCountries(_: Request, ctx: Context) {
   return ctx.json(AllCountries);
 }
 
-export function handleFindCountryByIso2Code(req: Request, ctx: Context) {
+export function handleFindCountryByIso2Code(_: Request, ctx: Context) {
   const params = [...ctx.url.searchParams.entries()].reduce((acc, [k, v]) => {
     acc[k] = v;
     return acc
@@ -30,7 +37,9 @@ export function handleFindCountryByIso2Code(req: Request, ctx: Context) {
   return ctx.json(findCountryByIso2Code(alpha2Code));
 }
 
-export function findCountryByIso2Code(countryCode: string) {
+export function findCountryByIso2Code(countryCode: string | string[]) {
+  if (Array.isArray(countryCode))
+    return AllCountries.filter(({ alpha2Code }) => countryCode.includes(alpha2Code));
   return AllCountries.find(({ alpha2Code }) => alpha2Code == countryCode);
 }
 
@@ -94,8 +103,8 @@ async function getLatestExchangeRates(src: string, dest: string[]) {
 
   defaultLogger.debug(`Looking up exchange rates for ${src} -> ${dest.join(',')} from APILayer`);
   return fetch(url, { headers: { apikey: String(process.env['API_LAYER_KEY']) } })
-  .then(res => res.json())
-  .then(d => d as ExchangeRateResponse);
+    .then(res => res.json())
+    .then(d => d as ExchangeRateResponse);
 }
 
 export function getUserCountry(req: Request, ctx: Context) {

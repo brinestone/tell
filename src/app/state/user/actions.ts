@@ -31,8 +31,11 @@ export class UpdatePrefs implements DisplayPrefs {
   constructor(readonly theme: 'dark' | 'light' | 'system', readonly country: string, readonly currency: string, readonly language: string) { }
   static type = `${prefix} upate prefs`;
 }
-
 export class SetColorMode {
   static type = `${prefix} set color mode`;
   constructor(readonly mode: 'dark' | 'light') { }
+}
+
+export class RefreshPaymentMethod {
+  static type = `${prefix} refresh payment methods`;
 }

@@ -1,0 +1,1 @@
+ALTER TYPE "public"."payment_methods" RENAME TO "payment_methods_types";

@@ -9,10 +9,28 @@ import {
   real,
   text,
   timestamp,
+  unique,
+  uniqueIndex,
   uuid,
   varchar
-}                           from 'drizzle-orm/pg-core';
-import { users }            from './users';
+} from 'drizzle-orm/pg-core';
+import { users } from './users';
+
+export const paymentMethodProviders = pgEnum('payment_method_provider', ['momo']);
+export const paymentMethodStatus = pgEnum('payment_method_status', ['active', 'inactive', 're-connection required']);
+export const paymentMethods = pgTable('payment_methods', {
+  id: uuid().primaryKey().defaultRandom(),
+  provider: paymentMethodProviders().notNull(),
+  params: jsonb().notNull(),
+  status: paymentMethodStatus().notNull().default('active'),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow().$onUpdate(() => new Date()),
+  owner: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+}, table => {
+  return {
+    idx: uniqueIndex().on(table.provider, table.owner)
+  }
+});
 
 export const wallets = pgTable('wallets', {
   id: uuid().primaryKey().defaultRandom(),
@@ -23,7 +41,6 @@ export const wallets = pgTable('wallets', {
 });
 
 export const transactionStatus = pgEnum('transaction_status', ['pending', 'cancelled', 'complete']);
-export const paymentMethods = pgEnum('payment_methods', ['momo']);
 export const walletTransactionType = pgEnum('wallet_transaction_type', ['funding', 'reward', 'withdrawal']);
 export const walletTransactions = pgTable('wallet_transactions', {
   id: uuid().primaryKey().defaultRandom(),
@@ -38,9 +55,10 @@ export const walletTransactions = pgTable('wallet_transactions', {
   notes: text(),
   accountTransaction: uuid().references(() => paymentTransactions.id)
 });
+
 export const paymentTransactions = pgTable('payment_transactions', {
   id: uuid().primaryKey().defaultRandom(),
-  paymentMethod: paymentMethods().notNull(),
+  paymentMethod: paymentMethodProviders().notNull(),
   status: transactionStatus().notNull(),
   externalTransactionId: varchar({ length: 400 }),
   recordedAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -71,18 +89,18 @@ export const fundingBalances = pgView('vw_funding_balances')
   );
 
 export const rewardBalances = pgView('vw_reward_balances')
-.as(qb => qb.select({
-  id: wallets.id,
-  balance: sql<number>`${wallets.startingBalance} + SUM(
+  .as(qb => qb.select({
+    id: wallets.id,
+    balance: sql<number>`${wallets.startingBalance} + SUM(
     CASE
       WHEN ${and(eq(walletTransactions.from, wallets.id), eq(walletTransactions.type, 'reward'), eq(walletTransactions.status, 'complete'))} THEN -${walletTransactions.value}
       WHEN ${and(eq(walletTransactions.to, wallets.id), eq(walletTransactions.type, 'reward'), eq(walletTransactions.status, 'complete'))} THEN ${walletTransactions.value}
       ELSE 0
     END
   )::BIGINT`.as('balance'),
-  ownerId: wallets.ownedBy
-}).from(wallets)
-  .leftJoin(walletTransactions, (wallet) => or(eq(wallet.id, walletTransactions.from), eq(wallet.id, walletTransactions.to)))
-  .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
-  .groupBy(wallets.id, wallets.ownedBy)
-);
+    ownerId: wallets.ownedBy
+  }).from(wallets)
+    .leftJoin(walletTransactions, (wallet) => or(eq(wallet.id, walletTransactions.from), eq(wallet.id, walletTransactions.to)))
+    .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
+    .groupBy(wallets.id, wallets.ownedBy)
+  );
