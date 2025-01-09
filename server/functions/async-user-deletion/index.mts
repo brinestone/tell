@@ -11,17 +11,17 @@ import { eq } from "drizzle-orm";
 export default asyncWorkloadFn<UserDeletedEvent>(async ({ step, eventData: { userId, email, credentials } }) => {
   await step.run('delete-wallet', async () => {
     await doDeleteUserWallet(userId);
-    defaultLogger.info(`Deleted wallet for user: ${email}`);
+    defaultLogger.info(`deleted wallet for user`, { email });
   });
 
   await step.run('remove-account-connections', async () => {
     await doRemoveAccountConnections(userId);
-    defaultLogger.info(`Deleted connected accounts for user: ${email}`);
+    defaultLogger.info(`deleted connected accounts for user`, { email });
   });
 
   await step.run('remove-payment-methods', async () => {
     const cnt = await doRemovePaymentMethods(userId);
-    defaultLogger.info(`Deleted ${cnt} payment methods for user: ${email}`);
+    defaultLogger.info(`deleted ${cnt} payment methods`, { email });
   })
 
   await step.run('remove-user-account', async () => {
@@ -32,7 +32,7 @@ export default asyncWorkloadFn<UserDeletedEvent>(async ({ step, eventData: { use
         t.delete(federatedCredentials).where(eq(federatedCredentials.id, credentials as string))
       ]);
     });
-    defaultLogger.info(`Deleted user account: ${email}`);
+    defaultLogger.info(`deleted user account`, { email });
   })
 });
 

@@ -1,21 +1,20 @@
-<div class="mx-auto container space-y-4 py-10">
+<div class="mx-auto container space-y-4 pt-4 md:pt-10 pb-10 px-3">
   <h1 class="text-3xl font-bold">Campaigns</h1>
   <div class="md:grid md:grid-cols-[1fr_auto] md:gap-x-3">
     <p-panel>
-      <p-table [scrollable]="true" scrollHeight="flex" dataKey="id"
-               [value]="campaigns.value()?.data ?? []" [paginator]="(campaigns.value()?.data?.length ?? 0) > 10"
-               [rows]="10" selectionMode="single" [(selection)]="selectedCampaign"
-               [loading]="campaigns.isLoading()" [totalRecords]="campaigns.value()?.total ?? 0">
+      <p-table [scrollable]="true" scrollHeight="flex" dataKey="id" [value]="campaigns.value()?.data ?? []"
+        [paginator]="(campaigns.value()?.data?.length ?? 0) > 10" [rows]="10" selectionMode="single"
+        [(selection)]="selectedCampaign" [loading]="campaigns.isLoading()"
+        [totalRecords]="campaigns.value()?.total ?? 0">
         <ng-template #caption>
           <div class="flex items-start">
             <div class="inline-flex gap-3 items-end">
               <p-button (onClick)="showCampaignModal.set(true)" [outlined]="true" title="New Campaign"
-                        label="New Campaign" icon="pi pi-plus"
-              />
+                label="New Campaign" icon="pi pi-plus" />
               <p-icon-field>
                 <p-inputicon>
                   <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
-                     [class.pi-filter-fill]="filterInput.value.length > 0"></i>
+                    [class.pi-filter-fill]="filterInput.value.length > 0"></i>
                 </p-inputicon>
                 <input size="small" #filterInput pInputText type="search" placeholder="Filter">
               </p-icon-field>
@@ -32,14 +31,16 @@
         </ng-template>
         <ng-template #body let-campaign let-index="rowIndex">
           <tr [pSelectableRow]="campaign" pRipple>
-            <td><p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p></td>
+            <td>
+              <p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p>
+            </td>
             <td>{{ campaign.categories.length }} categories</td>
             <td>{{ campaign.createdAt | date }}</td>
             <td class="w-[1rem]">
               <div class="flex gap-3 items-center">
-                <p-menu appendTo="body" [popup]="true" #campaignActions [model]="campaignOptions()[index]"/>
+                <p-menu appendTo="body" [popup]="true" #campaignActions [model]="campaignOptions()[index]" />
                 <p-button (onClick)="campaignActions.toggle($event)" size="small" [text]="true" severity="secondary"
-                          icon="pi pi-ellipsis-v"/>
+                  icon="pi pi-ellipsis-v" />
               </div>
             </td>
           </tr>
@@ -47,14 +48,14 @@
       </p-table>
     </p-panel>
     @if (selectedCampaign()) {
-      <div class="w-[20rem]">
-        <p-panel>
-          <ng-template #header>
-            <h1 class="text-lg font-bold"><i class="pi pi-megaphone"></i> Publications</h1>
-          </ng-template>
-          <tm-campaign-publications [campaignId]="selectedCampaign()?.id"/>
-        </p-panel>
-      </div>
+    <div class="w-[20rem]">
+      <p-panel>
+        <ng-template #header>
+          <h1 class="text-lg font-bold"><i class="pi pi-megaphone"></i> Publications</h1>
+        </ng-template>
+        <tm-campaign-publications [campaignId]="selectedCampaign()?.id" />
+      </p-panel>
+    </div>
     }
   </div>
 </div>
@@ -64,15 +65,14 @@
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
   <tm-campaign-form (onSubmit)="onCampaignFormSubmitted()" [countries]="countries.value() ?? []"
-                    [categoriesLoading]="categories.isLoading()"
-                    [countriesLoading]="countries.isLoading()" [categories]="categories.value() ?? []"/>
+    [categoriesLoading]="categories.isLoading()" [countriesLoading]="countries.isLoading()"
+    [categories]="categories.value() ?? []" />
 </p-drawer>
 <p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" [modal]="true" [(visible)]="showPublicationModal" position="right">
   <ng-template #header>
     <h1 class="text-lg font-bold"><i class="pi pi-megaphone"></i> Publish Campaign</h1>
   </ng-template>
   <tm-publication-form [campaignsLoading]="campaigns.isLoading()" [totalTokens]="tokens()"
-                       [campaigns]="campaigns.value()?.data ?? []"
-                       [campaign]="targetCampaignId()"
-                       (onSubmit)="onPublicationFormSubmitted()"/>
+    [campaigns]="campaigns.value()?.data ?? []" [campaign]="targetCampaignId()"
+    (onSubmit)="onPublicationFormSubmitted()" />
 </p-drawer>

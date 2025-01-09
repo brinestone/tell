@@ -2,21 +2,19 @@ import { TM_USER_ACCOUNT_CONNECTION_VERIFIED_MSG, TM_USER_ACCOUNT_DISCONNECTION_
 import { extractUser } from '@helpers/auth.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { sendTelegramBotMessage } from '@helpers/telegram.mjs';
-import defaultLogger from '@logger/common';
+import { CountryData } from '@lib/models/country-data';
+import { useLogger } from '@logger/common';
 import { AccountConnection, accountConnections, updatePrefSchema, userPrefs, verificationCodes, verificationCodesView } from '@schemas/users';
 import { TelegramAccountConnectionDataSchema } from '@zod-schemas/telegram.mjs';
+import { CodeVerificationSchema } from '@zod-schemas/user.mjs';
 import { and, eq } from 'drizzle-orm';
 import { Request, Response } from 'express';
-import { hashThese } from 'server/util';
-import { z } from 'zod';
 import { findCountryByIso2Code } from './countries.mjs';
-import { CountryData } from '@lib/models/country-data';
 
-const codeVerificationSchema = z.object({
-  code: z.string().length(6).transform(arg => hashThese(arg))
-});
-
+const logger = useLogger({ service: 'user' })
 export async function handleTelegramAccountConnectionRemoval(req: Request, res: Response) {
+  logger.info('removing telegram connection');
+
   const user = extractUser(req);
   const ans = await removeTelegramAccountConnection(user.id);
 
@@ -24,8 +22,9 @@ export async function handleTelegramAccountConnectionRemoval(req: Request, res: 
 }
 
 export async function verifyTelegramVerificationCode(req: Request, res: Response) {
+  logger.info('verifying telegram code');
   const params = { ...req.query };
-  const { code } = codeVerificationSchema.parse(params);
+  const { code } = CodeVerificationSchema.parse(params);
   const db = useUsersDb();
   const results = await db.select().from(verificationCodesView).where((verificationCode) => and(eq(verificationCode.code, code), eq(verificationCodesView.isExpired, false))).limit(1);
   if (results.length == 0) {
@@ -33,7 +32,7 @@ export async function verifyTelegramVerificationCode(req: Request, res: Response
     return;
   }
 
-  defaultLogger.debug('verification code confirmed', 'hash', code);
+  logger.debug('verification code confirmed', 'hash', code);
   const user = extractUser(req);
   const [{ data }] = results;
   const telegramData = TelegramAccountConnectionDataSchema.parse(data);
@@ -50,7 +49,7 @@ export async function verifyTelegramVerificationCode(req: Request, res: Response
       confirmed_at: new Date()
     }).where(eq(verificationCodes.hash, code));
   });
-  defaultLogger.info('account connection created', 'user', user, 'platform', 'telegram');
+  logger.info('account connection created', 'user', user, 'platform', 'telegram');
 
   const { chatId } = TelegramAccountConnectionDataSchema.parse(data);
   await sendTelegramBotMessage(chatId, TM_USER_ACCOUNT_CONNECTION_VERIFIED_MSG(user.names));
@@ -75,10 +74,11 @@ export async function findUserConnections(req: Request, res: Response) {
 }
 
 export async function updateUserPreferences(req: Request, res: Response) {
+  logger.info('updating user preferences');
   const db = useUsersDb();
   const user = extractUser(req);
   const input = updatePrefSchema.parse(req.body);
-  const [{ id }] = await db.transaction(async t => {
+  await db.transaction(async t => {
     return t.update(userPrefs).set(input).where(eq(userPrefs.user, user.id)).returning({ id: userPrefs.id });
   });
   res.status(202).json({});

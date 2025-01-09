@@ -1,8 +1,8 @@
-import winston         from 'winston';
-import Transport       from 'winston-transport';
-import { Logtail }     from '@logtail/node';
+import winston from 'winston';
+import Transport from 'winston-transport';
+import { Logtail } from '@logtail/node';
 import { from, retry } from 'rxjs';
-import { hostname }    from 'node:os';
+import { hostname } from 'node:os';
 
 class LogTailTransport extends Transport {
   private logTail: Logtail;
@@ -12,20 +12,11 @@ class LogTailTransport extends Transport {
     this.logTail = new Logtail(String(process.env['LOGTAIL_TOKEN']));
   }
 
-  override log(info: { message: string, level: string, splat?: any[] }, next: () => void): any {
-    console.log('here');
-    const { message, level, splat } = info;
-    let context: Record<string, any> = {
-      hostname: hostname(),
-      origin: process.env['ORIGIN'],
-      env: process.env['NODE_ENV']
-    };
-    if (splat) {
-      for (let i = 0, j = 1; i < splat.length - 1; ++i, j++) {
-        context[splat[i]] = splat[j];
-      }
-    }
-    from(this.logTail.log(message, level, context)).pipe(retry(20)).subscribe();
+  override log(info: { message: string, level: string} & Record<string, unknown>, next: () => void): any {
+    const { message, level } = info;
+    const rest = Object.entries(info).filter(([k]) => k != 'mesage' && k != 'level').reduce((acc, [k,v]) =>({...acc, [k]: v}), {} as Record<string, unknown>);
+
+    from(this.logTail.log(message, level, rest)).pipe(retry(20)).subscribe();
     next();
   }
 }
@@ -38,7 +29,7 @@ export const DevelopmentFormatter = winston.format.combine(
 );
 export const ProductionFormatter = winston.format.json();
 
-export function useProdLogger() {
+function useProdLogger() {
   return winston.createLogger({
     level: process.env['LOG_LEVEL'] ?? 'info',
     transports: [new LogTailTransport({ format: ProductionFormatter })],
@@ -46,7 +37,7 @@ export function useProdLogger() {
   })
 }
 
-export function useDevLogger() {
+function useDevLogger() {
   return winston.createLogger({
     level: process.env['LOG_LEVEL'] ?? 'debug',
     transports: [
@@ -65,4 +56,7 @@ const defaultMeta = {
 };
 
 const defaultLogger = process.env['NODE_ENV'] == 'development' ? useDevLogger() : useProdLogger();
+export function useLogger(meta: Record<string, string | number>) {
+  return defaultLogger.child(meta);
+}
 export default defaultLogger;

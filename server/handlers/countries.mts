@@ -1,29 +1,12 @@
 import { ExchangeRateResponse } from '@lib/models/country-data';
+import { useLogger } from '@logger/common';
 import { getStore } from '@netlify/blobs';
 import { Context } from '@netlify/functions';
+import { ExchangerateQuerySchema, GetCountryByIso2CodeSchema } from '@zod-schemas/countries.mjs';
 import _ from 'lodash';
-import { z } from 'zod';
 import AllCountries from '../../assets/countries.json';
-import defaultLogger from '@logger/common';
 
-const exchangeRateQuerySchema = z.object({
-  src: z.string().length(3),
-  dest: z.string()
-    .transform(val => val.toUpperCase().split(','))
-    .pipe(z.string().length(3).array())
-});
-
-const getCountryByIso2CodeSchema = z.object({
-  alpha2Code: z.string()
-    .length(2)
-    .transform(val => val.toUpperCase())
-    .or(
-      z.string()
-        .transform(val => val.toUpperCase().split(','))
-        .pipe(z.string().length(2).array())
-    )
-});
-
+const logger = useLogger({ service: 'countries' });
 export async function getAllCountries(_: Request, ctx: Context) {
   return ctx.json(AllCountries);
 }
@@ -33,7 +16,7 @@ export function handleFindCountryByIso2Code(_: Request, ctx: Context) {
     acc[k] = v;
     return acc
   }, {} as Record<string, string>);
-  const { alpha2Code } = getCountryByIso2CodeSchema.parse(params);
+  const { alpha2Code } = GetCountryByIso2CodeSchema.parse(params);
   return ctx.json(findCountryByIso2Code(alpha2Code));
 }
 
@@ -48,27 +31,27 @@ export async function findExchangeRates(req: Request, ctx: Context) {
     acc[k] = v;
     return acc
   }, {} as Record<string, string>);
-  const { dest, src } = exchangeRateQuerySchema.parse(params);
+  const { dest, src } = ExchangerateQuerySchema.parse(params);
   const ratesStore = getStore({
     name: 'exchangeRates',
     consistency: 'strong'
   });
 
-  defaultLogger.debug(`looking up exchange rate from cache for ${src} -> ${dest.join(',')}`);
+  logger.debug(`looking up exchange rate from cache for ${src} -> ${dest.join(',')}`);
   const result = await ratesStore.getWithMetadata(src, { type: 'json' })
   if (!result) {
-    defaultLogger.debug(`cache miss for ${src} -> ${dest.join(',')}`);
+    logger.debug(`cache miss for ${src} -> ${dest.join(',')}`);
     const { rates } = await getLatestExchangeRates(src, dest);
     await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
     return ctx.json(pickFields(rates, ...dest));
   } else {
-    defaultLogger.debug(`cache hit for ${src} -> ${dest.join(',')}`);
+    logger.debug(`cache hit for ${src} -> ${dest.join(',')}`);
     const { data, metadata: { fetchDate } } = result;
     const now = new Date().valueOf();
     const then = new Date(fetchDate as number).valueOf();
 
     if (now > then + 6 * 3_600_000) { // Data is stale
-      defaultLogger.debug(`updating stale exchange rate for ${src} -> ${dest.join(',')}`);
+      logger.debug(`updating stale exchange rate for ${src} -> ${dest.join(',')}`);
       const { rates } = await getLatestExchangeRates(src, dest);
       await ratesStore.setJSON(src, rates, { metadata: { fetchDate: new Date().valueOf() } });
       return ctx.json(pickFields(rates, ...dest));
@@ -101,7 +84,7 @@ async function getLatestExchangeRates(src: string, dest: string[]) {
   url.searchParams.set('symbols', dest.join(','));
   url.searchParams.set('base', src);
 
-  defaultLogger.debug(`Looking up exchange rates for ${src} -> ${dest.join(',')} from APILayer`);
+  logger.debug(`Looking up exchange rates for ${src} -> ${dest.join(',')} from APILayer`);
   return fetch(url, { headers: { apikey: String(process.env['API_LAYER_KEY']) } })
     .then(res => res.json())
     .then(d => d as ExchangeRateResponse);

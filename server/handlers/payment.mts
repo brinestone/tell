@@ -1,14 +1,16 @@
 import { extractUser } from "@helpers/auth.mjs";
 import { useFinanceDb } from "@helpers/db.mjs";
 import { handleError } from "@helpers/error.mjs";
-import defaultLogger from "@logger/common";
+import { useLogger } from "@logger/common";
 import { paymentMethods } from "@schemas/finance";
 import { RemoveMomoPaymentMethodSchema, UpdatePaymentMethodSchema } from "@zod-schemas/payment-method.mjs";
 import { and, eq, sql } from "drizzle-orm";
 import { Request, Response } from "express";
 import { fromError } from "zod-validation-error";
 
+const logger = useLogger({ service: 'payments' });
 export async function handleRemovePaymentMethod(req: Request, res: Response) {
+  logger.info('removing payment method');
   const { success, data, error } = RemoveMomoPaymentMethodSchema.safeParse(req.query);
   if (!success) {
     res.status(400).json({ message: fromError(error).message });
@@ -21,13 +23,14 @@ export async function handleRemovePaymentMethod(req: Request, res: Response) {
     const result = await removePaymentMethod(user.id, provider);
     res.status(202).json({});
     if (result.rowCount)
-      defaultLogger.info('removed payment method', 'user', user.id, 'provider', provider);
+      logger.info('removed payment method', 'user', user.id, 'provider', provider);
   } catch (e) {
     handleError(e as Error, res);
   }
 }
 
 export async function updatePaymentMethod(req: Request, res: Response) {
+  logger.info('upserting payment method');
   const { success, data, error } = UpdatePaymentMethodSchema.safeParse(req.body);
   if (!success) {
     res.status(400).json({ message: fromError(error).message });
@@ -50,7 +53,7 @@ export async function updatePaymentMethod(req: Request, res: Response) {
       });
     });
     res.status(202).json({});
-    defaultLogger.info('upserted payment methods', 'user', user.id, 'provider', provider);
+    logger.info('upserted payment methods', 'user', user.id, 'provider', provider);
   } catch (e) {
     handleError(e as Error, res);
   }
