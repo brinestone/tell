@@ -1,9 +1,7 @@
-import { SignedUpEvent, UserDeletedEvent } from '@events/user';
 import { extractUser } from '@helpers/auth.mjs';
-import { useAwlClient } from '@helpers/awl-client.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
-import defaultLogger, { useLogger } from '@logger/common';
+import { useLogger } from '@logger/common';
 import * as users from '@schemas/users';
 import { userSchema } from '@schemas/users';
 import { eq } from 'drizzle-orm';
@@ -11,14 +9,16 @@ import { Request, Response } from 'express';
 import { sign } from 'jsonwebtoken';
 import passport from 'passport';
 import { Strategy as GoogleStrategy, Profile, VerifyCallback } from 'passport-google-oauth20';
+import { doRemovePaymentMethods } from './payment.mjs';
+import { doRemoveAccountConnections } from './user.mjs';
+import { doCreateUserWallet, doDeleteUserWallet } from './wallet.mjs';
 
 const logger = useLogger({ handler: 'auth' });
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
   callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
-  passReqToCallback: true
-}, async (request, accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
+}, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
   logger.info('completing oauth2 request');
   const db = useUsersDb();
   let existingUser = await db.query.users.findFirst({
@@ -27,7 +27,7 @@ passport.use(new GoogleStrategy({
 
   if (!existingUser) {
     logger.info('creating new user', { email: profile.emails?.[0], provider: 'google' });
-    const { userId, email } = await db.transaction(async trx => {
+    const { userId } = await db.transaction(async trx => {
       await trx.insert(users.federatedCredentials).values({
         id: profile.id,
         lastAccessToken: accessToken,
@@ -52,15 +52,8 @@ passport.use(new GoogleStrategy({
       return userInfo;
     });
     existingUser = await db.query.users.findFirst({ where: eq(users.users.credentials, profile.id) });
-    const client = useAwlClient<SignedUpEvent>();
-    const eventData = {
-      userId,
-      email,
-      countryCode: request.header('accept-language')?.split(',')?.[0]?.split('-')?.[1] ?? 'CM'
-    };
-    client.send('accounts.sign-up', {
-      data: eventData
-    });
+
+    await doCreateUserWallet(userId);
   } else {
     await db.transaction(async tx => {
       await tx.update(users.federatedCredentials).set({ lastAccessToken: accessToken }).where(eq(users.federatedCredentials.id, profile.id))
@@ -85,12 +78,24 @@ export async function removeUserAccount(req: Request, res: Response) {
   const user = extractUser(req);
   const db = useUsersDb();
   try {
+    logger.info('deleting user account', { userId: user.id });
+    logger.info('deleting user preferences', { userId: user.id });
     await db.transaction(async t => {
       await t.delete(users.userPrefs).where(eq(users.userPrefs.user, user.id));
     });
-    defaultLogger.info('deleting user account', { userId: user.id });
-    const client = useAwlClient<UserDeletedEvent>();
-    client.send('accounts.deleted', { data: { email: user.email, userId: user.id, credentials: user.credentials as string } });
+    logger.info('deleting user wallet', { userId: user.id });
+    await doDeleteUserWallet(user.id);
+    logger.info('deleting user account connections', { userId: user.id });
+    await doRemoveAccountConnections(user.id);
+    logger.info('deleting user payment methods', { userId: user.id });
+    await doRemovePaymentMethods(user.id);
+    logger.info('deleting user credentials and user account record', { userId: user.id });
+    await db.transaction(t => Promise.all([
+      t.delete(users.users).where(eq(users.users.id, user.id)),
+      t.delete(users.federatedCredentials).where(eq(users.federatedCredentials.id, user.credentials as string))
+    ]));
+    logger.info('user account deleted', { userId: user, email: user.email });
+
     res.status(202).send({});
   } catch (e) {
     handleError(e as Error, res);

@@ -30,7 +30,6 @@
     "@angular/router": "^19.0.0",
     "@logtail/node": "^0.5.2",
     "@neondatabase/serverless": "^0.10.4",
-    "@netlify/async-workloads": "^0.0.97",
     "@netlify/blobs": "^8.1.0",
     "@netlify/functions": "^3.0.0",
     "@ngxs/devtools-plugin": "^19.0.0",
