@@ -35,7 +35,9 @@
         </ol>
         <p-divider />
         <div>
-          <p-button size="small" label="Delete my account" severity="danger" [outlined]="true" />
+          <p-confirm-dialog />
+          <p-button (onClick)="onDeleteAccountButtonClicked($event)" size="small" label="Delete my account"
+            severity="danger" [outlined]="true" />
         </div>
       </div>
     </p-panel>

@@ -1,8 +1,8 @@
 <div class="flex items-center gap-2">
-  <img width="25" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="telegram logo">
+  <img width="50" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="telegram logo">
   <div class="space-y-1">
     <h2 class="font-semibold">Telegram&trade;
-      <p-tag [rounded]="true" styleClass="capitalize" [severity]="isTelegramAccountConnected() ? 'success' : 'warn'"
+      <p-tag [rounded]="true" styleClass="capitalize" [severity]="telegramConnectionSeverityText()"
         [value]="telegramConnectionStatusText()" styleClass="text-sm" />
     </h2>
     @if(showVerificationCodeInput() && !isTelegramAccountConnected()) {
@@ -25,7 +25,7 @@
         class="text-primary" target="_blank">telegram bot</a> and obtain a code by sending the <strong>/start</strong>
       command</p>
     } @else {
-    <p class="text-sm text-muted-color max-w-[300px]">Receive campaign posts for your Telegram account's status</p>
+    <p class="text-sm text-muted-color max-w-[300px]">Receive promotion requests for your Telegram status.</p>
     }
   </div>
 </div>

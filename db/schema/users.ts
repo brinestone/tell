@@ -1,6 +1,7 @@
-import { relations, sql } from 'drizzle-orm';
-import { bigint, date, interval, jsonb, pgEnum, pgTable, pgView, timestamp, unique, uuid, varchar } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import { bigint, date, interval, jsonb, pgEnum, pgTable, pgView, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
 export const verificationCodes = pgTable('verification_codes', {
   id: uuid().primaryKey().defaultRandom(),
@@ -83,3 +84,5 @@ export const updatePrefSchema = createUpdateSchema(userPrefs).pick({
 });
 
 export const userSchema = createSelectSchema(users);
+const connectionsSchema = createSelectSchema(accountConnections);
+export type AccountConnection = z.infer<typeof connectionsSchema>;

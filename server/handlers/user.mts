@@ -3,35 +3,24 @@ import { extractUser } from '@helpers/auth.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { sendTelegramBotMessage } from '@helpers/telegram.mjs';
 import defaultLogger from '@logger/common';
-import { accountConnections, updatePrefSchema, userPrefs, verificationCodes, verificationCodesView } from '@schemas/users';
+import { AccountConnection, accountConnections, updatePrefSchema, userPrefs, verificationCodes, verificationCodesView } from '@schemas/users';
 import { TelegramAccountConnectionDataSchema } from '@zod-schemas/telegram.mjs';
 import { and, eq } from 'drizzle-orm';
 import { Request, Response } from 'express';
 import { hashThese } from 'server/util';
 import { z } from 'zod';
 import { findCountryByIso2Code } from './countries.mjs';
+import { CountryData } from '@lib/models/country-data';
 
 const codeVerificationSchema = z.object({
   code: z.string().length(6).transform(arg => hashThese(arg))
 });
 
-export async function removeTelegramAccountConnection(req: Request, res: Response) {
-  const db = useUsersDb();
+export async function handleTelegramAccountConnectionRemoval(req: Request, res: Response) {
   const user = extractUser(req);
-  const connection = await db.query.accountConnections.findFirst({
-    where: (connection => and(eq(connection.provider, 'telegram'), eq(connection.user, user.id)))
-  });
-  if (!connection) {
-    res.status(404).json({ message: 'Telegram connection not found' });
-    return;
-  }
+  const ans = await removeTelegramAccountConnection(user.id);
 
-  await db.transaction(t => t.delete(accountConnections).where(eq(accountConnections.id, connection.id)));
-
-  const { chatId } = TelegramAccountConnectionDataSchema.parse(connection.params);
-  await sendTelegramBotMessage(chatId, TM_USER_ACCOUNT_DISCONNECTION_MSG);
-
-  res.status(202).json({});
+  res.status(ans ? 202 : 404).json(ans ? {} : { message: 'Telegram connection not found' });
 }
 
 export async function verifyTelegramVerificationCode(req: Request, res: Response) {
@@ -105,9 +94,42 @@ export async function getUserPreferences(req: Request, res: Response) {
   res.json(prefs);
 }
 
+export async function doRemoveAccountConnections(userId: number) {
+  const db = useUsersDb();
+  const connections = await db.query.accountConnections.findMany({
+    where: (connection, { eq }) => eq(connection.user, userId)
+  });
+
+  if (connections.length == 0) return;
+  for await (const connection of connections) {
+    switch (connection.provider) {
+      case 'telegram':
+        await removeTelegramAccountConnection(userId, connection as any);
+        break;
+    }
+  }
+}
+
+async function removeTelegramAccountConnection(userId: number, conn?: AccountConnection) {
+  const db = useUsersDb();
+  const connection = conn ?? await db.query.accountConnections.findFirst({
+    where: (connection => and(eq(connection.provider, 'telegram'), eq(connection.user, userId)))
+  });
+  if (!connection) {
+    return false;
+  }
+
+  await db.transaction(t => t.delete(accountConnections).where(eq(accountConnections.id, connection.id)));
+
+  const { chatId } = TelegramAccountConnectionDataSchema.parse(connection.params);
+  await sendTelegramBotMessage(chatId, TM_USER_ACCOUNT_DISCONNECTION_MSG);
+  return true;
+}
+
+
 export async function doCreateUserPreferences(userId: number, countryCode: string) {
   const db = useUsersDb();
-  const country = findCountryByIso2Code(countryCode);
+  const country = findCountryByIso2Code(countryCode) as CountryData | undefined;
   await db.insert(userPrefs).values({
     country: countryCode,
     user: userId,

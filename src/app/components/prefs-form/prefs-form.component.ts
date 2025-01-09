@@ -53,7 +53,7 @@ export class PrefsFormComponent implements OnInit {
     { label: 'Light', value: 'light' },
   ];
   readonly form = new FormGroup({
-    theme: new FormControl<'light' | 'dark' | 'system'>('system', {
+    theme: new FormControl<'light' | 'dark' | 'system'>('light', {
       nonNullable: true,
       validators: [Validators.required]
     }),

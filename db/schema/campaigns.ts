@@ -14,7 +14,7 @@ export const campaigns = pgTable('campaigns', {
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   categories: bigint({ mode: 'number' }).array().notNull(),
-  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' })
+  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id)
 });
 
 export const newCampaignSchema = createInsertSchema(campaigns);
@@ -23,7 +23,7 @@ export const campaignPublications = pgTable('campaign_publications', {
     id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' }).defaultNow(),
-    campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id, { onDelete: 'cascade' }),
+    campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
     tokens: integer().notNull(),
     publishAfter: date({ mode: 'string' }).defaultNow(),
     publishBefore: date({ mode: 'string' })

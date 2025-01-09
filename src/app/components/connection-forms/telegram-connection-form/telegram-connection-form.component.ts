@@ -43,6 +43,14 @@ export class TelegramConnectionFormComponent {
       default:
         return 'not connected';
     }
+  });
+  readonly telegramConnectionSeverityText = computed(() => {
+    const conn = this.telegramConnection();
+    switch (conn?.status) {
+      case 'active': return 'success';
+      case 'reconnect_required': return 'warn';
+      default: return 'secondary';
+    }
   })
   readonly isTelegramAccountConnected = computed(() => {
     return this.telegramConnection()?.status === 'active';

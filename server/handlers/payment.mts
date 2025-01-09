@@ -8,7 +8,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { Request, Response } from "express";
 import { fromError } from "zod-validation-error";
 
-export async function removePaymentMethod(req: Request, res: Response) {
+export async function handleRemovePaymentMethod(req: Request, res: Response) {
   const { success, data, error } = RemoveMomoPaymentMethodSchema.safeParse(req.query);
   if (!success) {
     res.status(400).json({ message: fromError(error).message });
@@ -16,10 +16,9 @@ export async function removePaymentMethod(req: Request, res: Response) {
   }
 
   const user = extractUser(req);
-  const db = useFinanceDb();
   const { provider } = data;
   try {
-    const result = await db.transaction(t => t.delete(paymentMethods).where(and(eq(paymentMethods.owner, user.id), eq(paymentMethods.provider, provider))));
+    const result = await removePaymentMethod(user.id, provider);
     res.status(202).json({});
     if (result.rowCount)
       defaultLogger.info('removed payment method', 'user', user.id, 'provider', provider);
@@ -69,4 +68,14 @@ export async function findUserPaymentMethods(req: Request, res: Response) {
   });
 
   res.json(paymentMethods);
+}
+
+export async function doRemovePaymentMethods(userId: number) {
+  const db = useFinanceDb();
+  return await db.transaction(t => t.delete(paymentMethods).where(eq(paymentMethods.owner, userId))).then(r => r.rowCount);
+}
+
+async function removePaymentMethod(userId: number, provider: 'momo') {
+  const db = useFinanceDb();
+  return await db.transaction(t => t.delete(paymentMethods).where(and(eq(paymentMethods.owner, userId), eq(paymentMethods.provider, provider))));
 }

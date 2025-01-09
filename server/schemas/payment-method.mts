@@ -1,5 +1,6 @@
-import { PhoneNumberUtil } from "google-libphonenumber";
+import pkg from "google-libphonenumber";
 import { z } from "zod";
+const { PhoneNumberUtil } = pkg;
 
 export const UpdateMomoPaymentMethodSchema = z.object({
   phoneNumber: z.string()

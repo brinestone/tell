@@ -25,7 +25,7 @@ export const paymentMethods = pgTable('payment_methods', {
   status: paymentMethodStatus().notNull().default('active'),
   createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow().$onUpdate(() => new Date()),
-  owner: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  owner: bigint({ mode: 'number' }).notNull().references(() => users.id),
 }, table => {
   return {
     idx: uniqueIndex().on(table.provider, table.owner)
@@ -34,7 +34,7 @@ export const paymentMethods = pgTable('payment_methods', {
 
 export const wallets = pgTable('wallets', {
   id: uuid().primaryKey().defaultRandom(),
-  ownedBy: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  ownedBy: bigint({ mode: 'number' }).notNull().references(() => users.id),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   startingBalance: bigint({ mode: 'number' }).default(0)

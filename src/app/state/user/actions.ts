@@ -18,6 +18,7 @@ export class FinishGoogleSignInFlow {
 
 export class SignOut {
   static type = `${prefix} sign out`
+  constructor(readonly redirect?: string) { }
 }
 export class SignedIn {
   static type = `${prefix} signed in`

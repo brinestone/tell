@@ -8,3 +8,12 @@ export interface SignedUpEvent extends CustomAsyncWorkloadEvent {
     countryCode: string;
   }
 }
+
+export interface UserDeletedEvent extends CustomAsyncWorkloadEvent {
+  eventName: 'accounts.deleted';
+  eventData: {
+    userId: number;
+    email: string;
+    credentials: string;
+  }
+}

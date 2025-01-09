@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentProviders, inject, Injectable } from '@angular/core';
+import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
 import { DisplayPrefs, UserPrefs } from '@lib/models/user';
 import { Navigate } from '@ngxs/router-plugin';
 import {
@@ -15,7 +16,6 @@ import { patch } from '@ngxs/store/operators';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, tap, throwError } from 'rxjs';
 import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshPaymentMethod, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
-import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
 
 export * from './actions';
 
@@ -35,6 +35,12 @@ export type UserStateModel = {
 }
 
 export const USER = new StateToken<UserStateModel>('user');
+const defaultDisplayPrefs = {
+  country: 'CM',
+  currency: 'XAF',
+  language: 'en',
+  theme: 'light'
+} as DisplayPrefs;
 const defaultState: UserStateModel = { signedIn: false, paymentMethods: [] };
 
 type Context = StateContext<UserStateModel>;
@@ -72,10 +78,10 @@ class UserState implements NgxsOnInit {
     const { prefs: backup } = ctx.getState();
     ctx.setState(patch({
       prefs: patch({
-        country: action.country,
-        theme: action.theme,
-        language: action.language,
-        currency: action.currency
+        country: action.country || defaultDisplayPrefs.country,
+        theme: action.theme || defaultDisplayPrefs.theme,
+        language: action.language || defaultDisplayPrefs.language,
+        currency: action.currency || defaultDisplayPrefs.currency
       })
     }));
     return this.http.put('/api/users/prefs', action).pipe(
@@ -100,14 +106,14 @@ class UserState implements NgxsOnInit {
   }
 
   @Action(SignOut)
-  signOut(ctx: Context) {
+  signOut(ctx: Context, { redirect }: SignOut) {
     ctx.setState(defaultState);
-    ctx.dispatch(new Navigate(['/']));
+    ctx.dispatch(new Navigate([redirect ?? '/']));
     location.reload();
   }
 
   @Action(GoogleSignInFlow)
-  googleSignInFlow(ctx: Context, { redirect, apiBase }: GoogleSignInFlow) {
+  googleSignInFlow(_: Context, { redirect, apiBase }: GoogleSignInFlow) {
     localStorage.setItem('auth-redirect', redirect);
     location.href = `${apiBase}/auth/google`;
   }
@@ -154,12 +160,7 @@ export const principal = slices.principal;
 export const accessToken = slices.token;
 export const preferences = createSelector([slices.prefs], prefs => {
   if (!prefs) {
-    return {
-      country: 'CM',
-      currency: 'XAF',
-      language: 'en',
-      theme: 'system'
-    } as DisplayPrefs;
+    return defaultDisplayPrefs;
   }
 
   const { country, currency, language, theme } = prefs;

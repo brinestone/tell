@@ -1,13 +1,16 @@
-import { Request, Response }                                   from 'express';
-import { SignedUpEvent }                                       from '@events/user';
-import { useAwlClient }                                        from '@helpers/awl-client.mjs';
-import { useUsersDb }                                          from '@helpers/db.mjs';
-import * as users                                              from '@schemas/users';
-import { userSchema }                                          from '@schemas/users';
-import { eq }                                                  from 'drizzle-orm';
-import passport                                                from 'passport';
+import { Request, Response } from 'express';
+import { SignedUpEvent, UserDeletedEvent } from '@events/user';
+import { useAwlClient } from '@helpers/awl-client.mjs';
+import { useUsersDb } from '@helpers/db.mjs';
+import * as users from '@schemas/users';
+import { userSchema } from '@schemas/users';
+import { eq } from 'drizzle-orm';
+import passport from 'passport';
 import { Strategy as GoogleStrategy, Profile, VerifyCallback } from 'passport-google-oauth20';
-import { sign }                                                from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
+import { extractUser } from '@helpers/auth.mjs';
+import { handleError } from '@helpers/error.mjs';
+import defaultLogger from '@logger/common';
 
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
@@ -62,6 +65,22 @@ passport.deserializeUser<number>((id, done) => {
   db.query.users.findFirst({ where: eq(users.users.id, id) })
     .then(user => done(null, user ?? null), (err) => done(err, null));
 });
+
+export async function removeUserAccount(req: Request, res: Response) {
+  const user = extractUser(req);
+  const db = useUsersDb();
+  try {
+    await db.transaction(async t => {
+      await t.delete(users.userPrefs).where(eq(users.userPrefs.user, user.id));
+    });
+    defaultLogger.info('user account deleted', 'user', user.id);
+    const client = useAwlClient<UserDeletedEvent>();
+    client.send('accounts.deleted', { data: { email: user.email, userId: user.id, credentials: user.credentials as string } });
+    res.status(202).send({});
+  } catch (e) {
+    handleError(e as Error, res);
+  }
+}
 
 export const handleGoogleSignIn = passport.authenticate('google', { session: false, scope: ['profile', 'email'] });
 
