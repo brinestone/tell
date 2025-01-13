@@ -1,7 +1,10 @@
+import { useLogger } from '@logger/common';
 import { NextFunction, Request, Response } from 'express';
 
-export function errorHandler({ stack, message }: Error, __: Request, res: Response, _: NextFunction) {
-  console.log('error handler');
-  console.error(stack);
-  res.status(500).json({ message });
+const logger = useLogger({ middleware: 'error handler' });
+export function errorHandler(error: Error, __: Request, res: Response, _: NextFunction) {
+  logger.error('unhandled error', {
+    error
+  })
+  res.status(500).json({ message: error.message });
 }

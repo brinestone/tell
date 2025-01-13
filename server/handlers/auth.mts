@@ -22,49 +22,53 @@ passport.use(new GoogleStrategy({
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
   callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
 }, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
-  logger.info('completing oauth2 request');
-  const db = useUsersDb();
-  let existingUser = await db.query.users.findFirst({
-    where: (user, { eq }) => eq(user.credentials, profile.id)
-  });
+  try {
+    logger.info('completing oauth2 request');
+    const db = useUsersDb();
+    let existingUser = await db.query.users.findFirst({
+      where: (user, { eq }) => eq(user.credentials, profile.id)
+    });
 
-  if (!existingUser) {
-    logger.info('creating new user', { email: profile.emails?.[0], provider: 'google' });
-    const { userId } = await db.transaction(async trx => {
-      await trx.insert(users.federatedCredentials).values({
-        id: profile.id,
-        lastAccessToken: accessToken,
-        provider: profile.provider
-      })
-      const [userInfo] = await trx.insert(users.users).values({
-        credentials: profile.id,
-        names: profile.displayName,
-        email: profile.emails?.[0].value ?? '',
-        imageUrl: profile.photos?.[0].value ?? '',
-      }).returning({ userId: users.users.id, email: users.users.email });
+    if (!existingUser) {
+      logger.info('creating new user', { email: profile.emails?.[0], provider: 'google' });
+      const { userId } = await db.transaction(async trx => {
+        await trx.insert(users.federatedCredentials).values({
+          id: profile.id,
+          lastAccessToken: accessToken,
+          provider: profile.provider
+        })
+        const [userInfo] = await trx.insert(users.users).values({
+          credentials: profile.id,
+          names: profile.displayName,
+          email: profile.emails?.[0].value ?? '',
+          imageUrl: profile.photos?.[0].value ?? '',
+        }).returning({ userId: users.users.id, email: users.users.email });
 
-      const { userId } = userInfo;
-      await trx.insert(users.userPrefs).values({
-        country: 'CM',
-        currency: 'XAF',
-        language: 'en',
-        user: userId,
-        theme: 'light'
+        const { userId } = userInfo;
+        await trx.insert(users.userPrefs).values({
+          country: 'CM',
+          currency: 'XAF',
+          language: 'en',
+          user: userId,
+          theme: 'light'
+        });
+
+        return userInfo;
       });
+      existingUser = await db.query.users.findFirst({ where: eq(users.users.credentials, profile.id) });
 
-      return userInfo;
-    });
-    existingUser = await db.query.users.findFirst({ where: eq(users.users.credentials, profile.id) });
-
-    await doCreateUserWallet(userId);
-  } else {
-    await db.transaction(async tx => {
-      await tx.update(users.federatedCredentials).set({ lastAccessToken: accessToken }).where(eq(users.federatedCredentials.id, profile.id))
-      await tx.update(users.users).set({ updatedAt: new Date() }).where(eq(users.users.credentials, profile.id))
-    });
-    logger.info('updated user credential', { email: profile.emails?.[0], provider: 'google' });
+      await doCreateUserWallet(userId);
+    } else {
+      await db.transaction(async tx => {
+        await tx.update(users.federatedCredentials).set({ lastAccessToken: accessToken }).where(eq(users.federatedCredentials.id, profile.id))
+        await tx.update(users.users).set({ updatedAt: new Date() }).where(eq(users.users.credentials, profile.id))
+      });
+      logger.info('updated user credential', { email: profile.emails?.[0], provider: 'google' });
+    }
+    return done(null, existingUser);
+  } catch (e) {
+    return done(e, null);
   }
-  return done(null, existingUser);
 }));
 
 passport.serializeUser<number>((user, done) => {
