@@ -67,7 +67,7 @@ passport.use(new GoogleStrategy({
     }
     return done(null, existingUser);
   } catch (e) {
-    return done(e, null);
+    return done(e, undefined);
   }
 }));
 
