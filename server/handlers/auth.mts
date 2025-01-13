@@ -180,9 +180,9 @@ export async function handleTokenRefresh(req: Request, res: Response) {
   try {
     logger.info('refreshing tokens');
     const { success, data, error } = RefreshTokenValidationSchema.safeParse(req.query);
-    console.log(JSON.stringify(error));
 
     if (!success) {
+      logger.error("refresh token validation error", { error });
       res.status(403).json({ message: 'Invalid refresh token' });
       return;
     }
