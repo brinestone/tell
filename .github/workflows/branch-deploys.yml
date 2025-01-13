@@ -5,7 +5,7 @@ on:
     branches:
       - next
     paths:
-      - "server/functions/**/*.*"
+      - "server/**/*.*"
       - "src/**/*.*"
       - "lib/**/*.*"
       - "netlify.toml"
