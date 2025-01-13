@@ -67,6 +67,7 @@ passport.use(new GoogleStrategy({
     }
     return done(null, existingUser);
   } catch (e) {
+    logger.error('error while handling google sign in', { error: e });
     return done(e, undefined);
   }
 }));
