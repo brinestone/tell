@@ -1,7 +1,72 @@
 import { sql } from 'drizzle-orm';
-import { bigint, date, interval, jsonb, pgEnum, pgTable, pgView, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
+import {
+  AnyPgColumn,
+  bigint,
+  date,
+  interval,
+  jsonb,
+  pgEnum,
+  pgTable,
+  pgView,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  varchar
+} from 'drizzle-orm/pg-core';
+import { createSelectSchema, createUpdateSchema } from 'drizzle-zod';
 import { z } from 'zod';
+
+export const accessTokens = pgTable('access_tokens', {
+  id: uuid().defaultRandom().primaryKey(),
+  ip: varchar({ length: 39 }).notNull(),
+  created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  revoked_at: timestamp({ mode: 'date' }),
+  window: interval().notNull(),
+  user: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  replacedBy: uuid().references((): AnyPgColumn => accessTokens.id)
+});
+
+export const vwAccessTokens = pgView('vw_access_tokens').as(qb => {
+  return qb.select({
+    user: accessTokens.user,
+    is_expired: sql.raw(`(now() > (created_at + "window")::TIMESTAMP)::BOOLEAN OR replaced_by IS NOT NULL`).as<boolean>('is_expired'),
+    expires_at: sql.raw(`(created_at + "window")::TIMESTAMP`).as<Date>('expires_at'),
+    created_at: accessTokens.created_at,
+    ip: accessTokens.ip,
+    id: accessTokens.id
+  }).from(accessTokens)
+})
+
+export const refreshTokens = pgTable('refresh_tokens', {
+  id: uuid().defaultRandom().primaryKey(),
+  token: varchar({ length: 32 }).notNull().unique(),
+  user: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  ip: varchar({ length: 39 }).notNull(),
+  created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  replaced_by: uuid().references((): AnyPgColumn => refreshTokens.id),
+  revoked_by: bigint({ mode: 'number' }).references(() => users.id),
+  window: interval().notNull(),
+  access_token: uuid().notNull().references(() => accessTokens.id)
+}, table => {
+  return {
+    index: uniqueIndex().on(table.token, table.user)
+  }
+});
+
+export const vwRefreshTokens = pgView('vw_refresh_tokens').as(qb => {
+  return qb.select({
+    isExpired: sql.raw(`(now()::TIMESTAMP > (created_at + "${refreshTokens.window.name}")::TIMESTAMP)::BOOLEAN`).as<boolean>('is_expired'),
+    expires: sql.raw(`(created_at + "${refreshTokens.window.name}")::TIMESTAMP`).as<Date>('expires'),
+    revoked_by: refreshTokens.revoked_by,
+    replaced_by: refreshTokens.replaced_by,
+    created_at: refreshTokens.created_at,
+    access_token: refreshTokens.access_token,
+    ip: refreshTokens.ip,
+    user: refreshTokens.user,
+    token: refreshTokens.token,
+    id: refreshTokens.id
+  }).from(refreshTokens)
+})
 
 export const verificationCodes = pgTable('verification_codes', {
   id: uuid().primaryKey().defaultRandom(),
@@ -11,8 +76,6 @@ export const verificationCodes = pgTable('verification_codes', {
   confirmed_at: timestamp({ mode: 'date' }),
   data: jsonb()
 });
-
-export const newVerificationSchema = createInsertSchema(verificationCodes);
 
 export const verificationCodesView = pgView('vw_verification_codes').as(qb => {
   return qb.select({
@@ -83,6 +146,6 @@ export const updatePrefSchema = createUpdateSchema(userPrefs).pick({
   language: true
 });
 
-export const userSchema = createSelectSchema(users);
+export const UserSchema = createSelectSchema(users);
 const connectionsSchema = createSelectSchema(accountConnections);
 export type AccountConnection = z.infer<typeof connectionsSchema>;

@@ -1,9 +1,12 @@
-import passport from 'passport';
+import { Context } from '@netlify/functions';
+import { vwAccessTokens } from '@schemas/users';
+import { AccessTokenValidationSchema } from '@zod-schemas/user.mjs';
 import express, { NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { useUsersDb } from '../helpers/db.mjs';
-import { Context } from '@netlify/functions';
-import jwt from 'jsonwebtoken';
+import { and, eq } from 'drizzle-orm';
 
 const { verify } = jwt;
 
@@ -20,19 +23,33 @@ passport.use(new Strategy(
   {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: String(process.env['JWT_SECRET']),
-    audience: String(process.env['ORIGIN'])
+    audience: String(process.env['ORIGIN']),
+    passReqToCallback: true
   },
-  async (payload, done) => {
-    const { sub } = payload;
-    const db = useUsersDb();
-    const user = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(sub, users.id),
-    });
-    if (!user) {
-      done(new Error('Account not found'));
-      return
+  async (req: express.Request, payload, done) => {
+    try {
+      const { sub, tokenId } = payload;
+      const ip = String(req.header('client-ip'));
+      const db = useUsersDb();
+      const user = await db.query.users.findFirst({
+        where: (users, { eq }) => eq(sub, users.id),
+      });
+      const accessToken = await db.query.accessTokens.findFirst({
+        where: (token, { eq, and, isNull }) => and(eq(token.id, tokenId), eq(token.ip, ip), isNull(token.revoked_at))
+      });
+
+      if (!accessToken) {
+        done(new Error('Invalid access token'), null);
+        return;
+      }
+      if (!user) {
+        done(new Error('Account not found'));
+        return;
+      }
+      done(null, user);
+    } catch (e) {
+      done(e, null);
     }
-    done(null, user);
   }
 ));
 
@@ -50,7 +67,22 @@ export const rawAuth = async (req: Request, ctx: Context, next: (req: Request, c
 
   if (scheme !== 'Bearer') return unauthorizedResponse;
   try {
-    verify(token, String(process.env['JWT_SECRET']))
+    const { success, data } = AccessTokenValidationSchema.safeParse(token);
+    if (!success) {
+      return unauthorizedResponse;
+    }
+
+    const db = useUsersDb();
+    const result = await db.select().from(vwAccessTokens).where(and(
+      eq(vwAccessTokens.user, data.sub),
+      eq(vwAccessTokens.ip, ctx.ip),
+      eq(vwAccessTokens.is_expired, false),
+      eq(vwAccessTokens.id, data.tokenId)
+    )).limit(1);
+
+    if (result.length == 0) {
+      return unauthorizedResponse;
+    }
   } catch (e) {
     console.error(e);
     return unauthorizedResponse;

@@ -1,8 +1,8 @@
-import winston from 'winston';
-import Transport from 'winston-transport';
-import { Logtail } from '@logtail/node';
+import winston         from 'winston';
+import Transport       from 'winston-transport';
+import { Logtail }     from '@logtail/node';
 import { from, retry } from 'rxjs';
-import { hostname } from 'node:os';
+import { hostname }    from 'node:os';
 
 class LogTailTransport extends Transport {
   private logTail: Logtail;
@@ -12,9 +12,12 @@ class LogTailTransport extends Transport {
     this.logTail = new Logtail(String(process.env['LOGTAIL_TOKEN']));
   }
 
-  override log(info: { message: string, level: string} & Record<string, unknown>, next: () => void): any {
+  override log(info: { message: string, level: string } & Record<string, unknown>, next: () => void): any {
     const { message, level } = info;
-    const rest = Object.entries(info).filter(([k]) => k != 'mesage' && k != 'level').reduce((acc, [k,v]) =>({...acc, [k]: v}), {} as Record<string, unknown>);
+    const rest = Object.entries(info).filter(([k]) => k != 'mesage' && k != 'level').reduce((acc, [k, v]) => ({
+      ...acc,
+      [k]: v
+    }), {} as Record<string, unknown>);
 
     from(this.logTail.log(message, level, rest)).pipe(retry(20)).subscribe();
     next();
@@ -25,6 +28,7 @@ export const DevelopmentFormatter = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
   winston.format.errors({ stack: true }),
+  winston.format.align(),
   winston.format.printf(({ level, message, timestamp, stack }) => `${timestamp} ${level}: ${stack ?? message}`)
 );
 export const ProductionFormatter = winston.format.json();
@@ -56,7 +60,9 @@ const defaultMeta = {
 };
 
 const defaultLogger = process.env['NODE_ENV'] == 'development' ? useDevLogger() : useProdLogger();
+
 export function useLogger(meta: Record<string, string | number>) {
   return defaultLogger.child(meta);
 }
+
 export default defaultLogger;

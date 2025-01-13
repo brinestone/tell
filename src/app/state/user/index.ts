@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentProviders, inject, Injectable } from '@angular/core';
 import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
-import { DisplayPrefs, UserPrefs } from '@lib/models/user';
+import { AccessTokenClaimsSchema, DisplayPrefs, RefreshTokenClaimsSchema, UserPrefs } from '@lib/models/user';
 import { Navigate } from '@ngxs/router-plugin';
 import {
   Action,
@@ -14,20 +14,24 @@ import {
 } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
 import { jwtDecode } from 'jwt-decode';
-import { catchError, tap, throwError } from 'rxjs';
-import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshPaymentMethod, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
+import { catchError, map, tap, throwError } from 'rxjs';
+import { z } from 'zod';
+import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshAccessToken, RefreshPaymentMethod, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
 
 export * from './actions';
 
-export type Principal = {
-  name: string;
-  email: string;
-  sub: number;
-  image?: string;
-}
+const PrincipalSchema = AccessTokenClaimsSchema.pick({
+  email: true,
+  image: true,
+  name: true,
+  sub: true,
+});
+
+export type Principal = z.infer<typeof PrincipalSchema>;
 
 export type UserStateModel = {
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   signedIn: boolean;
   principal?: Principal;
   prefs?: UserPrefs;
@@ -45,6 +49,15 @@ const defaultState: UserStateModel = { signedIn: false, paymentMethods: [] };
 
 type Context = StateContext<UserStateModel>;
 
+export const ParamsSchema = z.object({
+  access: z.string()
+    .transform(t => jwtDecode(t))
+    .pipe(AccessTokenClaimsSchema),
+  refresh: z.string()
+    .transform(t => jwtDecode(t))
+    .pipe(RefreshTokenClaimsSchema)
+});
+
 @State({
   name: USER,
   defaults: defaultState
@@ -52,6 +65,25 @@ type Context = StateContext<UserStateModel>;
 @Injectable()
 class UserState implements NgxsOnInit {
   private http = inject(HttpClient);
+
+  @Action(RefreshAccessToken)
+  onRefreshAccessToken(ctx: Context) {
+    const { refreshToken } = ctx.getState();
+    return this.http.get<{ access: string, refresh: string }>('/api/auth/refresh', { params: { token: refreshToken ?? '' } }).pipe(
+      map(arg => ({
+        ...ParamsSchema.parse(arg),
+        accessToken: arg.access,
+        refreshToken: arg.refresh
+      })),
+      tap(({ access, accessToken, refreshToken }) => {
+        return ctx.setState(patch({
+          refreshToken,
+          accessToken,
+          principal: PrincipalSchema.parse(access)
+        }));
+      })
+    )
+  }
 
   @Action(RefreshPaymentMethod)
   onRefreshPaymentMethod(ctx: Context) {
@@ -119,26 +151,21 @@ class UserState implements NgxsOnInit {
   }
 
   @Action(FinishGoogleSignInFlow)
-  finishGoogleSignInFlow(ctx: Context, { accessToken }: FinishGoogleSignInFlow) {
-    try {
-      const data = jwtDecode<Principal>(accessToken);
-      ctx.setState(patch({
-        signedIn: true,
-        principal: data,
-        token: accessToken
-      }));
-      const redirect = localStorage.getItem('auth-redirect');
-      localStorage.removeItem('auth-redirect');
-      ctx.dispatch([SignedIn, new Navigate([redirect ?? '/'])]);
-    } catch (error) {
-      ctx.setState(defaultState);
-      console.error(error);
-      throw error;
-    }
+  finishGoogleSignInFlow(ctx: Context, { accessToken, refreshToken, accessClaims }: FinishGoogleSignInFlow) {
+    ctx.setState(patch({
+      signedIn: true,
+      principal: PrincipalSchema.parse(accessClaims),
+      accessToken,
+      refreshToken
+    }));
+
+    const redirect = localStorage.getItem('auth-redirect');
+    localStorage.removeItem('auth-redirect');
+    ctx.dispatch([SignedIn, new Navigate([redirect ?? '/'])]);
   }
 
   ngxsOnInit(ctx: Context) {
-    const { token } = ctx.getState();
+    const { accessToken: token } = ctx.getState();
     if (!token) return;
     const { exp } = jwtDecode(token);
     const now = Date.now();
@@ -157,7 +184,7 @@ const slices = createPropertySelectors(USER);
 
 export const isUserSignedIn = createSelector([USER], state => state?.signedIn);
 export const principal = slices.principal;
-export const accessToken = slices.token;
+export const accessToken = slices.accessToken;
 export const preferences = createSelector([slices.prefs], prefs => {
   if (!prefs) {
     return defaultDisplayPrefs;

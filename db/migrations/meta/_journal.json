@@ -148,6 +148,20 @@
       "when": 1736391217180,
       "tag": "0020_steep_azazel",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1736618004176,
+      "tag": "0021_nifty_manta",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1736694971000,
+      "tag": "0022_famous_ozymandias",
+      "breakpoints": true
     }
   ]
 }
