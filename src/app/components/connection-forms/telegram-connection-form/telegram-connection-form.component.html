@@ -2,9 +2,11 @@
   <img width="50" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="telegram logo">
   <div class="space-y-1">
     <h2 class="font-semibold">Telegram&trade;
-      <p-tag [rounded]="true" styleClass="capitalize" [severity]="telegramConnectionSeverityText()"
-        [value]="telegramConnectionStatusText()" styleClass="text-sm" />
     </h2>
+    <div>
+      <p-tag [rounded]="true" styleClass="capitalize" [severity]="telegramConnectionSeverityText()"
+      [value]="telegramConnectionStatusText()" styleClass="text-sm" />
+    </div>
     @if(showVerificationCodeInput() && !isTelegramAccountConnected()) {
     <div>
       <p-input-group>

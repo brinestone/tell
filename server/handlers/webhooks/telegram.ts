@@ -14,7 +14,6 @@ export async function onTelegramUpdate(req: Request, res: Response) {
   try {
     const { success, data, error } = TelegramBotCommandUpdateSchema.safeParse(req.body);
     if (!success) {
-      console.error(error);
       await sendTelegramBotMessage(Number(req.body.message.chat.id), TM_UNKNOWN_COMMAND_MSG);
       res.status(204).send();
       return;
@@ -27,8 +26,8 @@ export async function onTelegramUpdate(req: Request, res: Response) {
         await handleStartCommand(chat, from);
         break;
       default:
-        res.status(404).send('Not found');
-        return;
+        await sendTelegramBotMessage(chat.id, TM_UNKNOWN_COMMAND_MSG);
+        break;
     }
 
     res.status(204).send();
