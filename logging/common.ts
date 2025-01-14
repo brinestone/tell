@@ -36,7 +36,12 @@ export const ProductionFormatter = winston.format.json();
 function useProdLogger() {
   return winston.createLogger({
     level: process.env['LOG_LEVEL'] ?? 'info',
-    transports: [new LogTailTransport({ format: ProductionFormatter })],
+    transports: [
+      new winston.transports.Console({
+        format: ProductionFormatter
+      }),
+      new LogTailTransport({ format: ProductionFormatter }),
+    ],
     defaultMeta
   })
 }
