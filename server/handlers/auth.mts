@@ -23,7 +23,7 @@ passport.use(new GoogleStrategy({
   callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
 }, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
   try {
-    logger.info('completing oauth2 request');
+    logger.info('completing oauth2 request', { profile: { id: profile.id, provider: 'google', } });
     const db = useUsersDb();
     let existingUser = await db.query.users.findFirst({
       where: (user, { eq }) => eq(user.credentials, profile.id)
