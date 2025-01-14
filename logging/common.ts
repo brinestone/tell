@@ -1,8 +1,8 @@
-import winston         from 'winston';
-import Transport       from 'winston-transport';
-import { Logtail }     from '@logtail/node';
+import winston from 'winston';
+import Transport from 'winston-transport';
+import { Logtail } from '@logtail/node';
 import { from, retry } from 'rxjs';
-import { hostname }    from 'node:os';
+import { hostname } from 'node:os';
 
 class LogTailTransport extends Transport {
   private logTail: Logtail;
@@ -19,8 +19,7 @@ class LogTailTransport extends Transport {
       [k]: v
     }), {} as Record<string, unknown>);
 
-    from(this.logTail.log(message, level, rest)).pipe(retry(20)).subscribe();
-    next();
+    this.logTail.log(message, level, rest).then(() => next()).catch(this.log(info, next));
   }
 }
 
