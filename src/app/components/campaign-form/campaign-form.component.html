@@ -111,12 +111,12 @@
               <label class="font-medium">Phone numbers</label>
             </div>
             <div formArrayName="phones">
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid md:grid-cols-2 gap-2">
                 @for (group of newCampaignForm.controls.contactsAndLinks.controls.phones.controls; track group) {
                 <ng-container [formGroup]="group">
                   <div class="flex items-start gap-2">
                     <div class="space-y-1">
-                      <div class="flex gap-x-2">
+                      <div class="flex gap-x-2 flex-wrap">
                         <div>
                           <p-select placeholder="Select Country" [filter]="true"
                             [filterFields]="['alpha2Code','alpha3Code','nativeName','name']" filterMatchMode="contains"
@@ -124,7 +124,7 @@
                             [virtualScroll]="true" [checkmark]="true" [virtualScrollItemSize]="38"
                             [loading]="countriesLoading()">
                             <ng-template #selectedItem let-item>
-                              <div class="flex justify-between gap-1 items-center w-[3rem]">
+                              <div class="flex justify-between gap-1 items-center md:w-[3rem]">
                                 <img [src]="item.flags.png" width="21" class="m-0" [alt]="item.nativeName">
                                 <span>+{{ item.callingCodes[0] }}</span>
                               </div>

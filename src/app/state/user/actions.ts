@@ -24,6 +24,11 @@ export class SignedIn {
   static type = `${prefix} signed in`
 }
 
+export class SignedOut {
+  static type = `${prefix} signed out`;
+  constructor(readonly redirect?: string) { }
+}
+
 export class PrefsUpdated {
   static type = `${prefix} prefs updated`
 }

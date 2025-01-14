@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EnvironmentProviders, inject, Injectable } from '@angular/core';
 import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
 import { AccessTokenClaimsSchema, DisplayPrefs, RefreshTokenClaimsSchema, UserPrefs } from '@lib/models/user';
@@ -14,9 +14,10 @@ import {
 } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
 import { jwtDecode } from 'jwt-decode';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { z } from 'zod';
-import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshAccessToken, RefreshPaymentMethod, SetColorMode, SignedIn, SignOut, UpdatePrefs } from './actions';
+import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshAccessToken, RefreshPaymentMethod, SetColorMode, SignedIn, SignedOut, SignOut, UpdatePrefs } from './actions';
+import { Location } from '@angular/common';
 
 export * from './actions';
 
@@ -63,8 +64,14 @@ export const ParamsSchema = z.object({
   defaults: defaultState
 })
 @Injectable()
-class UserState implements NgxsOnInit {
+export class UserState implements NgxsOnInit {
   private http = inject(HttpClient);
+  private location = inject(Location);
+
+  @Action(SignedOut)
+  refreshOnSignedOut(_: Context, { redirect }: SignedOut) {
+    this.location.go(redirect ?? '/');
+  }
 
   @Action(RefreshAccessToken)
   onRefreshAccessToken(ctx: Context) {
@@ -138,10 +145,33 @@ class UserState implements NgxsOnInit {
   }
 
   @Action(SignOut)
-  signOut(ctx: Context, { redirect }: SignOut) {
-    ctx.setState(defaultState);
-    ctx.dispatch(new Navigate([redirect ?? '/']));
-    location.reload();
+  signOut(ctx: Context, action: SignOut): Observable<never> {
+    const { refreshToken } = ctx.getState();
+    if (!refreshToken) {
+      ctx.setState(defaultState);
+      ctx.dispatch([SignedOut, new Navigate([action.redirect ?? '/'])]);
+      return EMPTY;
+    }
+
+    return this.http.get(`/api/auth/revoke-token`, {
+      params: {
+        token: refreshToken
+      }
+    }).pipe(
+      tap(() => {
+        ctx.setState(defaultState);
+        ctx.dispatch([SignedOut, new Navigate([action.redirect ?? '/'])]);
+      }),
+      switchMap(() => EMPTY),
+      catchError((e: HttpErrorResponse) => {
+        if (e.status == 401 || e.status == 403) {
+          ctx.setState(defaultState);
+          ctx.dispatch([SignedOut, new Navigate([action.redirect ?? '/'])]);
+          return EMPTY;
+        }
+        return this.signOut(ctx, action);
+      })
+    );
   }
 
   @Action(GoogleSignInFlow)
@@ -176,15 +206,36 @@ class UserState implements NgxsOnInit {
   }
 }
 
-export function provideUserState(...providers: EnvironmentProviders[]) {
-  return provideStates([UserState], ...providers);
-}
+// export function provideUserState(...providers: EnvironmentProviders[]) {
+//   return provideStates([UserState], ...providers);
+// }
 
 const slices = createPropertySelectors(USER);
 
 export const isUserSignedIn = createSelector([USER], state => state?.signedIn);
 export const principal = slices.principal;
 export const accessToken = slices.accessToken;
+export const refreshToken = slices.refreshToken;
+export const accessTokenExpired = createSelector([slices.accessToken], t => {
+  if (!t) return true;
+  const { exp } = jwtDecode(t);
+  const now = Date.now();
+  const then = Number(exp);
+  if (isNaN(then)) return true;
+  const ans = now > (then * 1000);
+
+  return ans;
+});
+export const refreshTokenExpired = createSelector([slices.refreshToken], t => {
+  if (!t) return true;
+  const { exp } = jwtDecode(t);
+  const now = Date.now();
+  const then = Number(exp);
+  if (isNaN(then)) return true;
+
+  const ans = now > (then * 1000);
+  return ans;
+})
 export const preferences = createSelector([slices.prefs], prefs => {
   if (!prefs) {
     return defaultDisplayPrefs;

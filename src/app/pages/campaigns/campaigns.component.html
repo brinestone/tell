@@ -7,18 +7,16 @@
         [(selection)]="selectedCampaign" [loading]="campaigns.isLoading()"
         [totalRecords]="campaigns.value()?.total ?? 0">
         <ng-template #caption>
-          <div class="flex items-start">
-            <div class="inline-flex gap-3 items-end">
-              <p-button (onClick)="showCampaignModal.set(true)" [outlined]="true" title="New Campaign"
-                label="New Campaign" icon="pi pi-plus" />
-              <p-icon-field>
-                <p-inputicon>
-                  <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
-                    [class.pi-filter-fill]="filterInput.value.length > 0"></i>
-                </p-inputicon>
-                <input size="small" #filterInput pInputText type="search" placeholder="Filter">
-              </p-icon-field>
-            </div>
+          <div class="inline-flex gap-3 items-end flex-wrap">
+            <p-button (onClick)="showCampaignModal.set(true)" [outlined]="true" title="New Campaign"
+              label="New Campaign" icon="pi pi-plus" />
+            <p-icon-field>
+              <p-inputicon>
+                <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
+                  [class.pi-filter-fill]="filterInput.value.length > 0"></i>
+              </p-inputicon>
+              <input size="small" #filterInput pInputText type="search" placeholder="Filter">
+            </p-icon-field>
           </div>
         </ng-template>
         <ng-template #header>

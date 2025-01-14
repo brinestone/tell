@@ -19,7 +19,7 @@
           optionValue="alpha2Code" [options]="momoCountries()" appendTo="body" [virtualScroll]="true"
           [virtualScrollItemSize]="38" [loading]="loadingMomoCountries()">
           <ng-template #selectedItem let-item>
-            <div class="flex justify-between gap-1 items-center w-[3rem]">
+            <div class="flex justify-between gap-1 items-center md:w-[3rem]">
               <img [src]="item.flags.png" width="21" class="m-0" [alt]="item.nativeName">
               <span>+{{ item.callingCodes[0] }}</span>
             </div>
