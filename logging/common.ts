@@ -19,7 +19,10 @@ class LogTailTransport extends Transport {
       [k]: v
     }), {} as Record<string, unknown>);
 
-    this.logTail.log(message, level, rest).then(() => next()).catch(this.log(info, next));
+    this.logTail.log(message, level, rest).then(() => next()).catch(err => {
+      console.error(err);
+      this.log(info, next);
+    });
   }
 }
 
