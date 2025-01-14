@@ -118,7 +118,8 @@ export function handleGoogleOauthCallback({ failureRedirect }: { failureRedirect
 
 export async function handleUserSignIn(req: Request, res: Response) {
   logger.info('signing in user');
-  const ip = String(req.header('client-ip'));
+  logger.info('request headers', req.headers);
+  const ip = Netlify?.context?.ip ?? req.ip ?? String(req.header('client-ip'));
 
   try {
     const { success, data } = UserSchema.safeParse(req.user)
@@ -132,6 +133,7 @@ export async function handleUserSignIn(req: Request, res: Response) {
     logger.info('generating refresh token', { email: user.email });
     const refreshToken = randomBytes(16).toString('hex');
     const db = useUsersDb();
+    logger.info('updating database with tokens');
     const { accessTokenId, refreshTokenId } = await db.transaction(async t => {
       const [{ accessTokenId }] = await t.insert(users.accessTokens).values({
         ip,
@@ -151,7 +153,6 @@ export async function handleUserSignIn(req: Request, res: Response) {
     });
 
     logger.info('generated token pair');
-
     const signedAccessToken = sign({
       email: user.email,
       sub: user.id,
@@ -161,12 +162,14 @@ export async function handleUserSignIn(req: Request, res: Response) {
       tokenId: accessTokenId
     }, String(process.env['JWT_SECRET']), { expiresIn: process.env['JWT_LIFETIME'] })
 
+    logger.info('signed new access token');
     const signedRefreshToken = sign({
       value: refreshToken,
       tokenId: refreshTokenId
     }, String(process.env['JWT_SECRET']), {
       expiresIn: process.env['REFRESH_TOKEN_LIFETIME']
     });
+    logger.info('signed new refresh token');
 
     logger.info('Signed in user', { email: user.email });
     res.redirect(`/auth/oauth2/callback?access=${signedAccessToken}&refresh=${signedRefreshToken}`)
