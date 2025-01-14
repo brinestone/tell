@@ -120,7 +120,7 @@ export function handleGoogleOauthCallback({ failureRedirect }: { failureRedirect
 export async function handleUserSignIn(req: Request, res: Response) {
   logger.info('signing in user');
   logger.info('request headers', req.headers);
-  const ip = Netlify?.context?.ip ?? req.ip ?? String(req.header('client-ip'));
+  const ip = req.ip ?? String(req.header('client-ip'));
 
   try {
     const { success, data } = UserSchema.safeParse(req.user)
