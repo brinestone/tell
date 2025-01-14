@@ -1,3 +1,4 @@
+import '@netlify/functions';
 import { extractUser } from '@helpers/auth.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
