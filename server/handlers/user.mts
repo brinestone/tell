@@ -1,4 +1,4 @@
-import { TM_USER_ACCOUNT_CONNECTION_VERIFIED_MSG, TM_USER_ACCOUNT_DISCONNECTION_MSG } from '@constants/messages/user.mjs';
+import { TM_USER_ACCOUNT_CONNECTION_VERIFIED_MSG, TM_USER_ACCOUNT_DISCONNECTION_MSG } from '@constants/messages/telegram.mjs';
 import { extractUser } from '@helpers/auth.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { sendTelegramBotMessage } from '@helpers/telegram.mjs';

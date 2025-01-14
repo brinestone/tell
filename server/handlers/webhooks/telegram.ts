@@ -1,4 +1,4 @@
-import { TM_ACCOUNT_ALREADY_EXISTS_MD_MSG, TM_UNKNOWN_COMMAND_MSG } from '@constants/messages/user.mjs';
+import { TM_ACCOUNT_ALREADY_EXISTS_MD_MSG, TM_UNKNOWN_COMMAND_MSG } from '@constants/messages/telegram.mjs';
 import { useUsersDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
 import { sendTelegramBotMessage } from '@helpers/telegram.mjs';
