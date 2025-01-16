@@ -1,21 +1,22 @@
 import '@netlify/functions';
-import { extractUser } from '@helpers/auth.mjs';
-import { useUsersDb } from '@helpers/db.mjs';
-import { handleError } from '@helpers/error.mjs';
-import { AccessTokenClaims } from '@lib/models/user';
-import { useLogger } from '@logger/common';
-import * as users from '@schemas/users';
-import { UserSchema } from '@schemas/users';
-import { RefreshTokenValidationSchema } from '@zod-schemas/user.mjs';
-import { and, eq, isNull } from 'drizzle-orm';
-import { Request, Response } from 'express';
-import { sign } from 'jsonwebtoken';
-import { randomBytes } from 'node:crypto';
-import passport from 'passport';
-import { Strategy as GoogleStrategy, Profile, VerifyCallback } from 'passport-google-oauth20';
-import { doRemovePaymentMethods } from './payment.mjs';
-import { doRemoveAccountConnections } from './user.mjs';
-import { doCreateUserWallet, doDeleteUserWallet } from './wallet.mjs';
+import { extractUser }                                         from '@helpers/auth.mjs';
+import { useUsersDb }                                          from '@helpers/db.mjs';
+import { handleError }                                         from '@helpers/error.mjs';
+import { AccessTokenClaims }                                   from '@lib/models/user';
+import { useLogger }                                           from '@logger/common';
+import * as users                                              from '@schemas/users';
+import { UserSchema }                                          from '@schemas/users';
+import { RefreshTokenValidationSchema }                        from '@zod-schemas/user.mjs';
+import { and, eq, isNull }                                     from 'drizzle-orm';
+import { Request, Response }                                   from 'express';
+import { sign }                                                from 'jsonwebtoken';
+import { randomBytes }                                         from 'node:crypto';
+import passport                                                from 'passport';
+import { Profile, Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
+import { doRemovePaymentMethods }                              from './payment.mjs';
+import { doRemoveAccountConnections }                          from './user.mjs';
+import { doCreateUserWallet, doDeleteUserWallet }              from './wallet.mjs';
+import { extractIp }                                           from '@helpers/ip-extractor';
 
 const logger = useLogger({ service: 'auth' });
 passport.use(new GoogleStrategy({
@@ -120,7 +121,7 @@ export function handleGoogleOauthCallback({ failureRedirect }: { failureRedirect
 export async function handleUserSignIn(req: Request, res: Response) {
   logger.info('signing in user');
   logger.info('request headers', req.headers);
-  const ip = req.ip ?? String(req.header('client-ip'));
+  const ip = extractIp(req);
 
   try {
     const { success, data } = UserSchema.safeParse(req.user)
@@ -180,7 +181,7 @@ export async function handleUserSignIn(req: Request, res: Response) {
 }
 
 export async function handleTokenRefresh(req: Request, res: Response) {
-  const ip = String(req.header('client-ip'));
+  const ip = extractIp(req);
   try {
     logger.info('refreshing tokens');
     const { success, data, error } = RefreshTokenValidationSchema.safeParse(req.query);

@@ -71,6 +71,7 @@ export class UserState implements NgxsOnInit {
   @Action(SignedOut)
   refreshOnSignedOut(_: Context, { redirect }: SignedOut) {
     this.location.go(redirect ?? '/');
+    window.location.reload();
   }
 
   @Action(RefreshAccessToken)

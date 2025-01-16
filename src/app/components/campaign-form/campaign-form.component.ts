@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, model, output, signal, viewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper';
 import { Fluid } from 'primeng/fluid';
@@ -71,6 +71,7 @@ const maxUploadSize = 6291456;
 })
 export class CampaignFormComponent {
   private http = inject(HttpClient);
+  private uploadComponent = viewChild(FileUpload);
   newCampaignFormStep = model(1);
   selectedFiles = signal<File[]>([]);
   maxFileSize = computed(() => {
@@ -91,13 +92,17 @@ export class CampaignFormComponent {
   readonly countries = input.required<CountryData[]>();
   readonly categoriesLoading = input(false);
   readonly countriesLoading = input(false);
+  readonly submitting = signal(false);
   readonly error = output<Error>();
   readonly onSubmit = output();
+  readonly submissionPending = signal(false);
+  readonly uploading = signal(false);
   readonly newCampaignForm = new FormGroup({
     basic: new FormGroup({
       title: new FormControl('', [Validators.required, Validators.maxLength(255)]),
       description: new FormControl('', [Validators.required, Validators.maxLength(2000)]),
-      categories: new FormControl<number[]>([], [Validators.required, Validators.minLength(1)])
+      categories: new FormControl<number[]>([], [Validators.required, Validators.minLength(1)]),
+      redirectUrl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/)] })
     }),
     contactsAndLinks: new FormGroup({
       emails: new FormArray<FormControl<string>>([newEmailControl()]),
@@ -109,6 +114,9 @@ export class CampaignFormComponent {
     }),
     media: new FormArray<FormControl<string>>([])
   });
+  get basicControls() {
+    return this.newCampaignForm.controls.basic.controls;
+  }
 
   onMediaFileSelected(event: FileSelectEvent) {
     this.selectedFiles.update(() => [...event.currentFiles]);
@@ -118,7 +126,12 @@ export class CampaignFormComponent {
     this.selectedFiles.update(files => [...files.filter(f => f.name != event.file.name)]);
   }
 
+  onBeforeUpload() {
+    this.uploading.set(true);
+  }
+
   onMediaFilesUploaded({ originalEvent, files }: FileUploadEvent) {
+    this.uploading.set(false);
     const { body } = originalEvent as HttpResponse<string[]>;
     if (!body) return;
 
@@ -172,11 +185,27 @@ export class CampaignFormComponent {
     event.preventDefault();
   }
 
+  onAdvanceButtonClicked(step: number, callback: (n: number) => void, event: Event) {
+    event.preventDefault();
+    callback(step);
+  }
+
   onFinishButtonClicked() {
-    console.log(this.newCampaignForm.value);
+    this.submitting.set(true);
+    if (this.uploadComponent()?.hasFiles()) {
+      this.uploadComponent()?.uploader();
+      this.submissionPending.set(true);
+      return
+    }
+    this.doSubmission();
+  }
+
+  private doSubmission() {
+    this.submissionPending.set(false);
     const { basic, media, contactsAndLinks } = this.newCampaignForm.value;
     const phoneUtil = PhoneNumberUtil.getInstance();
     this.http.post('/api/campaigns', {
+      redirectUrl: String(basic?.redirectUrl),
       title: String(basic?.title),
       description: String(basic?.description),
       media: media ?? [],
@@ -190,7 +219,10 @@ export class CampaignFormComponent {
       }),
       categories: basic?.categories ?? []
     }).subscribe({
-      error: (error: HttpErrorResponse) => this.error.emit(error),
+      error: (error: HttpErrorResponse) => {
+        this.error.emit(error);
+        this.submitting.set(false);
+      },
       complete: () => {
         this.newCampaignForm.controls.contactsAndLinks.controls.links.clear();
         this.addLinkControl();
@@ -205,6 +237,7 @@ export class CampaignFormComponent {
         this.newCampaignForm.reset();
         this.newCampaignFormStep.set(1);
         this.onSubmit.emit();
+        this.submitting.set(false);
       }
     })
   }
@@ -228,5 +261,12 @@ export class CampaignFormComponent {
       if (!values.every(v => v.length > 0)) return;
       this.addEmailControl();
     });
+    effect(() => {
+      const submissionPending = this.submissionPending();
+      const uploading = this.uploading();
+      if (submissionPending && !uploading) {
+        this.doSubmission();
+      }
+    })
   }
 }

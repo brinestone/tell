@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { sql }                                    from 'drizzle-orm';
 import {
   AnyPgColumn,
   bigint,
@@ -12,9 +12,9 @@ import {
   uniqueIndex,
   uuid,
   varchar
-} from 'drizzle-orm/pg-core';
+}                                                 from 'drizzle-orm/pg-core';
 import { createSelectSchema, createUpdateSchema } from 'drizzle-zod';
-import { z } from 'zod';
+import { z }                                      from 'zod';
 
 export const accessTokens = pgTable('access_tokens', {
   id: uuid().defaultRandom().primaryKey(),
@@ -23,13 +23,13 @@ export const accessTokens = pgTable('access_tokens', {
   revoked_at: timestamp({ mode: 'date' }),
   window: interval().notNull(),
   user: bigint({ mode: 'number' }).notNull().references(() => users.id, { onDelete: 'cascade' }),
-  replacedBy: uuid().references((): AnyPgColumn => accessTokens.id)
+  replaced_by: uuid().references((): AnyPgColumn => accessTokens.id)
 });
 
 export const vwAccessTokens = pgView('vw_access_tokens').as(qb => {
   return qb.select({
     user: accessTokens.user,
-    is_expired: sql.raw(`(now() > (created_at + "window")::TIMESTAMP)::BOOLEAN OR replaced_by IS NOT NULL`).as<boolean>('is_expired'),
+    is_expired: sql.raw(`(now() > ("${accessTokens.created_at.name}" + "${accessTokens.window.name}")::TIMESTAMP)::BOOLEAN OR ${accessTokens.revoked_at.name} IS NOT NULL OR ${accessTokens.replaced_by.name} IS NOT NULL`).as<boolean>('is_expired'),
     expires_at: sql.raw(`(created_at + "window")::TIMESTAMP`).as<Date>('expires_at'),
     created_at: accessTokens.created_at,
     ip: accessTokens.ip,
@@ -55,8 +55,8 @@ export const refreshTokens = pgTable('refresh_tokens', {
 
 export const vwRefreshTokens = pgView('vw_refresh_tokens').as(qb => {
   return qb.select({
-    isExpired: sql.raw(`(now()::TIMESTAMP > (created_at + "${refreshTokens.window.name}")::TIMESTAMP)::BOOLEAN`).as<boolean>('is_expired'),
-    expires: sql.raw(`(created_at + "${refreshTokens.window.name}")::TIMESTAMP`).as<Date>('expires'),
+    isExpired: sql.raw(`(now()::TIMESTAMP > ("${refreshTokens.created_at.name}" + "${refreshTokens.window.name}")::TIMESTAMP)::BOOLEAN OR "${refreshTokens.revoked_by.name}" IS NOT NULL`).as<boolean>('is_expired'),
+    expires: sql.raw(`("${refreshTokens.created_at.name}" + "${refreshTokens.window.name}")::TIMESTAMP`).as<Date>('expires'),
     revoked_by: refreshTokens.revoked_by,
     replaced_by: refreshTokens.replaced_by,
     created_at: refreshTokens.created_at,

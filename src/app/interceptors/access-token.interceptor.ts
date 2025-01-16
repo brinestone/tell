@@ -12,17 +12,18 @@ export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.url.startsWith('/api') && token) {
     return next(req.clone({ setHeaders: { 'Authorization': `Bearer ${token}` } })).pipe(
       catchError((e: HttpErrorResponse) => {
-        if (e.status != 401 && req.url == '/api/auth/revoke-token') return throwError(() => e);
-        return store.dispatch(RefreshAccessToken).pipe(
-          concatMap(() => next(req.clone({ setHeaders: { authorization: `Bearer ${store.selectSnapshot(accessToken)}` } }))),
-          catchError((e: HttpErrorResponse) => {
-            if (e.status == 403) {
-              store.dispatch(new Navigate(['/auth/login'], undefined, { queryParamsHandling: 'preserve' }))
-              return EMPTY;
-            }
-            return throwError(() => e);
-          })
-        );
+        if (e.status == 401 && req.url != '/api/auth/revoke-token')
+          return store.dispatch(RefreshAccessToken).pipe(
+            concatMap(() => next(req.clone({ setHeaders: { authorization: `Bearer ${store.selectSnapshot(accessToken)}` } }))),
+            catchError((e: HttpErrorResponse) => {
+              if (e.status == 403) {
+                store.dispatch(new Navigate(['/auth/login'], undefined, { queryParamsHandling: 'preserve' }))
+                return EMPTY;
+              }
+              return throwError(() => e);
+            })
+          );
+        return throwError(() => e);
       })
     );
   }

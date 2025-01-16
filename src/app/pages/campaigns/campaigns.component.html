@@ -23,7 +23,7 @@
           <tr>
             <th>Title</th>
             <th>Categories</th>
-            <th>Created</th>
+            <th>Last Updated</th>
             <th class="w-[1rem]"></th>
           </tr>
         </ng-template>
@@ -33,7 +33,7 @@
               <p class="line-clamp-1 overflow-ellipsis">{{ campaign.title }}</p>
             </td>
             <td>{{ campaign.categories.length }} categories</td>
-            <td>{{ campaign.createdAt | date }}</td>
+            <td>{{ campaign.updatedAt | date }}</td>
             <td class="w-[1rem]">
               <div class="flex gap-3 items-center">
                 <p-menu appendTo="body" [popup]="true" #campaignActions [model]="campaignOptions()[index]" />
@@ -62,7 +62,7 @@
   <ng-template #header>
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
-  <tm-campaign-form (onSubmit)="onCampaignFormSubmitted()" [countries]="countries.value() ?? []"
+  <tm-campaign-form (error)="onCampaignFormErrored($event)" (onSubmit)="onCampaignFormSubmitted()" [countries]="countries.value() ?? []"
     [categoriesLoading]="categories.isLoading()" [countriesLoading]="countries.isLoading()"
     [categories]="categories.value() ?? []" />
 </p-drawer>

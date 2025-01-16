@@ -16,7 +16,7 @@ export const RefreshTokenValidationSchema = z.object({
 });
 
 export const AccessTokenValidationSchema = z.string()
-  .refine(t => verify(t, String(process.env['JWT_SECRET'])))
+  .transform(t => verify(t, String(process.env['JWT_SECRET'])))
   .pipe(
     AccessTokenClaimsSchema
   );

@@ -61,11 +61,28 @@
                   optionValue="id" optionLabel="title" />
               </p-fluid>
             </div>
+            <div>
+              <label class="font-medium">Redirect URL <span class="text-red-500">*</span></label>
+            </div>
+            <div class="space-y-1">
+              <p-fluid>
+                <input type="url" formControlName="redirectUrl" pInputText />
+              </p-fluid>
+              @if(basicControls.redirectUrl.dirty && basicControls.redirectUrl.invalid) {
+              <p-message variant="simple" size="small" severity="error">
+                @if(basicControls.redirectUrl.hasError('required')) {
+                This field is required
+                }@else if (basicControls.redirectUrl.hasError('pattern')) {
+                Invalid URL
+                }
+              </p-message>
+              }
+            </div>
           </div>
 
           <div class="flex justify-end">
             <p-button type="button" [disabled]="newCampaignForm.controls.basic.invalid" [outlined]="true" size="small"
-              (onClick)="advanceTo(2)">Next
+              (onClick)="onAdvanceButtonClicked(2, advanceTo, $event)">Next
             </p-button>
           </div>
         </ng-template>
@@ -116,7 +133,7 @@
                 <ng-container [formGroup]="group">
                   <div class="flex items-start gap-2">
                     <div class="space-y-1">
-                      <div class="flex gap-x-2 flex-wrap">
+                      <div class="flex gap-2 flex-wrap">
                         <div>
                           <p-select placeholder="Select Country" [filter]="true"
                             [filterFields]="['alpha2Code','alpha3Code','nativeName','name']" filterMatchMode="contains"
@@ -194,10 +211,11 @@
             </div>
           </div>
           <div class="flex justify-between items-center">
-            <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(1)">Back
+            <p-button size="small" type="button" [text]="true" severity="secondary"
+              (onClick)="onAdvanceButtonClicked(1, advanceTo, $event)">Back
             </p-button>
-            <p-button size="small" [disabled]="newCampaignForm.controls.contactsAndLinks.invalid" type="button"
-              [outlined]="true" (onClick)="advanceTo(3)">Next
+            <p-button size="small" [disabled]="newCampaignForm.controls.contactsAndLinks.invalid" type="submit"
+              [outlined]="true" (onClick)="onAdvanceButtonClicked(3, advanceTo, $event)">Next
             </p-button>
           </div>
         </ng-template>
@@ -206,10 +224,11 @@
         <ng-template #content let-advanceTo="activateCallback">
           <div class="mb-3 space-y-2">
             <div>
-              <p-fileupload url="/api/blob/upload" name="uploads" (onUpload)="onMediaFilesUploaded($event)"
-                accept="image/*,video/*" (onSelect)="onMediaFileSelected($event)" [multiple]="true"
-                [maxFileSize]="maxFileSize()" [fileLimit]="maxUploadCount()" (onClear)="onMediaFilesCleared()"
-                (onRemove)="onMediaFileRemoved($event)" mode="advanced">
+              <p-fileupload (onBeforeUpload)="onBeforeUpload()" url="/api/blob/upload" name="uploads"
+                (onUpload)="onMediaFilesUploaded($event)" accept="image/*,video/*"
+                (onSelect)="onMediaFileSelected($event)" [multiple]="true" [maxFileSize]="maxFileSize()"
+                [fileLimit]="maxUploadCount()" (onClear)="onMediaFilesCleared()" (onRemove)="onMediaFileRemoved($event)"
+                mode="advanced">
                 <!--10 MB for max file size-->
                 <ng-template #empty>
                   <p>Drag and drop a file here to upload.</p>
@@ -262,7 +281,8 @@
           <div class="flex justify-between items-center">
             <p-button size="small" type="button" [text]="true" severity="secondary" (onClick)="advanceTo(2)">Back
             </p-button>
-            <p-button size="small" type="submit" (onClick)="onFinishButtonClicked()">Finish
+            <p-button size="small" [loading]="submitting()" [disabled]="newCampaignForm.invalid || submitting()"
+              type="submit" (onClick)="onFinishButtonClicked()">Finish
             </p-button>
           </div>
         </ng-template>

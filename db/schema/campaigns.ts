@@ -1,7 +1,8 @@
 import { bigint, check, date, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { sql }                                                             from 'drizzle-orm';
-import { createInsertSchema }                                              from 'drizzle-zod';
+import { sql } from 'drizzle-orm';
+import { createInsertSchema } from 'drizzle-zod';
 import { users } from './users';
+import { z }                                                               from 'zod';
 
 export const campaigns = pgTable('campaigns', {
   id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
@@ -14,20 +15,21 @@ export const campaigns = pgTable('campaigns', {
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow().$onUpdate(() => new Date()),
   categories: bigint({ mode: 'number' }).array().notNull(),
-  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id)
+  createdBy: bigint({ mode: 'number' }).notNull().references(() => users.id),
+  redirectUrl: varchar({ length: 500 }).notNull()
 });
 
 export const newCampaignSchema = createInsertSchema(campaigns);
 
 export const campaignPublications = pgTable('campaign_publications', {
-    id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
-    createdAt: timestamp({ mode: 'date' }).defaultNow(),
-    updatedAt: timestamp({ mode: 'date' }).defaultNow(),
-    campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
-    tokens: integer().notNull(),
-    publishAfter: date({ mode: 'string' }).defaultNow(),
-    publishBefore: date({ mode: 'string' })
-  },
+  id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).defaultNow(),
+  campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
+  tokens: integer().notNull(),
+  publishAfter: date({ mode: 'string' }).defaultNow(),
+  publishBefore: date({ mode: 'string' })
+},
   table => [{
     checkConstraint: check('tokens_check', sql`${table.tokens}
     > 0`)

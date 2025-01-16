@@ -1,0 +1,1 @@
+ALTER TABLE "campaigns" ADD COLUMN "redirect_url" varchar(500) NOT NULL;

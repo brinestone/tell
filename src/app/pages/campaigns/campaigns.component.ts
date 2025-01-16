@@ -7,11 +7,13 @@ import { InputIcon }                                                            
 import { Drawer }                                                                        from 'primeng/drawer';
 import { ReactiveFormsModule }                                                           from '@angular/forms';
 import { DatePipe }                                                                      from '@angular/common';
-import { MenuItem, MessageService }                                                      from 'primeng/api';
+import { MenuItem, MessageService, ToastMessageOptions }                                 from 'primeng/api';
 import {
   rxResource
 }                                                                                        from '@angular/core/rxjs-interop';
-import { CountryData }                                                                   from '@lib/models/country-data';
+import {
+  CountryData
+}                                                                                        from '@lib/models/country-data';
 import { Category }                                                                      from '@lib/models/category';
 import { HttpClient }                                                                    from '@angular/common/http';
 import { Campaign, LookupCampaignResponse }                                              from '@lib/models/campaign';
@@ -27,7 +29,7 @@ import {
 import {
   PublicationFormComponent
 }                                                                                        from '@app/components/publication-form/publication-form.component';
-import { Ripple } from 'primeng/ripple';
+import { Ripple }                                                                        from 'primeng/ripple';
 
 @Component({
   selector: 'tm-campaigns',
@@ -100,6 +102,18 @@ export class CampaignsComponent {
   onCampaignFormSubmitted() {
     this.campaigns.reload();
     this.showCampaignModal.set(false);
+  }
+
+  onCampaignFormErrored(error: Error) {
+    const message: ToastMessageOptions = {
+      summary: 'Error',
+      detail: error.message,
+      severity: 'error',
+    };
+    if (this.showCampaignModal()) {
+      message.key = 'under-modal';
+    }
+    this.messageService.add(message);
   }
 
   constructor() {

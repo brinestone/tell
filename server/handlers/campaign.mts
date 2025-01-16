@@ -1,13 +1,15 @@
-import { extractUser } from '@helpers/auth.mjs';
-import { useCampaignsDb } from '@helpers/db.mjs';
-import { handleError } from '@helpers/error.mjs';
-import { LookupCampaignResponse } from '@lib/models/campaign';
-import { useLogger } from '@logger/common';
+import { extractUser }                                                              from '@helpers/auth.mjs';
+import { useCampaignsDb }                                                           from '@helpers/db.mjs';
+import { handleError }                                                              from '@helpers/error.mjs';
+import { LookupCampaignResponse }                                                   from '@lib/models/campaign';
+import { useLogger }                                                                from '@logger/common';
 import { campaignPublications, campaigns, newCampaignSchema, newPublicationSchema } from '@schemas/campaigns';
-import { count, eq } from 'drizzle-orm';
-import express from 'express';
+import { count, eq }                                                                from 'drizzle-orm';
+import express                                                                      from 'express';
+import { fromZodError }                                                             from 'zod-validation-error';
 
 const logger = useLogger({ service: 'campaign' });
+
 export async function createCampaignPublication(req: express.Request, res: express.Response) {
   const db = useCampaignsDb();
   const { campaign: campaignId } = req.params;
@@ -45,12 +47,18 @@ export async function findCampaignPublications(req: express.Request, res: expres
 }
 
 export async function createCampaign(req: express.Request, res: express.Response) {
-  const dto = req.body;
-  const db = useCampaignsDb();
   const user = extractUser(req);
+  const { success, data, error } = newCampaignSchema.safeParse({ ...req.body, createdBy: user.id});
+  if (!success) {
+    const msg = fromZodError(error).message;
+    res.status(400).json({ message: msg });
+    return;
+
+  }
+  const db = useCampaignsDb();
   try {
     logger.info('creating new campaign');
-    await db.transaction(t => t.insert(campaigns).values(newCampaignSchema.parse({ ...dto, createdBy: user.id })));
+    await db.transaction(t => t.insert(campaigns).values(data));
     res.status(201).json({});
   } catch (e) {
     handleError(e as Error, res);

@@ -2,13 +2,14 @@ import { Context } from '@netlify/functions';
 import { vwAccessTokens } from '@schemas/users';
 import { AccessTokenValidationSchema } from '@zod-schemas/user.mjs';
 import express, { NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { useUsersDb } from '../helpers/db.mjs';
 import { and, eq } from 'drizzle-orm';
+import { extractIp } from '@helpers/ip-extractor';
+import { useLogger } from '@logger/common';
 
-const { verify } = jwt;
+const logger = useLogger({ service: 'auth-middleware' });
 
 export function telegramWebhookAuth(req: express.Request, res: express.Response, next: NextFunction) {
   const authHeaderValue = req.header('x-telegram-bot-api-secret-token');
@@ -27,9 +28,10 @@ passport.use(new Strategy(
     passReqToCallback: true
   },
   async (req: express.Request, payload, done) => {
+    logger.debug('validating authentication token')
     try {
       const { sub, tokenId } = payload;
-      const ip = String(req.header('client-ip'));
+      const ip = extractIp(req);
       const db = useUsersDb();
       const user = await db.query.users.findFirst({
         where: (users, { eq }) => eq(sub, users.id),
@@ -56,19 +58,22 @@ passport.use(new Strategy(
 export const jwtAuth = passport.authenticate('jwt', { session: false }) as express.Handler;
 
 export const rawAuth = async (req: Request, ctx: Context, next: (req: Request, ctx: Context) => Promise<Response>) => {
+  logger.debug('validating authentication token');
   const headerValue = req.headers.get('authorization')?.split(' ');
   const unauthorizedResponse = new Response(JSON.stringify({ message: 'Unauthorized' }), {
     status: 401,
     headers: { 'content-type': 'application/json' }
   });
   if (!headerValue) return unauthorizedResponse;
+  console.log(headerValue);
 
   const [scheme, token] = headerValue;
 
   if (scheme !== 'Bearer') return unauthorizedResponse;
   try {
-    const { success, data } = AccessTokenValidationSchema.safeParse(token);
+    const { success, data, error } = AccessTokenValidationSchema.safeParse(token);
     if (!success) {
+      console.log(error);
       return unauthorizedResponse;
     }
 

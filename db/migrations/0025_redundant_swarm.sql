@@ -1,0 +1,2 @@
+DROP VIEW "public"."vw_access_tokens";--> statement-breakpoint
+CREATE VIEW "public"."vw_access_tokens" AS (select "user", (now() > ("created_at" + "window")::TIMESTAMP)::BOOLEAN OR revoked_at IS NOT NULL OR replaced_by IS NOT NULL as "is_expired", (created_at + "window")::TIMESTAMP as "expires_at", "created_at", "ip", "id" from "access_tokens");
