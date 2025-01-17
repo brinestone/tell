@@ -1,1 +1,29 @@
-<p>campaign works!</p>
+@defer (when !campaign.isLoading()) {
+<div class="container px-3 mx-auto pt-4 md:pt-10 pb-10">
+  <h1 class="text-2xl font-bold line-clamp-1 text-ellipsis max-w-[400px]">{{ campaign.value()?.title }}</h1>
+  <p-tabs [value]="activeTabIndex()">
+    <p-tablist>
+      <p-tab [value]="0"><i class="pi pi-chart-line"></i> Analytics</p-tab>
+      <p-tab [value]="1"><i class="pi pi-megaphone"></i> Publications</p-tab>
+      <p-tab [value]="2"><i class="pi pi-cog"></i> Settings</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel [value]="0">
+        <tm-campaign-analytics />
+      </p-tabpanel>
+      <p-tabpanel [value]="1">
+        <tm-campaign-publications />
+      </p-tabpanel>
+      <p-tabpanel [value]="2">
+        <tm-campaign-settings [campaign]="campaign.value()" />
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>
+
+}@placeholder {
+<div class="flex items-center justify-center h-full">
+  <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '20px', height: '20px' }" />
+</div>
+}

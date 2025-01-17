@@ -11,15 +11,15 @@ export const appRoutes: Routes = [
     loadChildren: () => import('./auth.routes').then(m => m.authRoutes)
   },
   {
-    path: 'campaigns/:id',
-    canActivate: [signedInGuard],
-    loadComponent: () => import('./pages/campaign/campaign.component').then(m => m.CampaignComponent)
-  },
-  {
     path: 'campaigns',
     canActivate: [signedInGuard],
     loadComponent: () => import('./pages/campaigns/campaigns.component').then(m => m.CampaignsComponent),
     title: 'Campaigns'
+  },
+  {
+    path: 'campaigns/:campaign',
+    canActivate: [signedInGuard],
+    loadComponent: () => import('./pages/campaign/campaign.component').then(m => m.CampaignComponent)
   },
   {
     canActivate: [signedInGuard],

@@ -17,6 +17,7 @@ import {
 import { MessageService, ToastMessageOptions } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
+import { Dialog } from 'primeng/dialog';
 import { Drawer } from 'primeng/drawer';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
@@ -33,16 +34,16 @@ import { TableModule } from 'primeng/table';
     InputText,
     IconField,
     InputIcon,
-    Drawer,
     ReactiveFormsModule,
     DatePipe,
     Panel,
     DataViewModule,
-    CampaignFormComponent,
     NgPlural,
     NgPluralCase,
     RouterLink,
-    Ripple
+    Dialog,
+    Ripple,
+    CampaignFormComponent
   ],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.scss'
@@ -56,13 +57,6 @@ export class CampaignsComponent {
   currentPageSize = model(20);
   readonly tokens = signal(0);
 
-  readonly categories = rxResource({
-    loader: () => this.http.get<Category[]>('/api/categories')
-  });
-  readonly countries = rxResource({
-    loader: () => this.http.get<CountryData[]>('/api/countries')
-  });
-
   readonly campaigns: ResourceRef<LookupCampaignResponse> = rxResource({
     request: () => ({ page: this.currentPage(), size: this.currentPageSize() }),
     loader: ({ request: { page, size } }) => this.http.get<LookupCampaignResponse>('/api/campaigns', {
@@ -72,6 +66,7 @@ export class CampaignsComponent {
       }
     })
   });
+
 
   onCampaignFormSubmitted() {
     this.campaigns.reload();
@@ -92,7 +87,7 @@ export class CampaignsComponent {
 
   constructor() {
     effect(() => {
-      const fetchError = this.categories.error();
+      const fetchError = this.campaigns.error();
       if (!fetchError) return;
       this.messageService.add({
         severity: 'error',

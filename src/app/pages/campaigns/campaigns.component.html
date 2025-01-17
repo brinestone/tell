@@ -2,7 +2,7 @@
   <h1 class="text-3xl font-bold">Campaigns</h1>
   <div class="md:grid md:grid-cols-[1fr_auto] md:gap-x-3">
     <p-panel>
-      <p-table [scrollable]="true" scrollHeight="flex" dataKey="id" [value]="campaigns.value()?.data ?? []"
+      <p-table #dt [scrollable]="true" scrollHeight="flex" dataKey="id" [value]="campaigns.value()?.data ?? []"
         [paginator]="(campaigns.value()?.data?.length ?? 0) > 10" [rows]="10" [loading]="campaigns.isLoading()"
         [totalRecords]="campaigns.value()?.total ?? 0">
         <ng-template #caption>
@@ -14,7 +14,8 @@
                 <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
                   [class.pi-filter-fill]="filterInput.value.length > 0"></i>
               </p-inputicon>
-              <input size="small" #filterInput pInputText type="search" placeholder="Filter">
+              <input (input)="dt.filter(filterInput.value, 'title', 'contains')" size="small" #filterInput pInputText
+                type="search" placeholder="Filter">
             </p-icon-field>
           </div>
         </ng-template>
@@ -30,11 +31,13 @@
           <tr [pSelectableRow]="campaign" pRipple>
             <td>
               <a [routerLink]="[campaign.id]"
-                class="line-clamp-1 overflow-ellipsis hover:text-primary transition-colors inline">{{ campaign.title }}</a>
+                class="line-clamp-1 overflow-ellipsis hover:text-primary transition-colors inline">{{ campaign.title
+                }}</a>
             </td>
-            <td [ngPlural]="campaign.categories.length">
+            <td [ngPlural]="campaign.categoryCount ?? 0">
+              <ng-template ngPluralCase="0">Not set</ng-template>
               <ng-template ngPluralCase="1">1 category</ng-template>
-              <ng-template ngPluralCase="<99">{{ campaign.categories.length }} categories</ng-template>
+              <ng-template ngPluralCase="<99">{{ campaign.categoryCount }} categories</ng-template>
               <ng-template ngPluralCase=">99">99+ categories</ng-template>
             </td>
             <td>{{ campaign.updatedAt | date }}</td>
@@ -47,11 +50,11 @@
   </div>
 </div>
 
-<p-drawer styleClass="w-full md:w-80 lg:w-[45rem]" [modal]="true" [(visible)]="showCampaignModal" position="right">
+<p-dialog maskStyleClass="backdrop-blur-sm" [draggable]="false" [breakpoints]="{'768px': '99vw'}"
+  [style]="{width: 'auto'}" [(visible)]="showCampaignModal" [modal]="true"
+  [closeButtonProps]="{tabindex: -1,rounded: true ,severity: 'secondary',text: true}">
   <ng-template #header>
     <h1 class="text-lg font-bold">New Campaign</h1>
   </ng-template>
-  <tm-campaign-form (error)="onCampaignFormErrored($event)" (onSubmit)="onCampaignFormSubmitted()"
-    [countries]="countries.value() ?? []" [categoriesLoading]="categories.isLoading()"
-    [countriesLoading]="countries.isLoading()" [categories]="categories.value() ?? []" />
-</p-drawer>
+  <tm-campaign-form (onErrored)="onCampaignFormErrored($event)" (onSubmitted)="onCampaignFormSubmitted()" />
+</p-dialog>

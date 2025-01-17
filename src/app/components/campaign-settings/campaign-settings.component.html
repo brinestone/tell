@@ -1,0 +1,193 @@
+<form [formGroup]="form">
+  <section class="md:w-3/4">
+    <p-fieldset formGroupName="general" legend="General Information">
+      <div class="grid grid-cols-[auto_1fr] gap-2 items-baseline">
+        <div>
+          <label class="text-sm font-medium text-muted-color">Campaign Title</label>
+        </div>
+        <div>
+          <p-inplace>
+            <ng-template #display>
+              <p>{{ campaign()?.title ?? 'Not set' }}</p>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <div class="flex items-start gap-2">
+                <input pInputText placeholder="Title *" formControlName="title">
+                <div class="flex items-center gap-1">
+                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                </div>
+              </div>
+            </ng-template>
+          </p-inplace>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-muted-color">Description</label>
+        </div>
+        <div>
+          <p-inplace>
+            <ng-template #display>
+              <p>{{ campaign()?.description ?? 'Not set' }}</p>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <div class="flex items-start gap-2">
+                <textarea pTextarea [value]="campaign()?.description"></textarea>
+                <div class="flex items-center gap-1">
+                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                </div>
+              </div>
+            </ng-template>
+          </p-inplace>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-muted-color">Categories</label>
+        </div>
+        <div>
+          <p-inplace>
+            <ng-template #display>
+              @let count = campaign()?.categories?.length ?? 0;
+              <p [ngPlural]="count">
+                <ng-template ngPluralCase="0">Not set</ng-template>
+                <ng-template ngPluralCase="1">1 category</ng-template>
+                <ng-template ngPluralCase="<99">{{count}} categories</ng-template>
+                <ng-template ngPluralCase=">99">99+ categories</ng-template>
+              </p>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <div class="flex items-start gap-2">
+                <p-multi-select formControlName="categories" [showClear]="true" [loading]="categories.isLoading()"
+                  [options]="categories.value()" optionValue="id" optionLabel="title" appendTo="body" />
+                <div class="flex items-center gap-1">
+                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                </div>
+              </div>
+            </ng-template>
+          </p-inplace>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-muted-color">Redirect URL</label>
+        </div>
+        <div>
+          <p-inplace>
+            <ng-template #display>
+              <p>{{ campaign()?.redirectUrl ?? 'Not set' }}</p>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <div class="flex items-start gap-2">
+                <input pInputText type="url" [value]="campaign()?.redirectUrl">
+                <div class="flex items-center gap-1">
+                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                </div>
+              </div>
+            </ng-template>
+          </p-inplace>
+        </div>
+      </div>
+    </p-fieldset>
+  </section>
+  <section class="md:w-3/4">
+    <p-fieldset legend="Links & Contacts">
+      <p-accordion value="1">
+        <p-accordion-panel value="0">
+          <p-accordion-header><span><i class="pi pi-link"></i> Links</span></p-accordion-header>
+          <p-accordion-content>
+            <div class="flex flex-wrap gap-3">
+              @for (linkControl of linkControls; track $index) {
+              <ng-container
+                *ngTemplateOutlet="linkControlTemplate; context: {length: $count,$implicit: linkControl, index: $index}" />
+              }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="1">
+          <p-accordion-header><span><i class="pi pi-phone"></i> Phone numbers</span></p-accordion-header>
+          <p-accordion-content>
+            <div class="flex flex-wrap gap-3">
+              @for(phoneGroup of phoneControls;track $index){
+              <ng-container
+                *ngTemplateOutlet="phoneControlTemplate;context: {length: $count,$implicit: phoneGroup,index: $index}" />
+              }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="2">
+          <p-accordion-header><span><i class="pi pi-at"></i> Email addresses</span></p-accordion-header>
+          <p-accordion-content>
+            emails
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    </p-fieldset>
+  </section>
+
+  <section class="md:w-3/4">
+    <p-fieldset legend="Attachments">
+
+    </p-fieldset>
+  </section>
+  <section class="md:max-w-[50%]">
+    <p-fieldset legend="Removal">
+      <div class="space-y-2">
+        <p>Deleting a campaign will invalidate all active publications and release all remaining allocated credits</p>
+        <div><p-button severity="danger" [outlined]="true" label="Yes, delete this campaign" /></div>
+      </div>
+    </p-fieldset>
+  </section>
+</form>
+
+<ng-template #phoneControlTemplate let-group let-index="index" let-length="length">
+  <div class="flex items-baseline gap-x-2 py-1">
+    <div class="space-y-1">
+      <div class="flex gap-2" [formGroup]="group">
+        <p-select placeholder="Select Country" [filter]="true"
+          [filterFields]="['alpha2Code','alpha3Code','nativeName','name']" filterMatchMode="contains"
+          optionValue="alpha2Code" formControlName="code" [options]="countries.value()" appendTo="body"
+          [virtualScroll]="true" [checkmark]="true" [virtualScrollItemSize]="38" [loading]="countries.isLoading()">
+          <ng-template #selectedItem let-item>
+            <div class="flex justify-between gap-1 items-center md:w-[3.5rem]">
+              <img [src]="item.flags.png" width="21" class="m-0" [alt]="item.nativeName">
+              <span>+{{ item.callingCodes[0] }}</span>
+            </div>
+          </ng-template>
+          <ng-template #item let-country>
+            <div class="flex items-center gap-2">
+              <img [src]="country.flags.svg" width="25" [alt]="country.nativeName">
+              <span>{{ country.nativeName }}</span>
+            </div>
+          </ng-template>
+        </p-select>
+        <input placeholder="{{ getSamplePhoneNumber(group.controls.code.value) }}" tmPhone
+          [code]="group.controls.code.value ?? 'CM'" pInputText size="small" formControlName="number">
+      </div>
+      @if(group.invalid && group.dirty) {
+      <p-message size="small" variant="simple" severity="error">
+        @if(group.hasError('phoneInvalid')){
+        Invalid phone number
+        }
+      </p-message>
+      }
+    </div>
+    @if(length > 0 && index
+    < length-1) { <p-button (onClick)="removePhoneControl(index)" tabindex="-1" size="small" [text]="true"
+      [rounded]="true" icon="pi pi-trash" severity="secondary" />
+    }
+  </div>
+</ng-template>
+
+<ng-template #linkControlTemplate let-control let-index="index" let-length="length">
+  <div class="flex items-baseline gap-x-2 py-1">
+    <div class="space-y-1">
+      <input pInputText size="small" class="block" [formControl]="control" type="url" placeholder="Link {{index + 1}}">
+      @if(control.invalid && control.dirty) {
+      <p-message size="small" variant="simple" severity="error">
+        @if(control.hasError('pattern')){
+        Invalid URL
+        }
+      </p-message>
+      }
+    </div>
+    @if(length > 0 && index
+    < length-1) { <p-button (onClick)="removeLinkControl(index)" tabindex="-1" size="small" [text]="true"
+      [rounded]="true" icon="pi pi-trash" severity="secondary" />
+    }
+  </div>
+</ng-template>
