@@ -201,7 +201,6 @@
             @switch(attachmentType) {
             @case('image') {
             <img [src]="url" class="w-full h-full object-cover" alt="media_{{$index}}">
-            <!-- <p-image width="150px" [src]="url" alt="attachment_{{$index}}" /> -->
             }
             @case('video') {
             <video loop autoplay muted [src]="url" class="w-full h-full object-cover"></video>
@@ -251,7 +250,7 @@
 <p-toast styleClass="text-sm" key="error-message" position="bottom-center" />
 
 <ng-template #emailControlTemplate let-control let-index="index" let-length="length">
-  <div class="flex items-baseline gap-x-2 py-1">
+  <div class="flex items-center gap-x-2 py-1">
     <div class="space-y-1">
       <input type="email" size="small" pInputText class="block" [formControl]="control"
         placeholder="Email {{ index + 1}}">
@@ -271,7 +270,7 @@
 </ng-template>
 
 <ng-template #phoneControlTemplate let-group let-index="index" let-length="length">
-  <div class="flex items-baseline gap-x-2 py-1">
+  <div class="flex items-center gap-x-2 py-1">
     <div class="space-y-1">
       <div class="flex gap-2" [formGroup]="group">
         <p-select placeholder="Select Country" [filter]="true"
@@ -310,7 +309,7 @@
 </ng-template>
 
 <ng-template #linkControlTemplate let-control let-index="index" let-length="length">
-  <div class="flex items-baseline gap-x-2 py-1">
+  <div class="flex items-center gap-x-2 py-1">
     <div class="space-y-1">
       <input pInputText size="small" class="block" [formControl]="control" type="url" placeholder="Link {{index + 1}}">
       @if(control.invalid && control.dirty) {
