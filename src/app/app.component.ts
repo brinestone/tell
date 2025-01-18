@@ -3,13 +3,14 @@ import { AsyncPipe } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { select } from '@ngxs/store';
-import { updatePreset, usePreset } from '@primeng/themes';
+import { dt, updatePreset, usePreset } from '@primeng/themes';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { map } from 'rxjs';
 import { AutoThemePreset, ManualThemePreset } from './app.config';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { isUserSignedIn, preferences } from './state/user';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'tm-root',
@@ -22,7 +23,8 @@ export class AppComponent {
   readonly isSmallDisplay = inject(BreakpointObserver).observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape]).pipe(map(({ matches }) => matches))
   readonly isSignedIn = select(isUserSignedIn);
   private readonly prefs = select(preferences);
-  constructor() {
+  constructor(meta: Meta) {
+    let tag = meta.addTag({ name: 'theme-color' });
     effect(() => {
       const doc = document.querySelector('html') as HTMLHtmlElement;
       const { theme } = this.prefs();
@@ -42,6 +44,10 @@ export class AppComponent {
           doc.classList.remove('app-dark');
           break;
         default:
+      }
+
+      if (tag) {
+        tag.content = getComputedStyle(document.getElementsByTagName('html')[0]).getPropertyValue('--p-primary-color');
       }
     })
   }

@@ -17,6 +17,11 @@ export const appRoutes: Routes = [
     title: 'Campaigns'
   },
   {
+    path: 'campaigns/:campaign',
+    canActivate: [signedInGuard],
+    loadComponent: () => import('./pages/campaign/campaign.component').then(m => m.CampaignComponent)
+  },
+  {
     canActivate: [signedInGuard],
     title: 'Dashboard',
     path: 'dashboard',

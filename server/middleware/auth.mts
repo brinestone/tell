@@ -65,7 +65,6 @@ export const rawAuth = async (req: Request, ctx: Context, next: (req: Request, c
     headers: { 'content-type': 'application/json' }
   });
   if (!headerValue) return unauthorizedResponse;
-  console.log(headerValue);
 
   const [scheme, token] = headerValue;
 
@@ -73,7 +72,6 @@ export const rawAuth = async (req: Request, ctx: Context, next: (req: Request, c
   try {
     const { success, data, error } = AccessTokenValidationSchema.safeParse(token);
     if (!success) {
-      console.log(error);
       return unauthorizedResponse;
     }
 

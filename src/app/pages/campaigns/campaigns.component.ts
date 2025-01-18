@@ -1,35 +1,30 @@
-import { Component, computed, effect, inject, linkedSignal, model, ResourceRef, signal } from '@angular/core';
-import { TableModule }                                                                   from 'primeng/table';
-import { Button }                                                                        from 'primeng/button';
-import { InputText }                                                                     from 'primeng/inputtext';
-import { IconField }                                                                     from 'primeng/iconfield';
-import { InputIcon }                                                                     from 'primeng/inputicon';
-import { Drawer }                                                                        from 'primeng/drawer';
-import { ReactiveFormsModule }                                                           from '@angular/forms';
-import { DatePipe }                                                                      from '@angular/common';
-import { MenuItem, MessageService, ToastMessageOptions }                                 from 'primeng/api';
+import { DatePipe, NgPlural, NgPluralCase } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, effect, inject, model, ResourceRef, signal } from '@angular/core';
 import {
   rxResource
-}                                                                                        from '@angular/core/rxjs-interop';
-import {
-  CountryData
-}                                                                                        from '@lib/models/country-data';
-import { Category }                                                                      from '@lib/models/category';
-import { HttpClient }                                                                    from '@angular/common/http';
-import { Campaign, LookupCampaignResponse }                                              from '@lib/models/campaign';
-import { Panel }                                                                         from 'primeng/panel';
-import { Menu }                                                                          from 'primeng/menu';
-import { DataViewModule }                                                                from 'primeng/dataview';
+} from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   CampaignFormComponent
-}                                                                                        from '@app/components/campaign-form/campaign-form.component';
+} from '@app/components/campaign-form/campaign-form.component';
+import { LookupCampaignResponse } from '@lib/models/campaign';
+import { Category } from '@lib/models/category';
 import {
-  CampaignPublicationsComponent
-}                                                                                        from '@app/components/campaign-publications/campaign-publications.component';
-import {
-  PublicationFormComponent
-}                                                                                        from '@app/components/publication-form/publication-form.component';
-import { Ripple }                                                                        from 'primeng/ripple';
+  CountryData
+} from '@lib/models/country-data';
+import { MessageService, ToastMessageOptions } from 'primeng/api';
+import { Button } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
+import { Dialog } from 'primeng/dialog';
+import { Drawer } from 'primeng/drawer';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputText } from 'primeng/inputtext';
+import { Panel } from 'primeng/panel';
+import { Ripple } from 'primeng/ripple';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'tm-campaigns',
@@ -39,16 +34,16 @@ import { Ripple }                                                               
     InputText,
     IconField,
     InputIcon,
-    Drawer,
     ReactiveFormsModule,
     DatePipe,
     Panel,
-    Menu,
     DataViewModule,
-    CampaignFormComponent,
-    CampaignPublicationsComponent,
-    PublicationFormComponent,
-    Ripple
+    NgPlural,
+    NgPluralCase,
+    RouterLink,
+    Dialog,
+    Ripple,
+    CampaignFormComponent
   ],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.scss'
@@ -56,20 +51,11 @@ import { Ripple }                                                               
 export class CampaignsComponent {
   private messageService = inject(MessageService);
   private http = inject(HttpClient);
-  readonly selectedCampaign = model<Campaign>();
-  readonly targetCampaignId = linkedSignal(() => this.selectedCampaign()?.id)
   showCampaignModal = model(false);
   showPublicationModal = model(false);
   currentPage = model(0);
   currentPageSize = model(20);
   readonly tokens = signal(0);
-
-  readonly categories = rxResource({
-    loader: () => this.http.get<Category[]>('/api/categories')
-  });
-  readonly countries = rxResource({
-    loader: () => this.http.get<CountryData[]>('/api/countries')
-  });
 
   readonly campaigns: ResourceRef<LookupCampaignResponse> = rxResource({
     request: () => ({ page: this.currentPage(), size: this.currentPageSize() }),
@@ -81,23 +67,6 @@ export class CampaignsComponent {
     })
   });
 
-  readonly campaignOptions = computed(() => {
-    return (this.campaigns.value()?.data ?? []).map((campaign: Campaign) => {
-      return [
-        {
-          label: 'Publish',
-          icon: 'pi pi-megaphone',
-          command: () => {
-            this.targetCampaignId.set(campaign.id);
-            this.showPublicationModal.set(true);
-          }
-        },
-        { label: 'Edit', icon: 'pi pi-pencil' },
-        { separator: true },
-        { label: 'Delete', icon: 'pi pi-trash' }
-      ] as MenuItem[];
-    })
-  })
 
   onCampaignFormSubmitted() {
     this.campaigns.reload();
@@ -118,7 +87,7 @@ export class CampaignsComponent {
 
   constructor() {
     effect(() => {
-      const fetchError = this.categories.error();
+      const fetchError = this.campaigns.error();
       if (!fetchError) return;
       this.messageService.add({
         severity: 'error',

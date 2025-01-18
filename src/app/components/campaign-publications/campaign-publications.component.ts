@@ -13,7 +13,7 @@ import { of }                       from 'rxjs';
   templateUrl: './campaign-publications.component.html',
   styleUrl: './campaign-publications.component.scss'
 })
-export class CampaignPublicationsComponent {
+export class CampaignPublications {
   private http = inject(HttpClient);
   readonly campaignId = input<number>();
   readonly publications: ResourceRef<CampaignPublication[]> = rxResource({
