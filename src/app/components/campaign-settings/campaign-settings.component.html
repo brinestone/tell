@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <section class="md:w-3/4">
+  <section>
     <p-fieldset formGroupName="general" legend="General Information">
       <div class="grid grid-cols-[auto_1fr] gap-2 items-baseline">
         <div>
@@ -12,10 +12,20 @@
             </ng-template>
             <ng-template #content let-closeCallback="closeCallback">
               <div class="flex items-start gap-2">
-                <input pInputText placeholder="Title *" formControlName="title">
-                <div class="flex items-center gap-1">
-                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                <div class="space-y-1">
+                  <div>
+                    <input pInputText placeholder="Title *" formControlName="title">
+                  </div>
+                  @if(generalControls.title.dirty && generalControls.title.invalid) {
+                  <p-message size="small" variant="simple" severity="error">
+                    @if(generalControls.title.hasError('required')) {
+                    This field cannot be empty
+                    }
+                  </p-message>
+                  }
                 </div>
+                <p-button (onClick)="revertControl('title', generalControls.title, closeCallback)" icon="pi pi-times"
+                  severity="secondary" [text]="true" />
               </div>
             </ng-template>
           </p-inplace>
@@ -26,13 +36,25 @@
         <div>
           <p-inplace>
             <ng-template #display>
-              <p>{{ campaign()?.description ?? 'Not set' }}</p>
+              <p class="max-w-[500px]">{{ campaign()?.description ?? 'Not set' }}</p>
             </ng-template>
             <ng-template #content let-closeCallback="closeCallback">
               <div class="flex items-start gap-2">
-                <textarea pTextarea [value]="campaign()?.description"></textarea>
+                <div class="space-y-1">
+                  <div>
+                    <textarea rows="5" cols="20" pTextarea formControlName="description"></textarea>
+                  </div>
+                  @if(generalControls.description.dirty && generalControls.description.invalid) {
+                  <p-message size="small" variant="simple" severity="error">
+                    @if(generalControls.description.hasError('required')) {
+                    This field cannot be empty
+                    }
+                  </p-message>
+                  }
+                </div>
                 <div class="flex items-center gap-1">
-                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                  <p-button (onClick)="revertControl('description', generalControls.description, closeCallback)"
+                    icon="pi pi-times" severity="secondary" [text]="true" />
                 </div>
               </div>
             </ng-template>
@@ -47,17 +69,31 @@
               @let count = campaign()?.categories?.length ?? 0;
               <p [ngPlural]="count">
                 <ng-template ngPluralCase="0">Not set</ng-template>
-                <ng-template ngPluralCase="1">1 category</ng-template>
-                <ng-template ngPluralCase="<99">{{count}} categories</ng-template>
+                <ng-template ngPluralCase="1">{{getCategory(campaign()?.categories![0])?.title ??
+                  'Unknown'}}</ng-template>
+                <ng-template ngPluralCase="other">{{count}} categories</ng-template>
                 <ng-template ngPluralCase=">99">99+ categories</ng-template>
               </p>
             </ng-template>
             <ng-template #content let-closeCallback="closeCallback">
               <div class="flex items-start gap-2">
-                <p-multi-select formControlName="categories" [showClear]="true" [loading]="categories.isLoading()"
-                  [options]="categories.value()" optionValue="id" optionLabel="title" appendTo="body" />
+                <div class="space-y-1">
+                  <div>
+                    <p-multi-select placeholder="Select category" formControlName="categories" [showClear]="true"
+                      [loading]="categories.isLoading()" [options]="categories.value()" optionValue="id"
+                      optionLabel="title" appendTo="body" />
+                  </div>
+                  @if(generalControls.categories.dirty && generalControls.categories.invalid) {
+                  <p-message size="small" variant="simple" severity="error">
+                    @if(generalControls.categories.hasError('required')) {
+                    This field cannot be empty
+                    }
+                  </p-message>
+                  }
+                </div>
                 <div class="flex items-center gap-1">
-                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                  <p-button (onClick)="revertControl('categories', generalControls.categories, closeCallback)"
+                    icon="pi pi-times" severity="secondary" [text]="true" />
                 </div>
               </div>
             </ng-template>
@@ -73,9 +109,23 @@
             </ng-template>
             <ng-template #content let-closeCallback="closeCallback">
               <div class="flex items-start gap-2">
-                <input pInputText type="url" [value]="campaign()?.redirectUrl">
+                <div class="space-y-1">
+                  <div>
+                    <input pInputText type="url" formControlName="redirectUrl">
+                  </div>
+                  @if(generalControls.redirectUrl.dirty && generalControls.redirectUrl.invalid) {
+                  <p-message size="small" variant="simple" severity="error">
+                    @if(generalControls.redirectUrl.hasError('required')) {
+                    This field cannot be empty
+                    }@else if (generalControls.redirectUrl.hasError('pattern')) {
+                    Invalid URL
+                    }
+                  </p-message>
+                  }
+                </div>
                 <div class="flex items-center gap-1">
-                  <p-button (onClick)="closeCallback($event)" icon="pi pi-times" severity="secondary" [text]="true" />
+                  <p-button (onClick)="revertControl('redirectUrl', generalControls.redirectUrl, closeCallback)"
+                    icon="pi pi-times" severity="secondary" [text]="true" />
                 </div>
               </div>
             </ng-template>
@@ -84,9 +134,9 @@
       </div>
     </p-fieldset>
   </section>
-  <section class="md:w-3/4">
+  <section>
     <p-fieldset legend="Links & Contacts">
-      <p-accordion value="1">
+      <p-accordion value="0">
         <p-accordion-panel value="0">
           <p-accordion-header><span><i class="pi pi-link"></i> Links</span></p-accordion-header>
           <p-accordion-content>
@@ -112,27 +162,113 @@
         <p-accordion-panel value="2">
           <p-accordion-header><span><i class="pi pi-at"></i> Email addresses</span></p-accordion-header>
           <p-accordion-content>
-            emails
+            <div class="flex flex-wrap gap-3">
+              @for(emailControl of emailControls;track $index){
+              <ng-container
+                *ngTemplateOutlet="emailControlTemplate;context: {length: $count,$implicit: emailControl,index: $index}" />
+              }
+            </div>
           </p-accordion-content>
         </p-accordion-panel>
       </p-accordion>
     </p-fieldset>
   </section>
-
-  <section class="md:w-3/4">
+  <section>
     <p-fieldset legend="Attachments">
-
+      <div class="space-y-3">
+        <div class="space-y-2">
+          <div class="flex justify-start">
+            <p-fileupload [chooseButtonProps]="{
+              rounded: true,
+              outlined: true,
+              size: 'small',
+              label: uploading() ? 'Uploading' : 'Upload file',
+              loading: uploading(),
+              disabled: uploading()
+            }" chooseIcon="pi pi-upload" mode="basic" auto url="/api/blob/upload" name="uploads"
+              accept="image/*,video/*" maxFileSize="6291456" (onError)="onUploadFailed($event)"
+              (onSend)="onBeforeUpload()" (onUpload)="onAttachmentFileUploaded($event)" />
+          </div>
+          <p class="text-muted-color text-sm">Attach images and videos to your campaign to make them stand out.</p>
+        </div>
+        @if(attachmentControls.length > 0) {
+        <p-divider />
+        <div class="grid gap-3 grid-cols-[repeat(auto-fill,minmax(130px,1fr))]">
+          @for(control of attachmentControls; track $index) {
+          @let url = control.value;
+          @let attachmentType = getAttachmentType(url);
+          <div class="relative rounded-md overflow-hidden group">
+            @switch(attachmentType) {
+            @case('image') {
+            <img [src]="url" class="w-full h-full object-cover" alt="media_{{$index}}">
+            <!-- <p-image width="150px" [src]="url" alt="attachment_{{$index}}" /> -->
+            }
+            @case('video') {
+            <video loop autoplay muted [src]="url" class="w-full h-full object-cover"></video>
+            }
+            }
+            <div
+              class="z-10 bg-black bg-opacity-0 transition-opacity group-hover:bg-opacity-30 absolute left-0 top-0 w-full h-full flex justify-center gap-3 items-center">
+              <p-button (onClick)="removeAttachmentControl($index)" styleClass="hidden group-hover:inline"
+                [rounded]="true" size="small" severity="danger" icon="pi pi-trash" />
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
     </p-fieldset>
   </section>
-  <section class="md:max-w-[50%]">
+  <section class="md:max-w-[70%]">
     <p-fieldset legend="Removal">
       <div class="space-y-2">
+        <p-confirm-dialog />
         <p>Deleting a campaign will invalidate all active publications and release all remaining allocated credits</p>
-        <div><p-button severity="danger" [outlined]="true" label="Yes, delete this campaign" /></div>
+        <div><p-button (onClick)="onDeleteCampaignButtonClicked($event)" severity="danger" [outlined]="true"
+            label="Yes, delete this campaign" /></div>
       </div>
     </p-fieldset>
   </section>
 </form>
+
+<p-toast styleClass="text-sm" key="pending-campaign-changes" position="bottom-center">
+  <ng-template #message let-message>
+    @if(!message.sticky) {
+    <span>{{ message.detail }}</span>
+    } @else {
+    <div class="flex gap-3 items-center">
+      <p>Save pending changes?</p>
+      <div class="flex items-center gap-2">
+        <p-button [loading]="updating()" [disabled]="form.invalid || updating() || uploading()"
+          (onClick)="onSubmitButtonClicked()" severity="success" [rounded]="true" label="Yes" size="small" />
+        <p-button [disabled]="updating()" size="small" (onClick)="onResetButtonClicked()" severity="secondary"
+          [text]="true" [rounded]="true" label="No" />
+      </div>
+    </div>
+    }
+  </ng-template>
+</p-toast>
+<p-toast styleClass="text-sm" key="error-message" position="bottom-center" />
+
+<ng-template #emailControlTemplate let-control let-index="index" let-length="length">
+  <div class="flex items-baseline gap-x-2 py-1">
+    <div class="space-y-1">
+      <input type="email" size="small" pInputText class="block" [formControl]="control"
+        placeholder="Email {{ index + 1}}">
+      @if(control.invalid && control.dirty) {
+      <p-message size="small" variant="simple" severity="error">
+        @if(control.hasError('email')) {
+        Invalid email address
+        }
+      </p-message>
+      }
+    </div>
+    @if(length > 0 && index
+    < length-1) { <p-button (onClick)="removeEmailControl(index)" tabindex="-1" size="small" [text]="true"
+      [rounded]="true" icon="pi pi-trash" severity="secondary" />
+    }
+  </div>
+</ng-template>
 
 <ng-template #phoneControlTemplate let-group let-index="index" let-length="length">
   <div class="flex items-baseline gap-x-2 py-1">
@@ -155,7 +291,7 @@
             </div>
           </ng-template>
         </p-select>
-        <input placeholder="{{ getSamplePhoneNumber(group.controls.code.value) }}" tmPhone
+        <input type="tel" placeholder="{{ getSamplePhoneNumber(group.controls.code.value) }}" tmPhone
           [code]="group.controls.code.value ?? 'CM'" pInputText size="small" formControlName="number">
       </div>
       @if(group.invalid && group.dirty) {

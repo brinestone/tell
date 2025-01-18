@@ -1,9 +1,11 @@
 import {
   createCampaign,
   createCampaignPublication,
+  deleteCampaign,
   findCampaignPublications,
   findUserCampaign,
-  lookupUserCampaings
+  lookupUserCampaings,
+  updateCampaignInfo
 } from '@handlers/campaign.mjs';
 import { prepareHandler } from '@helpers/handler.mjs';
 import { jwtAuth } from '@middleware/auth.mjs';
@@ -17,5 +19,7 @@ router.post('/', createCampaign);
 router.get('/:campaign/publications', findCampaignPublications);
 router.post('/:campaign/publications', createCampaignPublication);
 router.get('/:campaign', findUserCampaign);
+router.patch('/:campaign', updateCampaignInfo);
+router.delete('/:campaign', deleteCampaign);
 
 export const handler = prepareHandler('campaigns', router);

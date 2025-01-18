@@ -1,5 +1,6 @@
 [functions]
 node_bundler = "esbuild"
+external_node_modules = ["fluent-ffmpeg"]
 directory = "server/functions"
 
 [[redirects]]
@@ -18,3 +19,6 @@ status = 200
 from = "/*"
 to = "/index.html"
 status = 200
+
+[context.dev.environment]
+  VIDEO_PREVIEW_DURATION=10

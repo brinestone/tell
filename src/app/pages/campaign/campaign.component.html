@@ -1,29 +1,53 @@
-@defer (when !campaign.isLoading()) {
-<div class="container px-3 mx-auto pt-4 md:pt-10 pb-10">
-  <h1 class="text-2xl font-bold line-clamp-1 text-ellipsis max-w-[400px]">{{ campaign.value()?.title }}</h1>
-  <p-tabs [value]="activeTabIndex()">
-    <p-tablist>
-      <p-tab [value]="0"><i class="pi pi-chart-line"></i> Analytics</p-tab>
-      <p-tab [value]="1"><i class="pi pi-megaphone"></i> Publications</p-tab>
-      <p-tab [value]="2"><i class="pi pi-cog"></i> Settings</p-tab>
-    </p-tablist>
-    <p-tabpanels>
-      <p-tabpanel [value]="0">
-        <tm-campaign-analytics />
-      </p-tabpanel>
-      <p-tabpanel [value]="1">
-        <tm-campaign-publications />
-      </p-tabpanel>
-      <p-tabpanel [value]="2">
-        <tm-campaign-settings [campaign]="campaign.value()" />
-      </p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
+<div class="container px-3 mx-auto pt-4 md:pt-10 pb-10 space-y-3">
+  <div class="space-y-2">
+    <div>
+      <p-button [routerLink]="['..']" [relativeTo]="currentRoute" queryParamsHandling="replace" size="small"
+        [text]="true" severity="secondary" label="All Campaigns" icon="pi pi-arrow-left" />
+    </div>
+    <h1 class="text-2xl font-bold line-clamp-1 text-ellipsis max-w-[400px]">{{ campaign.value()?.title }}</h1>
+  </div>
+  <div>
+    <p-panel>
+      <p-tabs [value]="activeTabIndex()">
+        <p-tablist>
+          <p-tab [value]="0"><i class="pi pi-chart-line"></i> Analytics</p-tab>
+          <p-tab [value]="1"><i class="pi pi-megaphone"></i> Publications</p-tab>
+          <p-tab [value]="2"><i class="pi pi-cog"></i> Settings</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel [value]="0">
+            @defer (when !campaign.isLoading()) {
+            <tm-campaign-analytics />
+            }@placeholder {
+            <div class="flex items-center justify-center h-full">
+              <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+                [style]="{ width: '20px', height: '20px' }" />
+            </div>
+            }
+          </p-tabpanel>
+          <p-tabpanel [value]="1">
+            @defer (when !campaign.isLoading()) {
+            <tm-campaign-publications />
+            }@placeholder {
+            <div class="flex items-center justify-center h-full">
+              <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+                [style]="{ width: '20px', height: '20px' }" />
+            </div>
+            }
+          </p-tabpanel>
+          <p-tabpanel [value]="2">
+            @defer (when !campaign.isLoading()) {
+            <tm-campaign-settings (error)="onSettingsErrored($event)" (deleted)="onCampaignDeleted()"
+              (updated)="onCampaignUpdated()" [campaign]="campaign.value()" />
+            }@placeholder {
+            <div class="flex items-center justify-center h-full">
+              <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+                [style]="{ width: '20px', height: '20px' }" />
+            </div>
+            }
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </p-panel>
+  </div>
 </div>
-
-}@placeholder {
-<div class="flex items-center justify-center h-full">
-  <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-    [style]="{ width: '20px', height: '20px' }" />
-</div>
-}

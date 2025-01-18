@@ -1,4 +1,4 @@
-import { Context } from '@netlify/functions';
+import { Config, Context } from '@netlify/functions';
 import { handleUploads, serveUploadedFile } from '@handlers/blob.mjs';
 import { rawAuth } from '@middleware/auth.mjs';
 
@@ -10,4 +10,8 @@ export default async function (req: Request, ctx: Context) {
   return new Response(null, { status: 404 });
 }
 
-
+export const config: Config = {
+  path: [
+    '/api/blob/upload', '/api/blob/:key'
+  ]
+}

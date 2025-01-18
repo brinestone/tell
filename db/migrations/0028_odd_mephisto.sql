@@ -1,0 +1,1 @@
+ALTER TABLE "campaign_publications" RENAME COLUMN "tokens" TO "credits";

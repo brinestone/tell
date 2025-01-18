@@ -37,7 +37,7 @@
             <td [ngPlural]="campaign.categoryCount ?? 0">
               <ng-template ngPluralCase="0">Not set</ng-template>
               <ng-template ngPluralCase="1">1 category</ng-template>
-              <ng-template ngPluralCase="<99">{{ campaign.categoryCount }} categories</ng-template>
+              <ng-template ngPluralCase="other">{{ campaign.categoryCount }} categories</ng-template>
               <ng-template ngPluralCase=">99">99+ categories</ng-template>
             </td>
             <td>{{ campaign.updatedAt | date }}</td>
