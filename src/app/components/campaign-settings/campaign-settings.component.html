@@ -281,7 +281,7 @@
           <ng-template #selectedItem let-item>
             <div class="flex justify-between gap-1 items-center md:w-[3.5rem]">
               <img [src]="item.flags.png" width="21" class="m-0" [alt]="item.nativeName">
-              <span>+{{ item.callingCodes[0] }}</span>
+              <span class="hidden md:inline">+{{ item.callingCodes[0] }}</span>
             </div>
           </ng-template>
           <ng-template #item let-country>
