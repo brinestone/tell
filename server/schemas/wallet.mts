@@ -1,8 +1,13 @@
+import { currencyExistsByCode } from "@handlers/countries.mjs";
 import { z } from "zod";
 import { PaymentMethodProviderNameSchema } from "./payment-method.mjs";
-import { currencyExistsByCode, handleFindExchangeRates } from "@handlers/countries.mjs";
 
-export const WalletTopupInputValidationSchema = (production: boolean) =>  z.object({
+export const WalletTransfersInputValidationSchema = z.object({
+  page: z.union([z.string(), z.number()]).optional().pipe(z.coerce.number().min(0).optional().default(0)),
+  size: z.union([z.string(), z.number()]).optional().pipe(z.coerce.number().min(1).optional().default(20))
+});
+
+export const WalletTopupInputValidationSchema = (production: boolean) => z.object({
   paymentMethod: production ? PaymentMethodProviderNameSchema.exclude(['virtual']) : PaymentMethodProviderNameSchema,
   amount: z.number().min(0),
   currency: z.string().length(3).transform(s => s.toUpperCase()).refine(c => currencyExistsByCode(c), 'Unknown currency specified')

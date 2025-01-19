@@ -3,17 +3,75 @@ import { useFinanceDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
 import { isProduction } from '@helpers/handler.mjs';
 import { useLogger } from '@logger/common';
-import { BalancesSchema, fundingBalances, rewardBalances, wallets, walletTransactions } from '@schemas/finance';
-import { WalletTopupInputValidationSchema } from '@zod-schemas/wallet.mjs';
-import { eq } from 'drizzle-orm';
+import { fundingBalances, paymentTransactions, rewardBalances, wallets, walletTransactions } from '@schemas/finance';
+import { WalletTopupInputValidationSchema, WalletTransfersInputValidationSchema } from '@zod-schemas/wallet.mjs';
+import { count, desc, eq, or } from 'drizzle-orm';
 import { Request, Response } from 'express';
 import { fromError } from 'zod-validation-error';
 import { doCollectFunds } from './payment.mjs';
 import { PgQueryResultHKT, PgTransaction } from 'drizzle-orm/pg-core';
+import { BalancesSchema, WalletTransfersResponseSchema } from '@lib/models/wallet';
 
 const logger = useLogger({
   service: 'wallet'
 });
+
+export async function handleFindUserWalletTransfers(req: Request, res: Response) {
+  const user = extractUser(req);
+  logger.info('finding user wallet transactions', { user: user.id });
+  const { success, error, data } = WalletTransfersInputValidationSchema.safeParse(req.query);
+  if (!success) {
+    res.status(400).json({ message: fromError(error) });
+    return;
+  }
+
+  const { page, size } = data;
+  const db = useFinanceDb();
+
+  try {
+    const wallet = await db.query.wallets.findFirst({
+      where: (w, { eq }) => eq(w.ownedBy, user.id)
+    });
+
+    if (!wallet) {
+      res.status(404).json({ message: 'Wallet not found' });
+      return;
+    }
+
+    const [{ total }] = await db.select({ total: count() })
+      .from(walletTransactions)
+      .where(or(eq(walletTransactions.from, wallet.id), eq(walletTransactions.to, wallet.id)))
+      .limit(1);
+
+    const transactions = await db.select({
+      id: walletTransactions.id,
+      from: walletTransactions.from,
+      to: walletTransactions.to,
+      amount: walletTransactions.value,
+      status: walletTransactions.status,
+      type: walletTransactions.type,
+      date: walletTransactions.recordedAt,
+      payment: {
+        id: walletTransactions.accountTransaction,
+        currency: paymentTransactions.currency,
+        amount: paymentTransactions.value,
+        status: paymentTransactions.status
+      }
+    }).from(walletTransactions)
+      .leftJoin(paymentTransactions, wt => eq(paymentTransactions.id, wt.payment.id))
+      .orderBy(desc(walletTransactions.recordedAt))
+      .where(or(eq(walletTransactions.from, wallet.id), eq(walletTransactions.to, wallet.id)))
+      .offset(page * size)
+      .limit(size);
+
+    res.json(WalletTransfersResponseSchema.parse({
+      data: transactions,
+      total
+    }));
+  } catch (e) {
+    handleError(e as Error, res);
+  }
+}
 
 export async function handleWalletTopup(req: Request, res: Response) {
   const user = extractUser(req);

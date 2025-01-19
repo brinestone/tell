@@ -65,6 +65,9 @@ importers:
       '@primeng/themes':
         specifier: ^19.0.5
         version: 19.0.5
+      '@types/datadog-winston':
+        specifier: ^1.0.7
+        version: 1.0.7
       '@types/lodash':
         specifier: ^4.17.14
         version: 4.17.14
@@ -74,6 +77,9 @@ importers:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
+      datadog-winston:
+        specifier: ^1.6.0
+        version: 1.6.0(encoding@0.1.13)
       drizzle-orm:
         specifier: ^0.38.2
         version: 0.38.4(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(react@18.3.1)
@@ -2475,6 +2481,9 @@ packages:
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
 
+  '@types/datadog-winston@1.0.7':
+    resolution: {integrity: sha512-1E2B1AROGejf8xYUKglv0q4X3SlOL4EslcVHeJQuK1X572b6yvvtobSSXAUckNIFVqn518q+AmbXyIqsBo8N5g==}
+
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
@@ -3078,6 +3087,10 @@ packages:
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
 
+  colors@1.4.0:
+    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
+    engines: {node: '>=0.1.90'}
+
   colorspace@1.1.4:
     resolution: {integrity: sha512-BgvKJiuVu1igBUF2kEjRCZXol6wiiGbY5ipL/oVPwm0BL9sIpMIzM8IK7vwuxIIzOXMV3Ey5w+vxhm0rR/TN8w==}
 
@@ -3288,6 +3301,9 @@ packages:
   dargs@7.0.0:
     resolution: {integrity: sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==}
     engines: {node: '>=8'}
+
+  datadog-winston@1.6.0:
+    resolution: {integrity: sha512-kKl+VW/BFICrxTxHiA2Dbpr+JkDUZsvwFloflpDDJK6GKZDsl035uxVD18us884o1+9v721h1fbAwrTpni1wfA==}
 
   date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
@@ -3775,6 +3791,9 @@ packages:
   fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
+  fast-safe-stringify@2.1.1:
+    resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
+
   fast-uri@3.0.5:
     resolution: {integrity: sha512-5JnBCWpFlMo0a3ciDy/JckMzzv1U9coZrIhedq+HXxxUfDTAiS0LA8OKVao4G9BxmCVck/jtA5r3KAtRWEyD8Q==}
 
@@ -3787,6 +3806,9 @@ packages:
 
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
+
+  fecha@2.3.3:
+    resolution: {integrity: sha512-lUGBnIamTAwk4znq5BcqsDaxSmZ9nDVJaij6NvRt/Tg4R69gERA+otPKbS86ROw9nxVMw2/mp1fnaiWqbs6Sdg==}
 
   fecha@4.2.3:
     resolution: {integrity: sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==}
@@ -4616,6 +4638,9 @@ packages:
   log4js@6.9.1:
     resolution: {integrity: sha512-1somDdy9sChrr9/f4UlzhdaGfDR2c/SaD2a4T7qEkG4jTS57/B3qmnjLYePwQ8cqWnUHZI0iAKxMBpCZICiZ2g==}
     engines: {node: '>=8.0'}
+
+  logform@1.10.0:
+    resolution: {integrity: sha512-em5ojIhU18fIMOw/333mD+ZLE2fis0EzXl1ZwHx4iQzmpQi6odNiY/t+ITNr33JZhT9/KEaH+UPIipr6a9EjWg==}
 
   logform@2.7.0:
     resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
@@ -8813,6 +8838,12 @@ snapshots:
     dependencies:
       '@types/node': 22.10.7
 
+  '@types/datadog-winston@1.0.7':
+    dependencies:
+      '@types/node': 22.10.7
+      logform: 1.10.0
+      winston-transport: 4.9.0
+
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
@@ -9513,6 +9544,8 @@ snapshots:
 
   colorette@2.0.20: {}
 
+  colors@1.4.0: {}
+
   colorspace@1.1.4:
     dependencies:
       color: 3.2.1
@@ -9779,6 +9812,14 @@ snapshots:
   custom-event@1.0.1: {}
 
   dargs@7.0.0: {}
+
+  datadog-winston@1.6.0(encoding@0.1.13):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      node-fetch: 2.7.0(encoding@0.1.13)
+      winston-transport: 4.9.0
+    transitivePeerDependencies:
+      - encoding
 
   date-format@4.0.14: {}
 
@@ -10250,6 +10291,8 @@ snapshots:
 
   fast-json-stable-stringify@2.1.0: {}
 
+  fast-safe-stringify@2.1.1: {}
+
   fast-uri@3.0.5: {}
 
   fastq@1.18.0:
@@ -10263,6 +10306,8 @@ snapshots:
   fd-slicer@1.1.0:
     dependencies:
       pend: 1.2.0
+
+  fecha@2.3.3: {}
 
   fecha@4.2.3: {}
 
@@ -11187,6 +11232,14 @@ snapshots:
       streamroller: 3.1.5
     transitivePeerDependencies:
       - supports-color
+
+  logform@1.10.0:
+    dependencies:
+      colors: 1.4.0
+      fast-safe-stringify: 2.1.1
+      fecha: 2.3.3
+      ms: 2.1.3
+      triple-beam: 1.4.1
 
   logform@2.7.0:
     dependencies:

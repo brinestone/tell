@@ -3,6 +3,7 @@ import Transport from 'winston-transport';
 import { Logtail } from '@logtail/node';
 import { from, retry } from 'rxjs';
 import { hostname } from 'node:os';
+import DatadogWinston from 'datadog-winston';
 
 class LogTailTransport extends Transport {
   private logTail: Logtail;
@@ -44,6 +45,13 @@ function useProdLogger() {
       new winston.transports.Console({
         format: ProductionFormatter
       }),
+      // Datadog logs
+      new DatadogWinston({
+        apiKey: String(process.env['DATADOG_KEY']),
+        hostname: new URL(String(process.env['ORIGIN'])).hostname,
+        ddsource: 'nodejs',
+        ddtags: `env:${process.env['NODE_ENV']}`
+      }),
       new LogTailTransport({ format: ProductionFormatter }),
     ],
     defaultMeta
@@ -56,7 +64,13 @@ function useDevLogger() {
     transports: [
       new winston.transports.Console({
         format: DevelopmentFormatter
-      })
+      }),
+      new DatadogWinston({
+        apiKey: String(process.env['DATADOG_KEY']),
+        hostname: new URL(String(process.env['ORIGIN'])).hostname,
+        ddsource: 'nodejs',
+        ddtags: `env:${process.env['NODE_ENV']}`
+      }),
     ],
     defaultMeta
   })

@@ -9,16 +9,13 @@ import {
   real,
   text,
   timestamp,
-  unique,
   uniqueIndex,
   uuid,
   varchar
 } from 'drizzle-orm/pg-core';
 import { users } from './users';
-import { createSelectSchema } from 'drizzle-zod';
-import { z } from 'zod';
 
-export const paymentMethodProviders = pgEnum('payment_method_provider', ['momo','virtual']);
+export const paymentMethodProviders = pgEnum('payment_method_provider', ['momo', 'virtual']);
 export const paymentMethodStatus = pgEnum('payment_method_status', ['active', 'inactive', 're-connection required']);
 export const paymentMethods = pgTable('payment_methods', {
   id: uuid().primaryKey().defaultRandom(),
@@ -130,15 +127,6 @@ export const rewardBalances = pgView('vw_reward_balances')
     .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
     .groupBy(wallets.id, wallets.ownedBy)
   );
-
-export const BalancesSchema = z.object({
-  funding: createSelectSchema(fundingBalances).extend({
-    balance: z.union([z.string(), z.number()]).pipe(z.coerce.number())
-  }),
-  rewards: createSelectSchema(rewardBalances).extend({
-    balance: z.union([z.string(), z.number()]).pipe(z.coerce.number())
-  })
-});
 
 export const vwCreditAllocations = pgView('vw_credit_allocations').as(
   qb => {

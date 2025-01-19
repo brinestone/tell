@@ -50,7 +50,7 @@
     <div>
       <span class="text-sm text-muted-color">{{ form.value.amount | currency:form.value.currency:'symbol-narrow' }} <i
           class="pi pi-arrow-right text-xs"></i> {{
-        (form.value.amount ?? 0) * exchangeRate() |
+        ((form.value.amount ?? 0) * exchangeRate()).toFixed(2) |
         number:'2.0-0'}}
         credits</span>
     </div>
