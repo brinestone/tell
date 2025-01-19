@@ -44,7 +44,7 @@ export function findCountryByIso2Code(countryCode: string | string[]) {
   return AllCountries.find(({ alpha2Code }) => alpha2Code == countryCode);
 }
 
-export async function findExchangeRates(req: Request, ctx: Context) {
+export async function handleFindExchangeRates(req: Request, ctx: Context) {
   const params = [...ctx.url.searchParams.entries()].reduce((acc, [k, v]) => {
     acc[k] = v;
     return acc

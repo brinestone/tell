@@ -1,4 +1,4 @@
-import { handleFindCountryByIso2Code, findExchangeRates, getAllCountries, getUserCountry, handleFindAllCurrencies } from '@handlers/countries.mjs';
+import { handleFindCountryByIso2Code, handleFindExchangeRates, getAllCountries, getUserCountry, handleFindAllCurrencies } from '@handlers/countries.mjs';
 import { Config, Context }                                                                 from '@netlify/functions';
 import { ZodError }                                                                  from 'zod';
 
@@ -9,7 +9,7 @@ export default async function (req: Request, ctx: Context) {
     if (method == 'get' && ctx.url.pathname == '/api/countries')
       response = await getAllCountries(req, ctx);
     else if (method == 'get' && ctx.url.pathname == '/api/countries/exchange_rates')
-      response = await findExchangeRates(req, ctx);
+      response = await handleFindExchangeRates(req, ctx);
     else if (method == 'get' && ctx.url.pathname == '/api/countries/find')
       response = handleFindCountryByIso2Code(req, ctx);
     else if (method == 'get' && ctx.url.pathname == '/api/countries/mine')

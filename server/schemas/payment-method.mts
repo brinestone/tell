@@ -11,8 +11,12 @@ export const UpdateMomoPaymentMethodSchema = z.object({
     })
 });
 
+export const PaymentMethodProviderNameSchema = z.enum(['momo', 'virtual']);
+
+export type PaymentMethodProviderName = z.infer<typeof PaymentMethodProviderNameSchema>;
+
 export const UpdatePaymentMethodSchema = z.object({
-  provider: z.enum(['momo']),
+  provider: PaymentMethodProviderNameSchema.exclude(['virtual']),
   data: UpdateMomoPaymentMethodSchema
 });
 

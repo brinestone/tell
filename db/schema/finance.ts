@@ -47,7 +47,7 @@ export const walletTransactionType = pgEnum('wallet_transaction_type', ['funding
 export const walletTransactions = pgTable('wallet_transactions', {
   id: uuid().primaryKey().defaultRandom(),
   value: bigint({ mode: 'number' }).notNull(),
-  from: uuid().notNull().references(() => wallets.id),
+  from: uuid().references(() => wallets.id),
   to: uuid().notNull().references(() => wallets.id),
   recordedAt: timestamp({ mode: 'date' }).defaultNow(),
   completedAt: timestamp({ mode: 'date' }),
@@ -79,6 +79,8 @@ export const paymentTransactions = pgTable('payment_transactions', {
   completedAt: timestamp({ mode: 'date' }),
   cancelledAt: timestamp({ mode: 'date' }),
   value: real().notNull(),
+  exchangeRateSnapshot: real().notNull(),
+  convertedValue: real().notNull(),
   notes: text(),
   currency: varchar({ length: 10 }).notNull(),
   params: jsonb(),

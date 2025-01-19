@@ -28,7 +28,7 @@ passport.use(new Strategy(
     passReqToCallback: true,
   },
   async (req: express.Request, payload, done) => {
-    logger.debug('validating authentication token')
+    logger.debug('validating access token')
     try {
       const { sub, tokenId } = payload;
       const ip = extractIp(req);

@@ -36,13 +36,23 @@
         </ng-template>
       </p-inputnumber>
     </p-fluid>
+    @if(form.controls.amount.dirty && form.controls.amount.invalid) {
+    <p-message size="small" severity="error" variant="simple">
+      @if(form.controls.amount.hasError('required')) {
+      This field is required
+      }
+      @else if(form.controls.amount.hasError('min')) {
+      Value must be at least <strong>{{ form.controls.amount.getError('min').min | currency:form.value.currency:'symbol-narrow'
+        }}</strong>
+      }
+    </p-message>
+    }
     <div>
-      <p-message size="small" severity="secondary" variant="simple">
-        {{ form.value.amount | currency:form.value.currency:'symbol' }} <i class="pi pi-arrow-right text-xs"></i> {{
+      <span class="text-sm text-muted-color">{{ form.value.amount | currency:form.value.currency:'symbol-narrow' }} <i
+          class="pi pi-arrow-right text-xs"></i> {{
         (form.value.amount ?? 0) * exchangeRate() |
         number:'2.0-0'}}
-        credits
-      </p-message>
+        credits</span>
     </div>
   </div>
   <div class="col-span-2">

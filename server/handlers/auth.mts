@@ -17,6 +17,7 @@ import { doCreateVirtualPaymentMethod, doRemovePaymentMethods } from './payment.
 import { doRemoveAccountConnections } from './user.mjs';
 import { doCreateUserWallet, doDeleteUserWallet } from './wallet.mjs';
 import { extractIp } from '@helpers/ip-extractor';
+import { isProduction } from '@helpers/handler.mjs';
 
 const logger = useLogger({ service: 'auth' });
 passport.use(new GoogleStrategy({
@@ -61,7 +62,7 @@ passport.use(new GoogleStrategy({
       existingUser = await db.query.users.findFirst({ where: eq(users.users.credentials, profile.id) });
 
       let initialBalance = 0
-      if (req.header('x-nf-deploy-context') === 'dev' || req.header('x-nf-deploy-published') !== '1') {
+      if (!isProduction(req)) {
         initialBalance = 90000;
         await doCreateVirtualPaymentMethod(userId);
       }

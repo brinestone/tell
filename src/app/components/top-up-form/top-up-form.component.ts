@@ -1,9 +1,10 @@
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { paymentMethods } from '@app/state/user';
+import { paymentMethods, preferences } from '@app/state/user';
+import { environment } from '@env/environment.development';
 import { Currency } from '@lib/models/country-data';
 import { PaymentMethodProvider } from '@lib/models/payment-method-lookup';
 import { select } from '@ngxs/store';
@@ -36,6 +37,7 @@ export class TopUpFormComponent {
   readonly onSubmit = output();
   readonly exchangeRate = signal(1);
   readonly registeredPaymentMethods = select(paymentMethods);
+  readonly initialCurrency = input<string>();
   readonly form = new FormGroup({
     paymentMethod: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     currency: new FormControl('XAF', { nonNullable: true, validators: [Validators.required] }),
@@ -45,6 +47,12 @@ export class TopUpFormComponent {
   readonly selectedCurrency = computed(() => {
     const code = this.selectedCurrencyCode() ?? 'XAF';
     return this.currencies.value()?.find(c => c.code == code)
+  });
+  readonly minAmountValue = computed(() => {
+    const rate = this.exchangeRate();
+    const inv = 1 / rate;
+    const ans = Number((environment.minPaymentValue * inv).toFixed(2));
+    return ans;
   })
 
   // Resources
@@ -85,7 +93,34 @@ export class TopUpFormComponent {
     });
   }
 
+  reset() {
+    this.form.reset();
+    this.form.patchValue({
+      amount: 0,
+      currency: this.initialCurrency() ?? 'XAF',
+      paymentMethod: this.registeredPaymentMethods()?.[0]?.provider
+    });
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
+    this.form.updateValueAndValidity();
+  }
+
   constructor() {
+    effect(() => {
+      const min = this.minAmountValue();
+      this.form.controls.amount.setValidators([Validators.required, Validators.min(min)]);
+      this.form.controls.amount.updateValueAndValidity();
+    });
+    effect(() => {
+      const currency = this.selectedCurrency();
+      if (!currency || currency.supports_floating_point) return;
+      const amount = Number(this.form.value.amount);
+      if (isNaN(amount)) return;
+
+      this.form.patchValue({
+        amount: Math.floor(amount)
+      })
+    });
     this.form.valueChanges.pipe(
       takeUntilDestroyed(),
       distinctUntilKeyChanged('currency'),
