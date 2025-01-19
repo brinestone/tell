@@ -1,17 +1,20 @@
-import { DecimalPipe }                      from '@angular/common';
-import { HttpClient }                       from '@angular/common/http';
-import { Component, effect, inject, model } from '@angular/core';
-import { rxResource }                       from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router }           from '@angular/router';
-import { TopUpFormComponent }               from '@app/components/top-up-form/top-up-form.component';
-import { WalletBalanceResponse }            from '@lib/models/wallet';
-import { injectQueryParams }                from 'ngxtension/inject-query-params';
-import { Button }                           from 'primeng/button';
-import { Card }                             from 'primeng/card';
-import { Drawer }                           from 'primeng/drawer';
-import { Panel }                            from 'primeng/panel';
-import { ProgressSpinnerModule }            from 'primeng/progressspinner';
-import { TableModule }                      from 'primeng/table';
+import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, effect, inject, model, viewChild } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TopUpFormComponent } from '@app/components/top-up-form/top-up-form.component';
+import { preferences } from '@app/state/user';
+import { WalletBalanceResponse } from '@lib/models/wallet';
+import { select } from '@ngxs/store';
+import { injectQueryParams } from 'ngxtension/inject-query-params';
+import { MessageService } from 'primeng/api';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { Drawer } from 'primeng/drawer';
+import { Panel } from 'primeng/panel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'tm-wallet',
@@ -30,11 +33,14 @@ import { TableModule }                      from 'primeng/table';
 })
 export class WalletComponent {
   private http = inject(HttpClient);
+  private ms = inject(MessageService);
+  private form = viewChild(TopUpFormComponent);
   readonly balances = rxResource({
     loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
   });
   readonly topUpQuery = injectQueryParams('top-up');
   readonly showTopupFormModal = model(false);
+  readonly prefs = select(preferences);
 
   constructor(private route: ActivatedRoute, private router: Router) {
     effect(() => {
@@ -45,6 +51,31 @@ export class WalletComponent {
   }
 
   publicationModalHidden() {
+    const form = this.form();
+    if (form) {
+      form.reset();
+    }
     this.router.navigate([], { queryParamsHandling: 'replace', queryParams: {} })
+  }
+
+  publicationModalShown() {
+    const form = this.form();
+    if (form) {
+      form.reset();
+    }
+  }
+
+  onTopUpFormSubmitted() {
+    this.showTopupFormModal.set(false);
+    this.balances.reload();
+  }
+
+  onTopUpFormErrored(event: Error) {
+    this.ms.add({
+      severity: 'error',
+      summary: 'Error',
+      key: 'under-modal',
+      detail: event.message
+    });
   }
 }

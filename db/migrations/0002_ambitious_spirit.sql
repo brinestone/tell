@@ -1,0 +1,1 @@
+ALTER TABLE "payment_transactions" ADD COLUMN "exchange_rate_snapshot" real NOT NULL;

@@ -30,6 +30,7 @@ export type Currency = {
   code: string;
   name: string;
   symbol: string;
+  supports_floating_point: boolean;
 }
 
 export type Flags = {

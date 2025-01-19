@@ -41,15 +41,15 @@ export class CampaignPublications {
     request: () => this.campaign()?.id,
     loader: ({ request }) => request ? this.http.get<CampaignPublication[]>(`/api/campaigns/${request}/publications`) : of([])
   });
-  private readonly walletBalance = rxResource({
+  private readonly walletBalances = rxResource({
     loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
   });
-  readonly availableCredits = computed(() => {
-    return this.walletBalance.value()?.funding?.balance ?? 0
+  readonly availableFundingCredits = computed(() => {
+    return this.walletBalances.value()?.funding?.balance ?? 0
   });
   onPublicationSubmitted() {
     this.showNewPublicationModal.set(false);
     this.publications.reload();
-    this.walletBalance.reload();
+    this.walletBalances.reload();
   }
 }

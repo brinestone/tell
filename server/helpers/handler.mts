@@ -6,6 +6,10 @@ import context                               from 'express-http-context';
 import passport                              from 'passport';
 import serverless                            from 'serverless-http';
 
+export function isProduction(req: express.Request) {
+  return req.header('x-nf-deploy-context') !== 'dev' && req.header('x-nf-deploy-published') == '1'
+}
+
 export function prepareHandler(prefix: string, router: Router) {
   const app = express();
   app.use(

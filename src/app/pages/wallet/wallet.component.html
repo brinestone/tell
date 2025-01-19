@@ -65,12 +65,12 @@
     </p-panel>
   </section>
 
-  <p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" (onHide)="publicationModalHidden()"
+  <p-drawer styleClass="w-full md:w-80 lg:w-[30rem]" (onShow)="publicationModalShown()" (onHide)="publicationModalHidden()"
     [(visible)]="showTopupFormModal" [modal]="true" position="right">
     <ng-template #header>
       <h1 class="text-lg font-bold">Top up your Account</h1>
     </ng-template>
-    <tm-top-up-form />
+    <tm-top-up-form [initialCurrency]="prefs().currency" (error)="onTopUpFormErrored($event)" (onSubmit)="onTopUpFormSubmitted()" />
   </p-drawer>
 
 </div>

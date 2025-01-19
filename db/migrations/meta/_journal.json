@@ -5,274 +5,29 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735953823790,
-      "tag": "0000_vengeful_malice",
+      "when": 1737269652579,
+      "tag": "0000_melted_imperial_guard",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1735954086952,
-      "tag": "0001_massive_king_cobra",
+      "when": 1737307129025,
+      "tag": "0001_panoramic_namora",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1735990818304,
-      "tag": "0002_stiff_sprite",
+      "when": 1737307194352,
+      "tag": "0002_ambitious_spirit",
       "breakpoints": true
     },
     {
       "idx": 3,
       "version": "7",
-      "when": 1735991059475,
-      "tag": "0003_youthful_rattler",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1735994501332,
-      "tag": "0004_bright_abomination",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1736081680386,
-      "tag": "0005_hard_overlord",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1736082913811,
-      "tag": "0006_aromatic_captain_flint",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1736086612115,
-      "tag": "0007_grey_centennial",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1736114399152,
-      "tag": "0008_soft_the_call",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1736124659462,
-      "tag": "0009_sticky_zaran",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1736127260142,
-      "tag": "0010_clever_ultimo",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1736160957442,
-      "tag": "0011_worried_colonel_america",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "7",
-      "when": 1736200144418,
-      "tag": "0012_naive_silvermane",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "7",
-      "when": 1736200563990,
-      "tag": "0013_orange_maverick",
-      "breakpoints": true
-    },
-    {
-      "idx": 14,
-      "version": "7",
-      "when": 1736257860294,
-      "tag": "0014_windy_masked_marvel",
-      "breakpoints": true
-    },
-    {
-      "idx": 15,
-      "version": "7",
-      "when": 1736257983027,
-      "tag": "0015_salty_aqueduct",
-      "breakpoints": true
-    },
-    {
-      "idx": 16,
-      "version": "7",
-      "when": 1736334264840,
-      "tag": "0016_wakeful_sheva_callister",
-      "breakpoints": true
-    },
-    {
-      "idx": 17,
-      "version": "7",
-      "when": 1736339034995,
-      "tag": "0017_careless_kingpin",
-      "breakpoints": true
-    },
-    {
-      "idx": 18,
-      "version": "7",
-      "when": 1736380990994,
-      "tag": "0018_ordinary_amphibian",
-      "breakpoints": true
-    },
-    {
-      "idx": 19,
-      "version": "7",
-      "when": 1736386723508,
-      "tag": "0019_chubby_cassandra_nova",
-      "breakpoints": true
-    },
-    {
-      "idx": 20,
-      "version": "7",
-      "when": 1736391217180,
-      "tag": "0020_steep_azazel",
-      "breakpoints": true
-    },
-    {
-      "idx": 21,
-      "version": "7",
-      "when": 1736618004176,
-      "tag": "0021_nifty_manta",
-      "breakpoints": true
-    },
-    {
-      "idx": 22,
-      "version": "7",
-      "when": 1736694971000,
-      "tag": "0022_famous_ozymandias",
-      "breakpoints": true
-    },
-    {
-      "idx": 23,
-      "version": "7",
-      "when": 1736890486682,
-      "tag": "0023_dusty_stephen_strange",
-      "breakpoints": true
-    },
-    {
-      "idx": 24,
-      "version": "7",
-      "when": 1737017515199,
-      "tag": "0024_blue_nick_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 25,
-      "version": "7",
-      "when": 1737017991125,
-      "tag": "0025_redundant_swarm",
-      "breakpoints": true
-    },
-    {
-      "idx": 26,
-      "version": "7",
-      "when": 1737021295964,
-      "tag": "0026_mighty_moondragon",
-      "breakpoints": true
-    },
-    {
-      "idx": 27,
-      "version": "7",
-      "when": 1737024383091,
-      "tag": "0027_freezing_flatman",
-      "breakpoints": true
-    },
-    {
-      "idx": 28,
-      "version": "7",
-      "when": 1737168318564,
-      "tag": "0028_odd_mephisto",
-      "breakpoints": true
-    },
-    {
-      "idx": 29,
-      "version": "7",
-      "when": 1737208165907,
-      "tag": "0029_young_shocker",
-      "breakpoints": true
-    },
-    {
-      "idx": 30,
-      "version": "7",
-      "when": 1737208399051,
-      "tag": "0030_soft_daredevil",
-      "breakpoints": true
-    },
-    {
-      "idx": 31,
-      "version": "7",
-      "when": 1737208641699,
-      "tag": "0031_slippery_wendell_vaughn",
-      "breakpoints": true
-    },
-    {
-      "idx": 32,
-      "version": "7",
-      "when": 1737227654537,
-      "tag": "0032_nostalgic_reaper",
-      "breakpoints": true
-    },
-    {
-      "idx": 33,
-      "version": "7",
-      "when": 1737228050404,
-      "tag": "0033_blushing_wallop",
-      "breakpoints": true
-    },
-    {
-      "idx": 34,
-      "version": "7",
-      "when": 1737228143823,
-      "tag": "0034_unique_strong_guy",
-      "breakpoints": true
-    },
-    {
-      "idx": 35,
-      "version": "7",
-      "when": 1737250513363,
-      "tag": "0035_foamy_mole_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 36,
-      "version": "7",
-      "when": 1737251679998,
-      "tag": "0036_powerful_electro",
-      "breakpoints": true
-    },
-    {
-      "idx": 37,
-      "version": "7",
-      "when": 1737254474420,
-      "tag": "0037_silky_robbie_robertson",
-      "breakpoints": true
-    },
-    {
-      "idx": 38,
-      "version": "7",
-      "when": 1737255264606,
-      "tag": "0038_nifty_sway",
+      "when": 1737309892074,
+      "tag": "0003_ancient_storm",
       "breakpoints": true
     }
   ]

@@ -1,10 +1,12 @@
-<form [formGroup]="form" class="grid grid-cols-[auto_1fr] gap-3">
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="grid grid-cols-[auto_1fr] gap-3">
   <div>
     <label for="top-up-pm" class="font-medium">Payment method <span class="text-red-500">*</span></label>
   </div>
   <div class="space-y-1">
     <p-fluid>
-      <p-select formControlName="paymentMethod" size="small" appendTo="body" styleClass="w-full" inputId="top-up-pm" />
+      <p-select [options]="paymentMethods()" optionLabel="provider.label" optionValue="provider.name"
+        formControlName="paymentMethod" size="small" appendTo="body" styleClass="w-full" inputId="top-up-pm"
+        [checkmark]="true" />
     </p-fluid>
   </div>
   <div>
@@ -12,7 +14,10 @@
   </div>
   <div class="space-y-1">
     <p-fluid>
-      <p-select formControlName="currency" size="small" appendTo="body" styleClass="w-full" inputId="top-up-currency" />
+      <p-select [options]="currencies.value()" optionLabel="name" [filter]="true" filterBy="name,code"
+        optionValue="code" [virtualScroll]="true" [checkmark]="true" [virtualScrollItemSize]="38"
+        [loading]="currencies.isLoading()" placeholder="Choose a currency" formControlName="currency" size="small"
+        appendTo="body" styleClass="w-full" inputId="top-up-currency" />
     </p-fluid>
   </div>
   <div>
@@ -20,8 +25,9 @@
   </div>
   <div class="space-y-1">
     <p-fluid>
-      <p-inputnumber inputId="top-up-amount" [min]="1" size="small" formControlName="amount" [showButtons]="true"
-        buttonLayout="horizontal" spinnerMode="horizontal" [step]=".1">
+      <p-inputnumber [currency]="form.value.currency" mode="currency" inputId="top-up-amount" [min]="1" size="small"
+        formControlName="amount" [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal"
+        [step]="selectedCurrency()?.supports_floating_point ? .01 : 1">
         <ng-template #incrementbuttonicon>
           <span class="pi pi-plus"></span>
         </ng-template>
@@ -30,8 +36,27 @@
         </ng-template>
       </p-inputnumber>
     </p-fluid>
+    @if(form.controls.amount.dirty && form.controls.amount.invalid) {
+    <p-message size="small" severity="error" variant="simple">
+      @if(form.controls.amount.hasError('required')) {
+      This field is required
+      }
+      @else if(form.controls.amount.hasError('min')) {
+      Value must be at least <strong>{{ form.controls.amount.getError('min').min | currency:form.value.currency:'symbol-narrow'
+        }}</strong>
+      }
+    </p-message>
+    }
+    <div>
+      <span class="text-sm text-muted-color">{{ form.value.amount | currency:form.value.currency:'symbol-narrow' }} <i
+          class="pi pi-arrow-right text-xs"></i> {{
+        (form.value.amount ?? 0) * exchangeRate() |
+        number:'2.0-0'}}
+        credits</span>
+    </div>
   </div>
   <div class="col-span-2">
-    <p-button [disabled]="form.invalid" label="Finish" type="submit" styleClass="block w-full" size="small" />
+    <p-button [disabled]="form.invalid || submitting()" [label]="submitting() ? 'Processing...' : 'Finish'"
+      type="submit" styleClass="block w-full" size="small" />
   </div>
 </form>

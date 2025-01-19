@@ -1,5 +1,6 @@
 import { sql }                                    from 'drizzle-orm';
 import {
+  alias,
   AnyPgColumn,
   bigint,
   date,
@@ -55,7 +56,7 @@ export const refreshTokens = pgTable('refresh_tokens', {
 
 export const vwRefreshTokens = pgView('vw_refresh_tokens').as(qb => {
   return qb.select({
-    isExpired: sql.raw(`(now()::TIMESTAMP > ("${refreshTokens.created_at.name}" + "${refreshTokens.window.name}")::TIMESTAMP)::BOOLEAN OR "${refreshTokens.revoked_by.name}" IS NOT NULL`).as<boolean>('is_expired'),
+    isExpired: (sql<boolean>).raw(`(now()::TIMESTAMP > ("${refreshTokens.created_at.name}" + "${refreshTokens.window.name}")::TIMESTAMP)::BOOLEAN OR "${refreshTokens.revoked_by.name}" IS NOT NULL`).as('is_expired'),
     expires: sql.raw(`("${refreshTokens.created_at.name}" + "${refreshTokens.window.name}")::TIMESTAMP`).as<Date>('expires'),
     revoked_by: refreshTokens.revoked_by,
     replaced_by: refreshTokens.replaced_by,

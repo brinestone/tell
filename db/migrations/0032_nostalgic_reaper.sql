@@ -1,1 +1,0 @@
-ALTER TABLE "credit_allocations" ALTER COLUMN "exhausted" SET DEFAULT 0;
