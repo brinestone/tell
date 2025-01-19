@@ -1,22 +1,26 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, computed, effect, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CampaignAnalytics } from '@app/components/campaign-analytics/campaign-analytics.component';
-import { CampaignPublications } from '@app/components/campaign-publications/campaign-publications.component';
-import { CampaignSettings } from '@app/components/campaign-settings/campaign-settings.component';
-import { Campaign } from '@lib/models/campaign';
-import { Navigate } from '@ngxs/router-plugin';
-import { dispatch } from '@ngxs/store';
-import { injectParams } from 'ngxtension/inject-params';
-import { injectQueryParams } from 'ngxtension/inject-query-params';
-import { MessageService } from 'primeng/api';
-import { Button } from 'primeng/button';
-import { Panel } from 'primeng/panel';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import { HttpClient, HttpErrorResponse }           from '@angular/common/http';
+import { Component, computed, effect, inject }     from '@angular/core';
+import { rxResource }                              from '@angular/core/rxjs-interop';
+import { Title }                                   from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink }              from '@angular/router';
+import {
+  CampaignAnalytics
+}                                                  from '@app/components/campaign-analytics/campaign-analytics.component';
+import {
+  CampaignPublications
+}                                                  from '@app/components/campaign-publications/campaign-publications.component';
+import { CampaignSettings }                        from '@app/components/campaign-settings/campaign-settings.component';
+import { Campaign }                                from '@lib/models/campaign';
+import { Navigate }                                from '@ngxs/router-plugin';
+import { dispatch }                                from '@ngxs/store';
+import { injectParams }                            from 'ngxtension/inject-params';
+import { injectQueryParams }                       from 'ngxtension/inject-query-params';
+import { MessageService }                          from 'primeng/api';
+import { Button }                                  from 'primeng/button';
+import { Panel }                                   from 'primeng/panel';
+import { ProgressSpinner }                         from 'primeng/progressspinner';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
-import { EMPTY } from 'rxjs';
+import { EMPTY }                                   from 'rxjs';
 
 @Component({
   selector: 'tm-campaign',
@@ -47,9 +51,12 @@ export class CampaignComponent {
     const tabParam = this.tabParam();
     switch (tabParam) {
       default:
-      case 'general': return 0;
-      case 'publications': return 1;
-      case 'settings': return 2;
+      case 'general':
+        return 0;
+      case 'publications':
+        return 1;
+      case 'settings':
+        return 2;
     }
   });
   readonly campaignId = injectParams('campaign');
@@ -85,6 +92,13 @@ export class CampaignComponent {
   constructor(title: Title) {
     effect(() => {
       const campaign = this.campaign.value();
+      const error = this.campaign.error();
+
+      if (error) {
+        const e = error as HttpErrorResponse;
+        if (e.status == 404)
+          this.navigate(['..'], undefined, { relativeTo: this.currentRoute });
+      }
       if (campaign) {
         title.setTitle(campaign.title + ' | ' + title.getTitle());
       }

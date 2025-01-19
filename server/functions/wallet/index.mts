@@ -4,6 +4,8 @@ import { jwtAuth } from "@middleware/auth.mjs";
 import { Router } from "express";
 
 const router = Router();
-router.get('/balances', jwtAuth, getUserWalletBalances);
+router.use(jwtAuth);
+
+router.get('/balances', getUserWalletBalances);
 
 export const handler = prepareHandler('wallet', router);

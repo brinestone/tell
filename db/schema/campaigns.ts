@@ -1,8 +1,8 @@
-import { sql } from 'drizzle-orm';
-import { bigint, check, date, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { walletCreditAllocations } from '@schemas/finance';
+import { bigint, date, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
-import { users } from './users';
 import { z } from 'zod';
+import { users } from './users';
 
 export const campaigns = pgTable('campaigns', {
   id: bigint({ mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
@@ -58,13 +58,15 @@ export const campaignPublications = pgTable('campaign_publications', {
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow(),
   campaign: bigint({ mode: 'number' }).notNull().references(() => campaigns.id),
-  credits: integer().notNull(),
+  creditAllocation: uuid().notNull().references(() => walletCreditAllocations.id),
   publishAfter: date({ mode: 'string' }).defaultNow(),
   publishBefore: date({ mode: 'string' })
-},
-  table => [{
-    checkConstraint: check('tokens_check', sql`${table.credits}
-    > 0`)
-  }]);
+});
 
-export const newPublicationSchema = createInsertSchema(campaignPublications).refine(data => data.credits > 0);
+export const newPublicationSchema = createInsertSchema(campaignPublications)
+  .extend({
+    credits: z.number().min(25),
+    creditAllocation: z.string().uuid().optional()
+  })
+  .refine(data => data.credits > 0);
+

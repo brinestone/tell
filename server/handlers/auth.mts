@@ -241,7 +241,7 @@ export async function handleTokenRefresh(req: Request, res: Response) {
       }).returning({ accessTokenId: users.accessTokens.id });
 
       await t.update(users.accessTokens).set({
-        replacedBy: accessTokenId
+        replaced_by: accessTokenId
       }).where(eq(users.accessTokens.id, existingAccessToken.id))
 
       const [{ refreshTokenId }] = await t.insert(users.refreshTokens).values({

@@ -31,7 +31,9 @@ export const DevelopmentFormatter = winston.format.combine(
   winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
   winston.format.errors({ stack: true }),
   winston.format.align(),
-  winston.format.printf(({ level, message, timestamp, stack }) => `${timestamp} ${level}: ${stack ?? message}`)
+  winston.format.printf(({ level, message, timestamp, stack }) => {
+    return `${timestamp} ${level}: ${stack || message}`;
+  })
 );
 export const ProductionFormatter = winston.format.json();
 

@@ -1,17 +1,17 @@
-import { DecimalPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { DecimalPipe }                      from '@angular/common';
+import { HttpClient }                       from '@angular/common/http';
 import { Component, effect, inject, model } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TopUpFormComponent } from '@app/components/top-up-form/top-up-form.component';
-import { WalletBalanceResponse } from '@lib/models/wallet';
-import { injectQueryParams } from 'ngxtension/inject-query-params';
-import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
-import { Drawer } from 'primeng/drawer';
-import { Panel } from 'primeng/panel';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TableModule } from 'primeng/table';
+import { rxResource }                       from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router }           from '@angular/router';
+import { TopUpFormComponent }               from '@app/components/top-up-form/top-up-form.component';
+import { WalletBalanceResponse }            from '@lib/models/wallet';
+import { injectQueryParams }                from 'ngxtension/inject-query-params';
+import { Button }                           from 'primeng/button';
+import { Card }                             from 'primeng/card';
+import { Drawer }                           from 'primeng/drawer';
+import { Panel }                            from 'primeng/panel';
+import { ProgressSpinnerModule }            from 'primeng/progressspinner';
+import { TableModule }                      from 'primeng/table';
 
 @Component({
   selector: 'tm-wallet',
@@ -35,6 +35,7 @@ export class WalletComponent {
   });
   readonly topUpQuery = injectQueryParams('top-up');
   readonly showTopupFormModal = model(false);
+
   constructor(private route: ActivatedRoute, private router: Router) {
     effect(() => {
       const topUpQueryAvailable = this.topUpQuery() == 'true';

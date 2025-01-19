@@ -131,7 +131,11 @@ export class CampaignSettings {
   get modifiedGeneralOutput() {
     return Object.entries(this.general.controls).filter(([_, c]) => c.dirty)
       .reduce((acc, [k, c]) => {
-        acc[k] = c.value;
+        let v = c.value;
+        if (typeof v == 'string') {
+          v = v.trim();
+        }
+        acc[k] = v;
         return acc;
       }, {} as Record<string, string | number[] | null>);
   }

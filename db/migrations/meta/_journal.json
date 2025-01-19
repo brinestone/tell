@@ -204,6 +204,76 @@
       "when": 1737168318564,
       "tag": "0028_odd_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1737208165907,
+      "tag": "0029_young_shocker",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1737208399051,
+      "tag": "0030_soft_daredevil",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1737208641699,
+      "tag": "0031_slippery_wendell_vaughn",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1737227654537,
+      "tag": "0032_nostalgic_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1737228050404,
+      "tag": "0033_blushing_wallop",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1737228143823,
+      "tag": "0034_unique_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1737250513363,
+      "tag": "0035_foamy_mole_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1737251679998,
+      "tag": "0036_powerful_electro",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1737254474420,
+      "tag": "0037_silky_robbie_robertson",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1737255264606,
+      "tag": "0038_nifty_sway",
+      "breakpoints": true
     }
   ]
 }

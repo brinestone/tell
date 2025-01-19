@@ -1,11 +1,12 @@
 import { extractUser } from '@helpers/auth.mjs';
-import { useCampaignsDb } from '@helpers/db.mjs';
+import { useCampaignsDb, useFinanceDb } from '@helpers/db.mjs';
 import { handleError } from '@helpers/error.mjs';
-import { LookupCampaignResponse } from '@lib/models/campaign';
+import { CampaignPublicationSchema, LookupCampaignResponse } from '@lib/models/campaign';
 import { useLogger } from '@logger/common';
 import { CampaignLookupSchema, campaignPublications, campaigns, newCampaignSchema, newPublicationSchema, updateCampaignSchema } from '@schemas/campaigns';
+import { fundingBalances, vwCreditAllocations, walletCreditAllocations } from '@schemas/finance';
 import { CampaignIdExtractorSchema, CampaignLookupPaginationValidationSchema } from '@zod-schemas/campaigns.mjs';
-import { and, count, eq } from 'drizzle-orm';
+import { and, count, desc, eq } from 'drizzle-orm';
 import express from 'express';
 import { z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -84,20 +85,40 @@ export async function createCampaignPublication(req: express.Request, res: expre
 
   const { campaign: campaignId } = data;
 
-  const db = useCampaignsDb();
+  const campaignDb = useCampaignsDb();
+  const financeDb = useFinanceDb();
 
   logger.info('creating campaign publication', { campaign: campaignId });
   const user = extractUser(req);
   try {
-    const campaign = await db.query.campaigns.findFirst({
-      where: (c, { eq, and }) => and(eq(c.createdBy, user.id), eq(c.id, Number(campaignId)))
+    const input = newPublicationSchema.parse({ ...req.body, campaign: campaignId });
+    const campaign = await campaignDb.query.campaigns.findFirst({
+      where: (c, { eq, and }) => and(eq(c.createdBy, user.id), eq(c.id, campaignId))
     });
+
+    const walletResult = await financeDb.select().from(fundingBalances).where(eq(fundingBalances.ownerId, user.id)).limit(1);
     if (!campaign) {
       res.status(404).json({ message: 'Campaign not found' });
       return;
     }
-    const input = newPublicationSchema.parse(req.body);
-    await db.insert(campaignPublications).values(input);
+
+    if (walletResult.length == 0 || Number(walletResult[0].balance) < input.credits) {
+      res.status(412).json({ message: 'Insufficient funds' });
+      return;
+    }
+
+    const [{ id: walletId }] = walletResult;
+    await campaignDb.transaction(async t => {
+      const [{ id }] = await t.insert(walletCreditAllocations).values({
+        allocated: input.credits,
+        wallet: walletId
+      }).returning({ id: walletCreditAllocations.id });
+
+      await t.insert(campaignPublications).values({
+        ...input,
+        creditAllocation: id
+      });
+    });
     logger.info('created campaign publication', { campaign: campaignId })
     res.status(201).json({});
   } catch (e) {
@@ -115,11 +136,22 @@ export async function findCampaignPublications(req: express.Request, res: expres
   const { campaign } = data;
   const db = useCampaignsDb();
   try {
-    const publications = await db.query.campaignPublications.findMany({
-      where: (publication, { eq }) => eq(publication.campaign, Number(campaign)),
-      orderBy: (publication, { desc }) => [desc(publication.createdAt)]
-    });
-    res.json(publications);
+    const publications = await db.select({
+      id: campaignPublications.id,
+      publishBefore: campaignPublications.publishBefore,
+      publishAfter: campaignPublications.publishAfter,
+      creditAllocation: {
+        id: campaignPublications.creditAllocation,
+        allocated: vwCreditAllocations.allocated,
+        exhausted: vwCreditAllocations.exhausted
+      },
+    })
+      .from(campaignPublications)
+      .innerJoin(vwCreditAllocations, c => eq(c.creditAllocation.id, vwCreditAllocations.id))
+      .where(eq(campaignPublications.campaign, campaign))
+      .orderBy(desc(campaignPublications.updatedAt));
+
+    res.json(z.array(CampaignPublicationSchema).parse(publications));
   } catch (e) {
     handleError(e as Error, res);
   }
@@ -148,19 +180,16 @@ export async function lookupUserCampaings(req: express.Request, res: express.Res
   const db = useCampaignsDb();
   const { page, size } = CampaignLookupPaginationValidationSchema.parse(req.query);
   const user = extractUser(req);
-  const data = await db.query.campaigns.findMany({
-    columns: {
-      id: true,
-      title: true,
-      updatedAt: true,
-      categories: true
-    },
-    offset: page * size,
-    limit: size,
-    orderBy: (campaigns, { desc }) => [desc(campaigns.updatedAt)],
-    where: (campaigns, { eq }) => eq(campaigns.createdBy, user.id)
-  });
-
+  const data = await db.select({
+    id: campaigns.id,
+    title: campaigns.title,
+    updatedAt: campaigns.updatedAt,
+    categories: campaigns.categories
+  }).from(campaigns)
+    .where(eq(campaigns.createdBy, user.id))
+    .orderBy(desc(campaigns.updatedAt))
+    .offset(page * size)
+    .limit(size);
   const total = await db.select({ count: count() }).from(campaigns).where(eq(campaigns.createdBy, user.id));
 
   const responseData = {

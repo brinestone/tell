@@ -1,8 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { EnvironmentProviders, inject, Injectable } from '@angular/core';
-import { PaymentMethodLookup } from '@lib/models/payment-method-lookup';
+import { HttpClient, HttpErrorResponse }                                              from '@angular/common/http';
+import { EnvironmentProviders, inject, Injectable }                                   from '@angular/core';
+import {
+  PaymentMethodLookup
+}                                                                                     from '@lib/models/payment-method-lookup';
 import { AccessTokenClaimsSchema, DisplayPrefs, RefreshTokenClaimsSchema, UserPrefs } from '@lib/models/user';
-import { Navigate } from '@ngxs/router-plugin';
+import { Navigate }                                                                   from '@ngxs/router-plugin';
 import {
   Action,
   createPropertySelectors,
@@ -11,13 +13,25 @@ import {
   State,
   StateContext,
   StateToken
-} from '@ngxs/store';
-import { patch } from '@ngxs/store/operators';
-import { jwtDecode } from 'jwt-decode';
-import { catchError, EMPTY, map, Observable, switchMap, tap, throwError } from 'rxjs';
-import { z } from 'zod';
-import { FinishGoogleSignInFlow, GoogleSignInFlow, PrefsUpdated, RefreshAccessToken, RefreshPaymentMethod, SetColorMode, SignedIn, SignedOut, SignOut, UpdatePrefs } from './actions';
-import { Location } from '@angular/common';
+}                                                                                     from '@ngxs/store';
+import { patch }                                                                      from '@ngxs/store/operators';
+import { jwtDecode }                                                                  from 'jwt-decode';
+import { catchError, EMPTY, map, Observable, switchMap, tap, throwError }             from 'rxjs';
+import { z }                                                                          from 'zod';
+import {
+  FinishGoogleSignInFlow,
+  GoogleSignInFlow,
+  PrefsUpdated,
+  RefreshAccessToken,
+  RefreshPaymentMethod,
+  SetColorMode,
+  SignedIn,
+  SignedOut,
+  SignOut,
+  UpdatePrefs
+}                                                                                     from './actions';
+import { Location }                                                                   from '@angular/common';
+import { Router }                                                                     from '@angular/router';
 
 export * from './actions';
 
@@ -66,6 +80,7 @@ export const ParamsSchema = z.object({
 @Injectable()
 export class UserState implements NgxsOnInit {
   private http = inject(HttpClient);
+  private router = inject(Router);
   private location = inject(Location);
 
   @Action(SignedOut)
@@ -77,7 +92,10 @@ export class UserState implements NgxsOnInit {
   @Action(RefreshAccessToken)
   onRefreshAccessToken(ctx: Context) {
     const { refreshToken } = ctx.getState();
-    return this.http.get<{ access: string, refresh: string }>('/api/auth/refresh', { params: { token: refreshToken ?? '' } }).pipe(
+    return this.http.get<{
+      access: string,
+      refresh: string
+    }>('/api/auth/refresh', { params: { token: refreshToken ?? '' } }).pipe(
       map(arg => ({
         ...ParamsSchema.parse(arg),
         accessToken: arg.access,
@@ -190,9 +208,11 @@ export class UserState implements NgxsOnInit {
       refreshToken
     }));
 
-    const redirect = localStorage.getItem('auth-redirect');
+    const redirect = this.router.parseUrl(localStorage.getItem('auth-redirect') ?? '/');
     localStorage.removeItem('auth-redirect');
-    ctx.dispatch([SignedIn, new Navigate([redirect ?? '/'])]);
+
+    ctx.dispatch([SignedIn]);
+    this.router.navigateByUrl(redirect);
   }
 
   ngxsOnInit(ctx: Context) {

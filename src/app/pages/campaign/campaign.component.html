@@ -27,7 +27,7 @@
           </p-tabpanel>
           <p-tabpanel [value]="1">
             @defer (when !campaign.isLoading()) {
-            <tm-campaign-publications />
+            <tm-campaign-publications [campaign]="campaign.value()" />
             }@placeholder {
             <div class="flex items-center justify-center h-full">
               <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"

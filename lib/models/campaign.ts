@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Campaign {
   description: string | null
   id: number;
@@ -25,13 +27,15 @@ export type LookupCampaignResponse = {
   data: CampaignLookup[];
 }
 
-export interface CampaignPublication {
-  id: number;
-  campaign: number;
-  createdAt: Date;
-  updatedAt: Date;
-  channels: string[];
-  assignedTokens: number;
-  publishAfter: Date;
-  publishBefore?: Date;
-}
+export const CampaignPublicationSchema = z.object({
+  id: z.number(),
+  publishBefore: z.string().nullable().pipe(z.coerce.date().nullable()),
+  publishAfter: z.string().nullable().pipe(z.coerce.date().nullable()),
+  creditAllocation: z.object({
+    id: z.string().uuid(),
+    allocated: z.number(),
+    exhausted: z.union([z.string(), z.number()]).pipe(z.coerce.number())
+  })
+});
+
+export type CampaignPublication = z.infer<typeof CampaignPublicationSchema>;

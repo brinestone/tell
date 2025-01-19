@@ -1,9 +1,9 @@
-import { extractUser } from "@helpers/auth.mjs";
-import { useFinanceDb } from "@helpers/db.mjs";
-import { handleError } from "@helpers/error.mjs";
-import { fundingBalances, rewardBalances, wallets } from "@schemas/finance";
-import { eq } from "drizzle-orm";
-import { Request, Response } from "express";
+import { extractUser }                                              from '@helpers/auth.mjs';
+import { useFinanceDb }                                             from '@helpers/db.mjs';
+import { handleError }                                              from '@helpers/error.mjs';
+import { BalancesSchema, fundingBalances, rewardBalances, wallets } from '@schemas/finance';
+import { eq }                                                       from 'drizzle-orm';
+import { Request, Response }                                        from 'express';
 
 export async function getUserWalletBalances(req: Request, res: Response) {
   const db = useFinanceDb();
@@ -11,7 +11,7 @@ export async function getUserWalletBalances(req: Request, res: Response) {
   try {
     const [funding] = await db.select().from(fundingBalances).where(balance => eq(balance.ownerId, user.id));
     const [rewards] = await db.select().from(rewardBalances).where(balance => eq(balance.ownerId, user.id));
-    res.json({ funding, rewards });
+    res.json(BalancesSchema.parse({ funding, rewards }));
   } catch (e) {
     handleError(e as Error, res);
   }
