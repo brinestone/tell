@@ -1,17 +1,18 @@
-import { DecimalPipe }                      from '@angular/common';
-import { HttpClient }                       from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, effect, inject, model } from '@angular/core';
-import { rxResource }                       from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router }           from '@angular/router';
-import { TopUpFormComponent }               from '@app/components/top-up-form/top-up-form.component';
-import { WalletBalanceResponse }            from '@lib/models/wallet';
-import { injectQueryParams }                from 'ngxtension/inject-query-params';
-import { Button }                           from 'primeng/button';
-import { Card }                             from 'primeng/card';
-import { Drawer }                           from 'primeng/drawer';
-import { Panel }                            from 'primeng/panel';
-import { ProgressSpinnerModule }            from 'primeng/progressspinner';
-import { TableModule }                      from 'primeng/table';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TopUpFormComponent } from '@app/components/top-up-form/top-up-form.component';
+import { WalletBalanceResponse } from '@lib/models/wallet';
+import { injectQueryParams } from 'ngxtension/inject-query-params';
+import { MessageService } from 'primeng/api';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { Drawer } from 'primeng/drawer';
+import { Panel } from 'primeng/panel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'tm-wallet',
@@ -30,6 +31,7 @@ import { TableModule }                      from 'primeng/table';
 })
 export class WalletComponent {
   private http = inject(HttpClient);
+  private ms = inject(MessageService);
   readonly balances = rxResource({
     loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
   });
@@ -46,5 +48,18 @@ export class WalletComponent {
 
   publicationModalHidden() {
     this.router.navigate([], { queryParamsHandling: 'replace', queryParams: {} })
+  }
+
+  onTopUpFormSubmitted() {
+    this.showTopupFormModal.set(false);
+    this.balances.reload();
+  }
+  onTopUpFormErrored(event: Error) {
+    this.ms.add({
+      severity: 'error',
+      summary: 'Error',
+      key: 'under-modal',
+      detail: event.message
+    });
   }
 }

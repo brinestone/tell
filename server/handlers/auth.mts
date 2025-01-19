@@ -1,29 +1,30 @@
 import '@netlify/functions';
-import { extractUser }                                         from '@helpers/auth.mjs';
-import { useUsersDb }                                          from '@helpers/db.mjs';
-import { handleError }                                         from '@helpers/error.mjs';
-import { AccessTokenClaims }                                   from '@lib/models/user';
-import { useLogger }                                           from '@logger/common';
-import * as users                                              from '@schemas/users';
-import { UserSchema }                                          from '@schemas/users';
-import { RefreshTokenValidationSchema }                        from '@zod-schemas/user.mjs';
-import { and, eq, isNull }                                     from 'drizzle-orm';
-import { Request, Response }                                   from 'express';
-import { sign }                                                from 'jsonwebtoken';
-import { randomBytes }                                         from 'node:crypto';
-import passport                                                from 'passport';
+import { extractUser } from '@helpers/auth.mjs';
+import { useUsersDb } from '@helpers/db.mjs';
+import { handleError } from '@helpers/error.mjs';
+import { AccessTokenClaims } from '@lib/models/user';
+import { useLogger } from '@logger/common';
+import * as users from '@schemas/users';
+import { UserSchema } from '@schemas/users';
+import { RefreshTokenValidationSchema } from '@zod-schemas/user.mjs';
+import { and, eq, isNull } from 'drizzle-orm';
+import { Request, Response } from 'express';
+import { sign } from 'jsonwebtoken';
+import { randomBytes } from 'node:crypto';
+import passport from 'passport';
 import { Profile, Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
-import { doRemovePaymentMethods }                              from './payment.mjs';
-import { doRemoveAccountConnections }                          from './user.mjs';
-import { doCreateUserWallet, doDeleteUserWallet }              from './wallet.mjs';
-import { extractIp }                                           from '@helpers/ip-extractor';
+import { doCreateVirtualPaymentMethod, doRemovePaymentMethods } from './payment.mjs';
+import { doRemoveAccountConnections } from './user.mjs';
+import { doCreateUserWallet, doDeleteUserWallet } from './wallet.mjs';
+import { extractIp } from '@helpers/ip-extractor';
 
 const logger = useLogger({ service: 'auth' });
 passport.use(new GoogleStrategy({
   clientID: String(process.env['OAUTH2_CLIENT_ID']),
   clientSecret: String(process.env['OAUTH2_CLIENT_SECRET']),
   callbackURL: `${process.env['ORIGIN']}/api/auth/google/callback`,
-}, async (accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
+  passReqToCallback: true,
+}, async (req, accessToken: string, __: string, profile: Profile, done: VerifyCallback) => {
   try {
     logger.info('completing oauth2 request', { profile: { id: profile.id, provider: 'google', } });
     const db = useUsersDb();
@@ -59,7 +60,12 @@ passport.use(new GoogleStrategy({
       });
       existingUser = await db.query.users.findFirst({ where: eq(users.users.credentials, profile.id) });
 
-      await doCreateUserWallet(userId);
+      let initialBalance = 0
+      if (req.header('x-nf-deploy-context') === 'dev' || req.header('x-nf-deploy-published') !== '1') {
+        initialBalance = 90000;
+        await doCreateVirtualPaymentMethod(userId);
+      }
+      await doCreateUserWallet(userId, initialBalance);
     } else {
       await db.transaction(async tx => {
         await tx.update(users.federatedCredentials).set({ lastAccessToken: accessToken }).where(eq(users.federatedCredentials.id, profile.id))

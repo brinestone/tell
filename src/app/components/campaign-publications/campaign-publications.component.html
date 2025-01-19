@@ -4,7 +4,7 @@
   <ng-template #header>
     <div class="flex justify-between items-center">
       <div class="flex items-center gap-3">
-        @if (campaign()?.redirectUrl && availableCredits() > 0) {
+        @if (campaign()?.redirectUrl && availableFundingCredits() > 0) {
         <p-button (onClick)="showNewPublicationModal.set(true)" size="small" label="Publish" icon="pi pi-megaphone" />
         } @else {
         <div class="space-y-2">
@@ -17,7 +17,7 @@
             </p-message>
           </div>
           }
-          @if (availableCredits() < 25) { <div>
+          @if (availableFundingCredits() < 25) { <div>
             <p-message icon="pi pi-exclamation-triangle" size="small" variant="outlined" severity="warn">
               This campaign cannot be published because your funding balance is too low.
               Please top up your funding wallet by clicking <a class="" routerLink="/wallet"
@@ -73,7 +73,7 @@
     <h1 class="text-2xl font-bold">Publication</h1>
   </ng-template>
   <tm-publication-form (onSubmit)="onPublicationSubmitted()" [campaign]="campaign()"
-    [totalCredits]="availableCredits()" />
+    [totalCredits]="availableFundingCredits()" />
 </p-dialog>
 
 }@placeholder (minimum 5s) {

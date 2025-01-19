@@ -25,7 +25,7 @@ passport.use(new Strategy(
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: String(process.env['JWT_SECRET']),
     audience: String(process.env['ORIGIN']),
-    passReqToCallback: true
+    passReqToCallback: true,
   },
   async (req: express.Request, payload, done) => {
     logger.debug('validating authentication token')

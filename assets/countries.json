@@ -18,11 +18,11 @@
     "region": "Asia",
     "population": 40218234,
     "latlng": [
-      33.0,
-      65.0
+      33,
+      65
     ],
     "demonym": "Afghan",
-    "area": 652230.0,
+    "area": 652230,
     "timezones": [
       "UTC+04:30"
     ],
@@ -44,7 +44,8 @@
       {
         "code": "AFN",
         "name": "Afghan afghani",
-        "symbol": "؋"
+        "symbol": "؋",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -115,7 +116,7 @@
       19.9
     ],
     "demonym": "Ålandish",
-    "area": 1580.0,
+    "area": 1580,
     "timezones": [
       "UTC+02:00"
     ],
@@ -129,7 +130,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -183,11 +185,11 @@
     "region": "Europe",
     "population": 2837743,
     "latlng": [
-      41.0,
-      20.0
+      41,
+      20
     ],
     "demonym": "Albanian",
-    "area": 28748.0,
+    "area": 28748,
     "gini": 33.2,
     "timezones": [
       "UTC+01:00"
@@ -208,7 +210,8 @@
       {
         "code": "ALL",
         "name": "Albanian lek",
-        "symbol": "L"
+        "symbol": "L",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -262,11 +265,11 @@
     "region": "Africa",
     "population": 44700000,
     "latlng": [
-      28.0,
-      3.0
+      28,
+      3
     ],
     "demonym": "Algerian",
-    "area": 2381741.0,
+    "area": 2381741,
     "gini": 27.6,
     "timezones": [
       "UTC+01:00"
@@ -290,7 +293,8 @@
       {
         "code": "DZD",
         "name": "Algerian dinar",
-        "symbol": "د.ج"
+        "symbol": "د.ج",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -362,10 +366,10 @@
     "population": 55197,
     "latlng": [
       -14.33333333,
-      -170.0
+      -170
     ],
     "demonym": "American Samoan",
-    "area": 199.0,
+    "area": 199,
     "timezones": [
       "UTC-11:00"
     ],
@@ -379,7 +383,8 @@
       {
         "code": "USD",
         "name": "United States Dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -437,7 +442,7 @@
       1.5
     ],
     "demonym": "Andorran",
-    "area": 468.0,
+    "area": 468,
     "timezones": [
       "UTC+01:00"
     ],
@@ -455,7 +460,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -507,7 +513,7 @@
       18.5
     ],
     "demonym": "Angolan",
-    "area": 1246700.0,
+    "area": 1246700,
     "gini": 51.3,
     "timezones": [
       "UTC+01:00"
@@ -528,7 +534,8 @@
       {
         "code": "AOA",
         "name": "Angolan kwanza",
-        "symbol": "Kz"
+        "symbol": "Kz",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -591,7 +598,7 @@
       -63.16666666
     ],
     "demonym": "Anguillian",
-    "area": 91.0,
+    "area": 91,
     "timezones": [
       "UTC-04:00"
     ],
@@ -605,7 +612,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -719,7 +727,7 @@
       -61.8
     ],
     "demonym": "Antiguan, Barbudan",
-    "area": 442.0,
+    "area": 442,
     "timezones": [
       "UTC-04:00"
     ],
@@ -733,7 +741,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -792,11 +801,11 @@
     "region": "Americas",
     "population": 45376763,
     "latlng": [
-      -34.0,
-      -64.0
+      -34,
+      -64
     ],
     "demonym": "Argentinean",
-    "area": 2780400.0,
+    "area": 2780400,
     "gini": 42.9,
     "timezones": [
       "UTC-03:00"
@@ -818,7 +827,8 @@
       {
         "code": "ARS",
         "name": "Argentine peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -890,11 +900,11 @@
     "region": "Asia",
     "population": 2963234,
     "latlng": [
-      40.0,
-      45.0
+      40,
+      45
     ],
     "demonym": "Armenian",
-    "area": 29743.0,
+    "area": 29743,
     "gini": 29.9,
     "timezones": [
       "UTC+04:00"
@@ -915,7 +925,8 @@
       {
         "code": "AMD",
         "name": "Armenian dram",
-        "symbol": "֏"
+        "symbol": "֏",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -974,7 +985,7 @@
       -69.96666666
     ],
     "demonym": "Aruban",
-    "area": 180.0,
+    "area": 180,
     "timezones": [
       "UTC-04:00"
     ],
@@ -988,7 +999,8 @@
       {
         "code": "AWG",
         "name": "Aruban florin",
-        "symbol": "ƒ"
+        "symbol": "ƒ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1040,11 +1052,11 @@
     "region": "Oceania",
     "population": 25687041,
     "latlng": [
-      -27.0,
-      133.0
+      -27,
+      133
     ],
     "demonym": "Australian",
-    "area": 7692024.0,
+    "area": 7692024,
     "gini": 34.4,
     "timezones": [
       "UTC+05:00",
@@ -1066,7 +1078,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1119,7 +1132,7 @@
       13.33333333
     ],
     "demonym": "Austrian",
-    "area": 83871.0,
+    "area": 83871,
     "gini": 30.8,
     "timezones": [
       "UTC+01:00"
@@ -1144,7 +1157,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1202,7 +1216,7 @@
       47.5
     ],
     "demonym": "Azerbaijani",
-    "area": 86600.0,
+    "area": 86600,
     "gini": 26.6,
     "timezones": [
       "UTC+04:00"
@@ -1224,7 +1238,8 @@
       {
         "code": "AZN",
         "name": "Azerbaijani manat",
-        "symbol": "₼"
+        "symbol": "₼",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -1272,10 +1287,10 @@
     "population": 393248,
     "latlng": [
       24.25,
-      -76.0
+      -76
     ],
     "demonym": "Bahamian",
-    "area": 13943.0,
+    "area": 13943,
     "timezones": [
       "UTC-05:00"
     ],
@@ -1289,7 +1304,8 @@
       {
         "code": "BSD",
         "name": "Bahamian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1348,11 +1364,11 @@
     "region": "Asia",
     "population": 1701583,
     "latlng": [
-      26.0,
+      26,
       50.55
     ],
     "demonym": "Bahraini",
-    "area": 765.0,
+    "area": 765,
     "timezones": [
       "UTC+03:00"
     ],
@@ -1366,7 +1382,8 @@
       {
         "code": "BHD",
         "name": "Bahraini dinar",
-        "symbol": ".د.ب"
+        "symbol": ".د.ب",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1425,11 +1442,11 @@
     "region": "Asia",
     "population": 164689383,
     "latlng": [
-      24.0,
-      90.0
+      24,
+      90
     ],
     "demonym": "Bangladeshi",
-    "area": 147570.0,
+    "area": 147570,
     "gini": 32.4,
     "timezones": [
       "UTC+06:00"
@@ -1448,7 +1465,8 @@
       {
         "code": "BDT",
         "name": "Bangladeshi taka",
-        "symbol": "৳"
+        "symbol": "৳",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -1504,7 +1522,7 @@
       -59.53333333
     ],
     "demonym": "Barbadian",
-    "area": 430.0,
+    "area": 430,
     "timezones": [
       "UTC-04:00"
     ],
@@ -1518,7 +1536,8 @@
       {
         "code": "BBD",
         "name": "Barbadian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1581,11 +1600,11 @@
     "region": "Europe",
     "population": 9398861,
     "latlng": [
-      53.0,
-      28.0
+      53,
+      28
     ],
     "demonym": "Belarusian",
-    "area": 207600.0,
+    "area": 207600,
     "gini": 25.3,
     "timezones": [
       "UTC+03:00"
@@ -1607,12 +1626,14 @@
       {
         "code": "BYN",
         "name": "New Belarusian ruble",
-        "symbol": "Br"
+        "symbol": "Br",
+        "supports_floating_point": true
       },
       {
         "code": "BYR",
         "name": "Old Belarusian ruble",
-        "symbol": "Br"
+        "symbol": "Br",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -1682,10 +1703,10 @@
     "population": 11555997,
     "latlng": [
       50.83333333,
-      4.0
+      4
     ],
     "demonym": "Belgian",
-    "area": 30528.0,
+    "area": 30528,
     "gini": 27.2,
     "timezones": [
       "UTC+01:00"
@@ -1706,7 +1727,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1774,7 +1796,7 @@
       -88.75
     ],
     "demonym": "Belizean",
-    "area": 22966.0,
+    "area": 22966,
     "gini": 53.3,
     "timezones": [
       "UTC-06:00"
@@ -1793,7 +1815,8 @@
       {
         "code": "BZD",
         "name": "Belize dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -1872,7 +1895,7 @@
       2.25
     ],
     "demonym": "Beninese",
-    "area": 112622.0,
+    "area": 112622,
     "gini": 47.8,
     "timezones": [
       "UTC+01:00"
@@ -1893,7 +1916,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -1959,7 +1983,7 @@
       -64.75
     ],
     "demonym": "Bermudian",
-    "area": 54.0,
+    "area": 54,
     "timezones": [
       "UTC-04:00"
     ],
@@ -1973,7 +1997,8 @@
       {
         "code": "BMD",
         "name": "Bermudian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2024,7 +2049,7 @@
       90.5
     ],
     "demonym": "Bhutanese",
-    "area": 38394.0,
+    "area": 38394,
     "gini": 37.4,
     "timezones": [
       "UTC+06:00"
@@ -2043,12 +2068,14 @@
       {
         "code": "BTN",
         "name": "Bhutanese ngultrum",
-        "symbol": "Nu."
+        "symbol": "Nu.",
+        "supports_floating_point": false
       },
       {
         "code": "INR",
         "name": "Indian rupee",
-        "symbol": "₹"
+        "symbol": "₹",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -2107,11 +2134,11 @@
     "region": "Americas",
     "population": 11673029,
     "latlng": [
-      -17.0,
-      -65.0
+      -17,
+      -65
     ],
     "demonym": "Bolivian",
-    "area": 1098581.0,
+    "area": 1098581,
     "gini": 41.6,
     "timezones": [
       "UTC-04:00"
@@ -2133,7 +2160,8 @@
       {
         "code": "BOB",
         "name": "Bolivian boliviano",
-        "symbol": "Bs."
+        "symbol": "Bs.",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -2214,7 +2242,7 @@
       -68.266667
     ],
     "demonym": "Dutch",
-    "area": 294.0,
+    "area": 294,
     "timezones": [
       "UTC-04:00"
     ],
@@ -2228,7 +2256,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2275,12 +2304,12 @@
     "region": "Europe",
     "population": 3280815,
     "latlng": [
-      44.0,
-      18.0
+      44,
+      18
     ],
     "demonym": "Bosnian, Herzegovinian",
-    "area": 51209.0,
-    "gini": 33.0,
+    "area": 51209,
+    "gini": 33,
     "timezones": [
       "UTC+01:00"
     ],
@@ -2299,7 +2328,8 @@
       {
         "code": "BAM",
         "name": "Bosnia and Herzegovina convertible mark",
-        "symbol": "KM"
+        "symbol": "KM",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2365,11 +2395,11 @@
     "region": "Africa",
     "population": 2351625,
     "latlng": [
-      -22.0,
-      24.0
+      -22,
+      24
     ],
     "demonym": "Motswana",
-    "area": 582000.0,
+    "area": 582000,
     "gini": 53.3,
     "timezones": [
       "UTC+02:00"
@@ -2390,7 +2420,8 @@
       {
         "code": "BWP",
         "name": "Botswana pula",
-        "symbol": "P"
+        "symbol": "P",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -2460,7 +2491,7 @@
       3.4
     ],
     "demonym": "Norwegian",
-    "area": 49.0,
+    "area": 49,
     "timezones": [
       "UTC+01:00"
     ],
@@ -2474,7 +2505,8 @@
       {
         "code": "NOK",
         "name": "Norwegian krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2534,11 +2566,11 @@
     "region": "Americas",
     "population": 212559409,
     "latlng": [
-      -10.0,
-      -55.0
+      -10,
+      -55
     ],
     "demonym": "Brazilian",
-    "area": 8515767.0,
+    "area": 8515767,
     "gini": 53.4,
     "timezones": [
       "UTC-05:00",
@@ -2569,7 +2601,8 @@
       {
         "code": "BRL",
         "name": "Brazilian real",
-        "symbol": "R$"
+        "symbol": "R$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2632,11 +2665,11 @@
     "region": "Africa",
     "population": 3000,
     "latlng": [
-      -6.0,
+      -6,
       71.5
     ],
     "demonym": "Indian",
-    "area": 60.0,
+    "area": 60,
     "timezones": [
       "UTC+06:00"
     ],
@@ -2650,7 +2683,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2722,7 +2756,8 @@
       {
         "code": "GBP",
         "name": "British pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2771,7 +2806,7 @@
       -64.62305
     ],
     "demonym": "Virgin Islander",
-    "area": 151.0,
+    "area": 151,
     "timezones": [
       "UTC-04:00"
     ],
@@ -2785,7 +2820,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2852,7 +2888,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2904,7 +2941,7 @@
       114.66666666
     ],
     "demonym": "Bruneian",
-    "area": 5765.0,
+    "area": 5765,
     "timezones": [
       "UTC+08:00"
     ],
@@ -2921,12 +2958,14 @@
       {
         "code": "BND",
         "name": "Brunei dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "SGD",
         "name": "Singapore dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -2980,11 +3019,11 @@
     "region": "Europe",
     "population": 6927288,
     "latlng": [
-      43.0,
-      25.0
+      43,
+      25
     ],
     "demonym": "Bulgarian",
-    "area": 110879.0,
+    "area": 110879,
     "gini": 41.3,
     "timezones": [
       "UTC+02:00"
@@ -3006,7 +3045,8 @@
       {
         "code": "BGN",
         "name": "Bulgarian lev",
-        "symbol": "лв"
+        "symbol": "лв",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -3058,11 +3098,11 @@
     "region": "Africa",
     "population": 20903278,
     "latlng": [
-      13.0,
-      -2.0
+      13,
+      -2
     ],
     "demonym": "Burkinabe",
-    "area": 272967.0,
+    "area": 272967,
     "gini": 35.3,
     "timezones": [
       "UTC"
@@ -3085,7 +3125,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3154,10 +3195,10 @@
     "population": 11890781,
     "latlng": [
       -3.5,
-      30.0
+      30
     ],
     "demonym": "Burundian",
-    "area": 27834.0,
+    "area": 27834,
     "gini": 38.6,
     "timezones": [
       "UTC+02:00"
@@ -3177,7 +3218,8 @@
       {
         "code": "BIF",
         "name": "Burundian franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3243,11 +3285,11 @@
     "region": "Asia",
     "population": 16718971,
     "latlng": [
-      13.0,
-      105.0
+      13,
+      105
     ],
     "demonym": "Cambodian",
-    "area": 181035.0,
+    "area": 181035,
     "timezones": [
       "UTC+07:00"
     ],
@@ -3266,12 +3308,14 @@
       {
         "code": "KHR",
         "name": "Cambodian riel",
-        "symbol": "៛"
+        "symbol": "៛",
+        "supports_floating_point": false
       },
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -3325,11 +3369,11 @@
     "region": "Africa",
     "population": 26545864,
     "latlng": [
-      6.0,
-      12.0
+      6,
+      12
     ],
     "demonym": "Cameroonian",
-    "area": 475442.0,
+    "area": 475442,
     "gini": 46.6,
     "timezones": [
       "UTC+01:00"
@@ -3352,7 +3396,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3417,11 +3462,11 @@
     "region": "Americas",
     "population": 38005238,
     "latlng": [
-      60.0,
-      -95.0
+      60,
+      -95
     ],
     "demonym": "Canadian",
-    "area": 9984670.0,
+    "area": 9984670,
     "gini": 33.3,
     "timezones": [
       "UTC-08:00",
@@ -3444,7 +3489,8 @@
       {
         "code": "CAD",
         "name": "Canadian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -3508,11 +3554,11 @@
     "region": "Africa",
     "population": 555988,
     "latlng": [
-      16.0,
-      -24.0
+      16,
+      -24
     ],
     "demonym": "Cape Verdian",
-    "area": 4033.0,
+    "area": 4033,
     "gini": 42.4,
     "timezones": [
       "UTC-01:00"
@@ -3527,7 +3573,8 @@
       {
         "code": "CVE",
         "name": "Cape Verdean escudo",
-        "symbol": "Esc"
+        "symbol": "Esc",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3590,7 +3637,7 @@
       -80.5
     ],
     "demonym": "Caymanian",
-    "area": 264.0,
+    "area": 264,
     "timezones": [
       "UTC-05:00"
     ],
@@ -3604,7 +3651,8 @@
       {
         "code": "KYD",
         "name": "Cayman Islands dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -3652,11 +3700,11 @@
     "region": "Africa",
     "population": 4829764,
     "latlng": [
-      7.0,
-      21.0
+      7,
+      21
     ],
     "demonym": "Central African",
-    "area": 622984.0,
+    "area": 622984,
     "gini": 56.2,
     "timezones": [
       "UTC+01:00"
@@ -3679,7 +3727,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3747,11 +3796,11 @@
     "region": "Africa",
     "population": 16425859,
     "latlng": [
-      15.0,
-      19.0
+      15,
+      19
     ],
     "demonym": "Chadian",
-    "area": 1284000.0,
+    "area": 1284000,
     "gini": 43.3,
     "timezones": [
       "UTC+01:00"
@@ -3774,7 +3823,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3841,11 +3891,11 @@
     "region": "Americas",
     "population": 19116209,
     "latlng": [
-      -30.0,
-      -71.0
+      -30,
+      -71
     ],
     "demonym": "Chilean",
-    "area": 756102.0,
+    "area": 756102,
     "gini": 44.4,
     "timezones": [
       "UTC-06:00",
@@ -3866,7 +3916,8 @@
       {
         "code": "CLP",
         "name": "Chilean peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -3942,11 +3993,11 @@
     "region": "Asia",
     "population": 1402112000,
     "latlng": [
-      35.0,
-      105.0
+      35,
+      105
     ],
     "demonym": "Chinese",
-    "area": 9640011.0,
+    "area": 9640011,
     "gini": 38.5,
     "timezones": [
       "UTC+08:00"
@@ -3979,7 +4030,8 @@
       {
         "code": "CNY",
         "name": "Chinese yuan",
-        "symbol": "¥"
+        "symbol": "¥",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4030,7 +4082,7 @@
       105.66666666
     ],
     "demonym": "Christmas Island",
-    "area": 135.0,
+    "area": 135,
     "timezones": [
       "UTC+07:00"
     ],
@@ -4044,7 +4096,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4095,7 +4148,7 @@
       96.83333333
     ],
     "demonym": "Cocos Islander",
-    "area": 14.0,
+    "area": 14,
     "timezones": [
       "UTC+06:30"
     ],
@@ -4109,7 +4162,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4156,11 +4210,11 @@
     "region": "Americas",
     "population": 50882884,
     "latlng": [
-      4.0,
-      -72.0
+      4,
+      -72
     ],
     "demonym": "Colombian",
-    "area": 1141748.0,
+    "area": 1141748,
     "gini": 51.3,
     "timezones": [
       "UTC-05:00"
@@ -4182,7 +4236,8 @@
       {
         "code": "COP",
         "name": "Colombian peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4260,7 +4315,7 @@
       44.25
     ],
     "demonym": "Comoran",
-    "area": 1862.0,
+    "area": 1862,
     "gini": 45.3,
     "timezones": [
       "UTC+03:00"
@@ -4275,7 +4330,8 @@
       {
         "code": "KMF",
         "name": "Comorian franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -4350,11 +4406,11 @@
     "region": "Africa",
     "population": 5518092,
     "latlng": [
-      -1.0,
-      15.0
+      -1,
+      15
     ],
     "demonym": "Congolese",
-    "area": 342000.0,
+    "area": 342000,
     "gini": 48.9,
     "timezones": [
       "UTC+01:00"
@@ -4376,7 +4432,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -4444,11 +4501,11 @@
     "region": "Africa",
     "population": 89561404,
     "latlng": [
-      0.0,
-      25.0
+      0,
+      25
     ],
     "demonym": "Congolese",
-    "area": 2344858.0,
+    "area": 2344858,
     "gini": 42.1,
     "timezones": [
       "UTC+01:00",
@@ -4475,7 +4532,8 @@
       {
         "code": "CDF",
         "name": "Congolese franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -4563,7 +4621,7 @@
       -159.76666666
     ],
     "demonym": "Cook Islander",
-    "area": 236.0,
+    "area": 236,
     "timezones": [
       "UTC-10:00"
     ],
@@ -4577,12 +4635,14 @@
       {
         "code": "NZD",
         "name": "New Zealand dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "CKD",
         "name": "Cook Islands dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4635,11 +4695,11 @@
     "region": "Americas",
     "population": 5094114,
     "latlng": [
-      10.0,
-      -84.0
+      10,
+      -84
     ],
     "demonym": "Costa Rican",
-    "area": 51100.0,
+    "area": 51100,
     "gini": 48.2,
     "timezones": [
       "UTC-06:00"
@@ -4658,7 +4718,8 @@
       {
         "code": "CRC",
         "name": "Costa Rican colón",
-        "symbol": "₡"
+        "symbol": "₡",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4723,7 +4784,7 @@
       15.5
     ],
     "demonym": "Croatian",
-    "area": 56594.0,
+    "area": 56594,
     "gini": 29.7,
     "timezones": [
       "UTC+01:00"
@@ -4745,7 +4806,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4800,10 +4862,10 @@
     "population": 11326616,
     "latlng": [
       21.5,
-      -80.0
+      -80
     ],
     "demonym": "Cuban",
-    "area": 109884.0,
+    "area": 109884,
     "timezones": [
       "UTC-05:00"
     ],
@@ -4817,12 +4879,14 @@
       {
         "code": "CUC",
         "name": "Cuban convertible peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "CUP",
         "name": "Cuban peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -4877,7 +4941,7 @@
       -68.933333
     ],
     "demonym": "Dutch",
-    "area": 444.0,
+    "area": 444,
     "timezones": [
       "UTC-04:00"
     ],
@@ -4891,7 +4955,8 @@
       {
         "code": "ANG",
         "name": "Netherlands Antillean guilder",
-        "symbol": "ƒ"
+        "symbol": "ƒ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -4953,11 +5018,11 @@
     "region": "Europe",
     "population": 1207361,
     "latlng": [
-      35.0,
-      33.0
+      35,
+      33
     ],
     "demonym": "Cypriot",
-    "area": 9251.0,
+    "area": 9251,
     "gini": 32.7,
     "timezones": [
       "UTC+02:00"
@@ -4975,7 +5040,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5045,8 +5111,8 @@
       15.5
     ],
     "demonym": "Czech",
-    "area": 78865.0,
-    "gini": 25.0,
+    "area": 78865,
+    "gini": 25,
     "timezones": [
       "UTC+01:00"
     ],
@@ -5060,7 +5126,8 @@
       {
         "code": "CZK",
         "name": "Czech koruna",
-        "symbol": "Kč"
+        "symbol": "Kč",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5121,11 +5188,11 @@
     "region": "Europe",
     "population": 5831404,
     "latlng": [
-      56.0,
-      10.0
+      56,
+      10
     ],
     "demonym": "Danish",
-    "area": 43094.0,
+    "area": 43094,
     "gini": 28.2,
     "timezones": [
       "UTC-04:00",
@@ -5147,7 +5214,8 @@
       {
         "code": "DKK",
         "name": "Danish krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5206,10 +5274,10 @@
     "population": 988002,
     "latlng": [
       11.5,
-      43.0
+      43
     ],
     "demonym": "Djibouti",
-    "area": 23200.0,
+    "area": 23200,
     "gini": 41.6,
     "timezones": [
       "UTC+03:00"
@@ -5229,7 +5297,8 @@
       {
         "code": "DJF",
         "name": "Djiboutian franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -5310,7 +5379,7 @@
       -61.33333333
     ],
     "demonym": "Dominican",
-    "area": 751.0,
+    "area": 751,
     "timezones": [
       "UTC-04:00"
     ],
@@ -5324,7 +5393,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5370,11 +5440,11 @@
     "region": "Americas",
     "population": 10847904,
     "latlng": [
-      19.0,
+      19,
       -70.66666666
     ],
     "demonym": "Dominican",
-    "area": 48671.0,
+    "area": 48671,
     "gini": 41.9,
     "timezones": [
       "UTC-04:00"
@@ -5392,7 +5462,8 @@
       {
         "code": "DOP",
         "name": "Dominican peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5461,11 +5532,11 @@
     "region": "Americas",
     "population": 17643060,
     "latlng": [
-      -2.0,
+      -2,
       -77.5
     ],
     "demonym": "Ecuadorean",
-    "area": 276841.0,
+    "area": 276841,
     "gini": 45.7,
     "timezones": [
       "UTC-06:00",
@@ -5485,7 +5556,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5549,11 +5621,11 @@
     "region": "Africa",
     "population": 102334403,
     "latlng": [
-      27.0,
-      30.0
+      27,
+      30
     ],
     "demonym": "Egyptian",
-    "area": 1002450.0,
+    "area": 1002450,
     "gini": 31.5,
     "timezones": [
       "UTC+02:00"
@@ -5573,7 +5645,8 @@
       {
         "code": "EGP",
         "name": "Egyptian pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5647,7 +5720,7 @@
       -88.91666666
     ],
     "demonym": "Salvadoran",
-    "area": 21041.0,
+    "area": 21041,
     "gini": 38.8,
     "timezones": [
       "UTC-06:00"
@@ -5666,7 +5739,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -5728,11 +5802,11 @@
     "region": "Africa",
     "population": 1402985,
     "latlng": [
-      2.0,
-      10.0
+      2,
+      10
     ],
     "demonym": "Equatorial Guinean",
-    "area": 28051.0,
+    "area": 28051,
     "timezones": [
       "UTC+01:00"
     ],
@@ -5750,7 +5824,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -5832,11 +5907,11 @@
     "region": "Africa",
     "population": 5352000,
     "latlng": [
-      15.0,
-      39.0
+      15,
+      39
     ],
     "demonym": "Eritrean",
-    "area": 117600.0,
+    "area": 117600,
     "timezones": [
       "UTC+03:00"
     ],
@@ -5855,7 +5930,8 @@
       {
         "code": "ERN",
         "name": "Eritrean nakfa",
-        "symbol": "Nfk"
+        "symbol": "Nfk",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -5960,11 +6036,11 @@
     "region": "Europe",
     "population": 1331057,
     "latlng": [
-      59.0,
-      26.0
+      59,
+      26
     ],
     "demonym": "Estonian",
-    "area": 45227.0,
+    "area": 45227,
     "gini": 30.3,
     "timezones": [
       "UTC+02:00"
@@ -5983,7 +6059,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6038,12 +6115,12 @@
     "region": "Africa",
     "population": 114963583,
     "latlng": [
-      8.0,
-      38.0
+      8,
+      38
     ],
     "demonym": "Ethiopian",
-    "area": 1104300.0,
-    "gini": 35.0,
+    "area": 1104300,
+    "gini": 35,
     "timezones": [
       "UTC+03:00"
     ],
@@ -6065,7 +6142,8 @@
       {
         "code": "ETB",
         "name": "Ethiopian birr",
-        "symbol": "Br"
+        "symbol": "Br",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -6126,10 +6204,10 @@
     "population": 2563,
     "latlng": [
       -51.75,
-      -59.0
+      -59
     ],
     "demonym": "Falkland Islander",
-    "area": 12173.0,
+    "area": 12173,
     "timezones": [
       "UTC-04:00"
     ],
@@ -6143,7 +6221,8 @@
       {
         "code": "FKP",
         "name": "Falkland Islands pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6207,11 +6286,11 @@
     "region": "Europe",
     "population": 48865,
     "latlng": [
-      62.0,
-      -7.0
+      62,
+      -7
     ],
     "demonym": "Faroese",
-    "area": 1393.0,
+    "area": 1393,
     "timezones": [
       "UTC+00:00"
     ],
@@ -6225,12 +6304,14 @@
       {
         "code": "DKK",
         "name": "Danish krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       },
       {
         "code": "FOK",
         "name": "Faroese króna",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -6279,11 +6360,11 @@
     "region": "Oceania",
     "population": 896444,
     "latlng": [
-      -18.0,
-      175.0
+      -18,
+      175
     ],
     "demonym": "Fijian",
-    "area": 18272.0,
+    "area": 18272,
     "gini": 36.7,
     "timezones": [
       "UTC+12:00"
@@ -6298,7 +6379,8 @@
       {
         "code": "FJD",
         "name": "Fijian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6364,11 +6446,11 @@
     "region": "Europe",
     "population": 5530719,
     "latlng": [
-      64.0,
-      26.0
+      64,
+      26
     ],
     "demonym": "Finnish",
-    "area": 338424.0,
+    "area": 338424,
     "gini": 27.3,
     "timezones": [
       "UTC+02:00"
@@ -6388,7 +6470,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6448,11 +6531,11 @@
     "region": "Europe",
     "population": 67391582,
     "latlng": [
-      46.0,
-      2.0
+      46,
+      2
     ],
     "demonym": "French",
-    "area": 640679.0,
+    "area": 640679,
     "gini": 32.4,
     "timezones": [
       "UTC-10:00",
@@ -6490,7 +6573,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6544,8 +6628,8 @@
     "region": "Americas",
     "population": 254541,
     "latlng": [
-      4.0,
-      -53.0
+      4,
+      -53
     ],
     "demonym": "French Guianan",
     "timezones": [
@@ -6565,7 +6649,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6634,11 +6719,11 @@
     "region": "Oceania",
     "population": 280904,
     "latlng": [
-      -15.0,
-      -140.0
+      -15,
+      -140
     ],
     "demonym": "French Polynesian",
-    "area": 4167.0,
+    "area": 4167,
     "timezones": [
       "UTC-10:00",
       "UTC-09:30",
@@ -6654,7 +6739,8 @@
       {
         "code": "XPF",
         "name": "CFP franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6703,7 +6789,7 @@
       69.167
     ],
     "demonym": "French",
-    "area": 7747.0,
+    "area": 7747,
     "timezones": [
       "UTC+05:00"
     ],
@@ -6717,7 +6803,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -6777,12 +6864,12 @@
     "region": "Africa",
     "population": 2225728,
     "latlng": [
-      -1.0,
+      -1,
       11.75
     ],
     "demonym": "Gabonese",
-    "area": 267668.0,
-    "gini": 38.0,
+    "area": 267668,
+    "gini": 38,
     "timezones": [
       "UTC+01:00"
     ],
@@ -6801,7 +6888,8 @@
       {
         "code": "XAF",
         "name": "Central African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -6865,7 +6953,7 @@
       -16.56666666
     ],
     "demonym": "Gambian",
-    "area": 11295.0,
+    "area": 11295,
     "gini": 35.9,
     "timezones": [
       "UTC+00:00"
@@ -6883,7 +6971,8 @@
       {
         "code": "GMD",
         "name": "Gambian dalasi",
-        "symbol": "D"
+        "symbol": "D",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -6943,11 +7032,11 @@
     "region": "Asia",
     "population": 3714000,
     "latlng": [
-      42.0,
+      42,
       43.5
     ],
     "demonym": "Georgian",
-    "area": 69700.0,
+    "area": 69700,
     "gini": 35.9,
     "timezones": [
       "UTC-04:00"
@@ -6968,7 +7057,8 @@
       {
         "code": "GEL",
         "name": "Georgian Lari",
-        "symbol": "ლ"
+        "symbol": "ლ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7016,11 +7106,11 @@
     "region": "Europe",
     "population": 83240525,
     "latlng": [
-      51.0,
-      9.0
+      51,
+      9
     ],
     "demonym": "German",
-    "area": 357114.0,
+    "area": 357114,
     "gini": 31.9,
     "timezones": [
       "UTC+01:00"
@@ -7046,7 +7136,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7098,11 +7189,11 @@
     "region": "Africa",
     "population": 31072945,
     "latlng": [
-      8.0,
-      -2.0
+      8,
+      -2
     ],
     "demonym": "Ghanaian",
-    "area": 238533.0,
+    "area": 238533,
     "gini": 43.5,
     "timezones": [
       "UTC"
@@ -7122,7 +7213,8 @@
       {
         "code": "GHS",
         "name": "Ghanaian cedi",
-        "symbol": "₵"
+        "symbol": "₵",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7185,7 +7277,7 @@
       -5.35
     ],
     "demonym": "Gibraltar",
-    "area": 6.0,
+    "area": 6,
     "timezones": [
       "UTC+01:00"
     ],
@@ -7202,7 +7294,8 @@
       {
         "code": "GIP",
         "name": "Gibraltar pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7256,11 +7349,11 @@
     "region": "Europe",
     "population": 10715549,
     "latlng": [
-      39.0,
-      22.0
+      39,
+      22
     ],
     "demonym": "Greek",
-    "area": 131990.0,
+    "area": 131990,
     "gini": 32.9,
     "timezones": [
       "UTC+02:00"
@@ -7281,7 +7374,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7334,11 +7428,11 @@
     "region": "Americas",
     "population": 56367,
     "latlng": [
-      72.0,
-      -40.0
+      72,
+      -40
     ],
     "demonym": "Greenlandic",
-    "area": 2166086.0,
+    "area": 2166086,
     "timezones": [
       "UTC-04:00",
       "UTC-03:00",
@@ -7355,7 +7449,8 @@
       {
         "code": "DKK",
         "name": "Danish krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7404,7 +7499,7 @@
       -61.66666666
     ],
     "demonym": "Grenadian",
-    "area": 344.0,
+    "area": 344,
     "timezones": [
       "UTC-04:00"
     ],
@@ -7418,7 +7513,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7493,7 +7589,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7543,7 +7640,7 @@
       144.78333333
     ],
     "demonym": "Guamanian",
-    "area": 549.0,
+    "area": 549,
     "timezones": [
       "UTC+10:00"
     ],
@@ -7557,7 +7654,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7619,7 +7717,7 @@
       -90.25
     ],
     "demonym": "Guatemalan",
-    "area": 108889.0,
+    "area": 108889,
     "gini": 48.3,
     "timezones": [
       "UTC-06:00"
@@ -7640,7 +7738,8 @@
       {
         "code": "GTQ",
         "name": "Guatemalan quetzal",
-        "symbol": "Q"
+        "symbol": "Q",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7704,7 +7803,7 @@
       -2.58333333
     ],
     "demonym": "Channel Islander",
-    "area": 78.0,
+    "area": 78,
     "timezones": [
       "UTC+00:00"
     ],
@@ -7718,12 +7817,14 @@
       {
         "code": "GBP",
         "name": "British pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       },
       {
         "code": "GGP",
         "name": "Guernsey pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -7776,11 +7877,11 @@
     "region": "Africa",
     "population": 13132792,
     "latlng": [
-      11.0,
-      -10.0
+      11,
+      -10
     ],
     "demonym": "Guinean",
-    "area": 245857.0,
+    "area": 245857,
     "gini": 33.7,
     "timezones": [
       "UTC"
@@ -7803,7 +7904,8 @@
       {
         "code": "GNF",
         "name": "Guinean franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -7870,11 +7972,11 @@
     "region": "Africa",
     "population": 1967998,
     "latlng": [
-      12.0,
-      -15.0
+      12,
+      -15
     ],
     "demonym": "Guinea-Bissauan",
-    "area": 36125.0,
+    "area": 36125,
     "gini": 50.7,
     "timezones": [
       "UTC"
@@ -7893,7 +7995,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -7953,11 +8056,11 @@
     "region": "Americas",
     "population": 786559,
     "latlng": [
-      5.0,
-      -59.0
+      5,
+      -59
     ],
     "demonym": "Guyanese",
-    "area": 214969.0,
+    "area": 214969,
     "gini": 45.1,
     "timezones": [
       "UTC-04:00"
@@ -7977,7 +8080,8 @@
       {
         "code": "GYD",
         "name": "Guyanese dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8052,11 +8156,11 @@
     "region": "Americas",
     "population": 11402533,
     "latlng": [
-      19.0,
+      19,
       -72.41666666
     ],
     "demonym": "Haitian",
-    "area": 27750.0,
+    "area": 27750,
     "gini": 41.1,
     "timezones": [
       "UTC-05:00"
@@ -8074,7 +8178,8 @@
       {
         "code": "HTG",
         "name": "Haitian gourde",
-        "symbol": "G"
+        "symbol": "G",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -8141,7 +8246,7 @@
       72.51666666
     ],
     "demonym": "Heard and McDonald Islander",
-    "area": 412.0,
+    "area": 412,
     "timezones": [
       "UTC+05:00"
     ],
@@ -8155,7 +8260,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8222,7 +8328,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8287,11 +8394,11 @@
     "region": "Americas",
     "population": 9904608,
     "latlng": [
-      15.0,
+      15,
       -86.5
     ],
     "demonym": "Honduran",
-    "area": 112492.0,
+    "area": 112492,
     "gini": 48.2,
     "timezones": [
       "UTC-06:00"
@@ -8311,7 +8418,8 @@
       {
         "code": "HNL",
         "name": "Honduran lempira",
-        "symbol": "L"
+        "symbol": "L",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8369,11 +8477,11 @@
     "region": "Europe",
     "population": 9749763,
     "latlng": [
-      47.0,
-      20.0
+      47,
+      20
     ],
     "demonym": "Hungarian",
-    "area": 93028.0,
+    "area": 93028,
     "gini": 29.6,
     "timezones": [
       "UTC+01:00"
@@ -8397,7 +8505,8 @@
       {
         "code": "HUF",
         "name": "Hungarian forint",
-        "symbol": "Ft"
+        "symbol": "Ft",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8454,7 +8563,7 @@
       114.16666666
     ],
     "demonym": "Chinese",
-    "area": 1104.0,
+    "area": 1104,
     "timezones": [
       "UTC+08:00"
     ],
@@ -8471,7 +8580,8 @@
       {
         "code": "HKD",
         "name": "Hong Kong dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8526,11 +8636,11 @@
     "region": "Europe",
     "population": 366425,
     "latlng": [
-      65.0,
-      -18.0
+      65,
+      -18
     ],
     "demonym": "Icelander",
-    "area": 103000.0,
+    "area": 103000,
     "gini": 26.1,
     "timezones": [
       "UTC"
@@ -8545,7 +8655,8 @@
       {
         "code": "ISK",
         "name": "Icelandic króna",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8600,11 +8711,11 @@
     "region": "Asia",
     "population": 1380004385,
     "latlng": [
-      20.0,
-      77.0
+      20,
+      77
     ],
     "demonym": "Indian",
-    "area": 3287590.0,
+    "area": 3287590,
     "gini": 35.7,
     "timezones": [
       "UTC+05:30"
@@ -8629,7 +8740,8 @@
       {
         "code": "INR",
         "name": "Indian rupee",
-        "symbol": "₹"
+        "symbol": "₹",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -8689,11 +8801,11 @@
     "region": "Asia",
     "population": 273523621,
     "latlng": [
-      -5.0,
-      120.0
+      -5,
+      120
     ],
     "demonym": "Indonesian",
-    "area": 1904569.0,
+    "area": 1904569,
     "gini": 38.2,
     "timezones": [
       "UTC+07:00",
@@ -8715,7 +8827,8 @@
       {
         "code": "IDR",
         "name": "Indonesian rupiah",
-        "symbol": "Rp"
+        "symbol": "Rp",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -8770,11 +8883,11 @@
     "region": "Africa",
     "population": 26378275,
     "latlng": [
-      8.0,
-      -5.0
+      8,
+      -5
     ],
     "demonym": "Ivorian",
-    "area": 322463.0,
+    "area": 322463,
     "gini": 41.5,
     "timezones": [
       "UTC"
@@ -8796,7 +8909,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -8857,12 +8971,12 @@
     "region": "Asia",
     "population": 83992953,
     "latlng": [
-      32.0,
-      53.0
+      32,
+      53
     ],
     "demonym": "Iranian",
-    "area": 1648195.0,
-    "gini": 42.0,
+    "area": 1648195,
+    "gini": 42,
     "timezones": [
       "UTC+03:30"
     ],
@@ -8885,7 +8999,8 @@
       {
         "code": "IRR",
         "name": "Iranian rial",
-        "symbol": "﷼"
+        "symbol": "﷼",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -8933,11 +9048,11 @@
     "region": "Asia",
     "population": 40222503,
     "latlng": [
-      33.0,
-      44.0
+      33,
+      44
     ],
     "demonym": "Iraqi",
-    "area": 438317.0,
+    "area": 438317,
     "gini": 29.5,
     "timezones": [
       "UTC+03:00"
@@ -8960,7 +9075,8 @@
       {
         "code": "IQD",
         "name": "Iraqi dinar",
-        "symbol": "ع.د"
+        "symbol": "ع.د",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -9026,11 +9142,11 @@
     "region": "Europe",
     "population": 4994724,
     "latlng": [
-      53.0,
-      -8.0
+      53,
+      -8
     ],
     "demonym": "Irish",
-    "area": 70273.0,
+    "area": 70273,
     "gini": 31.4,
     "timezones": [
       "UTC"
@@ -9048,7 +9164,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9113,7 +9230,7 @@
       -4.5
     ],
     "demonym": "Manx",
-    "area": 572.0,
+    "area": 572,
     "timezones": [
       "UTC+00:00"
     ],
@@ -9127,12 +9244,14 @@
       {
         "code": "GBP",
         "name": "British pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       },
       {
         "code": "IMP[G]",
         "name": "Manx pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9195,8 +9314,8 @@
       34.75
     ],
     "demonym": "Israeli",
-    "area": 20770.0,
-    "gini": 39.0,
+    "area": 20770,
+    "gini": 39,
     "timezones": [
       "UTC+02:00"
     ],
@@ -9216,7 +9335,8 @@
       {
         "code": "ILS",
         "name": "Israeli new shekel",
-        "symbol": "₪"
+        "symbol": "₪",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9274,7 +9394,7 @@
       12.83333333
     ],
     "demonym": "Italian",
-    "area": 301336.0,
+    "area": 301336,
     "gini": 35.9,
     "timezones": [
       "UTC+01:00"
@@ -9297,7 +9417,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9353,7 +9474,7 @@
       -77.5
     ],
     "demonym": "Jamaican",
-    "area": 10991.0,
+    "area": 10991,
     "gini": 45.5,
     "timezones": [
       "UTC-05:00"
@@ -9368,7 +9489,8 @@
       {
         "code": "JMD",
         "name": "Jamaican dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9427,11 +9549,11 @@
     "region": "Asia",
     "population": 125836021,
     "latlng": [
-      36.0,
-      138.0
+      36,
+      138
     ],
     "demonym": "Japanese",
-    "area": 377930.0,
+    "area": 377930,
     "gini": 32.9,
     "timezones": [
       "UTC+09:00"
@@ -9446,7 +9568,8 @@
       {
         "code": "JPY",
         "name": "Japanese yen",
-        "symbol": "¥"
+        "symbol": "¥",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9499,7 +9622,7 @@
       -2.16666666
     ],
     "demonym": "Channel Islander",
-    "area": 116.0,
+    "area": 116,
     "timezones": [
       "UTC+01:00"
     ],
@@ -9513,12 +9636,14 @@
       {
         "code": "GBP",
         "name": "British pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       },
       {
         "code": "JEP[G]",
         "name": "Jersey pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9571,11 +9696,11 @@
     "region": "Asia",
     "population": 10203140,
     "latlng": [
-      31.0,
-      36.0
+      31,
+      36
     ],
     "demonym": "Jordanian",
-    "area": 89342.0,
+    "area": 89342,
     "gini": 33.7,
     "timezones": [
       "UTC+03:00"
@@ -9596,7 +9721,8 @@
       {
         "code": "JOD",
         "name": "Jordanian dinar",
-        "symbol": "د.ا"
+        "symbol": "د.ا",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9662,11 +9788,11 @@
     "region": "Asia",
     "population": 18754440,
     "latlng": [
-      48.0,
-      68.0
+      48,
+      68
     ],
     "demonym": "Kazakhstani",
-    "area": 2724900.0,
+    "area": 2724900,
     "gini": 27.8,
     "timezones": [
       "UTC+05:00",
@@ -9689,7 +9815,8 @@
       {
         "code": "KZT",
         "name": "Kazakhstani tenge",
-        "symbol": "₸"
+        "symbol": "₸",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9752,11 +9879,11 @@
     "region": "Africa",
     "population": 53771300,
     "latlng": [
-      1.0,
-      38.0
+      1,
+      38
     ],
     "demonym": "Kenyan",
-    "area": 580367.0,
+    "area": 580367,
     "gini": 40.8,
     "timezones": [
       "UTC+03:00"
@@ -9778,7 +9905,8 @@
       {
         "code": "KES",
         "name": "Kenyan shilling",
-        "symbol": "Sh"
+        "symbol": "Sh",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9846,11 +9974,11 @@
     "population": 119446,
     "latlng": [
       1.41666666,
-      173.0
+      173
     ],
     "demonym": "I-Kiribati",
-    "area": 811.0,
-    "gini": 37.0,
+    "area": 811,
+    "gini": 37,
     "timezones": [
       "UTC+12:00",
       "UTC+13:00",
@@ -9866,12 +9994,14 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "KID",
         "name": "Kiribati dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -9923,7 +10053,7 @@
       45.75
     ],
     "demonym": "Kuwaiti",
-    "area": 17818.0,
+    "area": 17818,
     "timezones": [
       "UTC+03:00"
     ],
@@ -9941,7 +10071,8 @@
       {
         "code": "KWD",
         "name": "Kuwaiti dinar",
-        "symbol": "د.ك"
+        "symbol": "د.ك",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10002,11 +10133,11 @@
     "region": "Asia",
     "population": 6591600,
     "latlng": [
-      41.0,
-      75.0
+      41,
+      75
     ],
     "demonym": "Kirghiz",
-    "area": 199951.0,
+    "area": 199951,
     "gini": 29.7,
     "timezones": [
       "UTC+06:00"
@@ -10027,7 +10158,8 @@
       {
         "code": "KGS",
         "name": "Kyrgyzstani som",
-        "symbol": "с"
+        "symbol": "с",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10092,11 +10224,11 @@
     "region": "Asia",
     "population": 7275556,
     "latlng": [
-      18.0,
-      105.0
+      18,
+      105
     ],
     "demonym": "Laotian",
-    "area": 236800.0,
+    "area": 236800,
     "gini": 38.8,
     "timezones": [
       "UTC+07:00"
@@ -10118,7 +10250,8 @@
       {
         "code": "LAK",
         "name": "Lao kip",
-        "symbol": "₭"
+        "symbol": "₭",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -10172,11 +10305,11 @@
     "region": "Europe",
     "population": 1901548,
     "latlng": [
-      57.0,
-      25.0
+      57,
+      25
     ],
     "demonym": "Latvian",
-    "area": 64559.0,
+    "area": 64559,
     "gini": 35.1,
     "timezones": [
       "UTC+02:00"
@@ -10197,7 +10330,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10255,7 +10389,7 @@
       35.83333333
     ],
     "demonym": "Lebanese",
-    "area": 10452.0,
+    "area": 10452,
     "gini": 31.8,
     "timezones": [
       "UTC+02:00"
@@ -10274,7 +10408,8 @@
       {
         "code": "LBP",
         "name": "Lebanese pound",
-        "symbol": "ل.ل"
+        "symbol": "ل.ل",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -10343,7 +10478,7 @@
       28.5
     ],
     "demonym": "Mosotho",
-    "area": 30355.0,
+    "area": 30355,
     "gini": 44.9,
     "timezones": [
       "UTC+02:00"
@@ -10361,12 +10496,14 @@
       {
         "code": "LSL",
         "name": "Lesotho loti",
-        "symbol": "L"
+        "symbol": "L",
+        "supports_floating_point": false
       },
       {
         "code": "ZAR",
         "name": "South African rand",
-        "symbol": "R"
+        "symbol": "R",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10436,7 +10573,7 @@
       -9.5
     ],
     "demonym": "Liberian",
-    "area": 111369.0,
+    "area": 111369,
     "gini": 35.3,
     "timezones": [
       "UTC"
@@ -10456,7 +10593,8 @@
       {
         "code": "LRD",
         "name": "Liberian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -10517,11 +10655,11 @@
     "region": "Africa",
     "population": 6871287,
     "latlng": [
-      25.0,
-      17.0
+      25,
+      17
     ],
     "demonym": "Libyan",
-    "area": 1759540.0,
+    "area": 1759540,
     "timezones": [
       "UTC+01:00"
     ],
@@ -10543,7 +10681,8 @@
       {
         "code": "LYD",
         "name": "Libyan dinar",
-        "symbol": "ل.د"
+        "symbol": "ل.د",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -10617,7 +10756,7 @@
       9.53333333
     ],
     "demonym": "Liechtensteiner",
-    "area": 160.0,
+    "area": 160,
     "timezones": [
       "UTC+01:00"
     ],
@@ -10635,7 +10774,8 @@
       {
         "code": "CHF",
         "name": "Swiss franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10689,11 +10829,11 @@
     "region": "Europe",
     "population": 2794700,
     "latlng": [
-      56.0,
-      24.0
+      56,
+      24
     ],
     "demonym": "Lithuanian",
-    "area": 65300.0,
+    "area": 65300,
     "gini": 35.7,
     "timezones": [
       "UTC+02:00"
@@ -10714,7 +10854,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10774,7 +10915,7 @@
       6.16666666
     ],
     "demonym": "Luxembourger",
-    "area": 2586.0,
+    "area": 2586,
     "gini": 35.4,
     "timezones": [
       "UTC+01:00"
@@ -10794,7 +10935,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10865,7 +11007,7 @@
       113.55
     ],
     "demonym": "Chinese",
-    "area": 30.0,
+    "area": 30,
     "timezones": [
       "UTC+08:00"
     ],
@@ -10882,7 +11024,8 @@
       {
         "code": "MOP",
         "name": "Macanese pataca",
-        "symbol": "P"
+        "symbol": "P",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -10936,11 +11079,11 @@
     "population": 2083380,
     "latlng": [
       41.83333333,
-      22.0
+      22
     ],
     "demonym": "Macedonian",
-    "area": 25713.0,
-    "gini": 33.0,
+    "area": 25713,
+    "gini": 33,
     "timezones": [
       "UTC+01:00"
     ],
@@ -10961,7 +11104,8 @@
       {
         "code": "MKD",
         "name": "Macedonian denar",
-        "symbol": "ден"
+        "symbol": "ден",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11015,11 +11159,11 @@
     "region": "Africa",
     "population": 27691019,
     "latlng": [
-      -20.0,
-      47.0
+      -20,
+      47
     ],
     "demonym": "Malagasy",
-    "area": 587041.0,
+    "area": 587041,
     "gini": 42.6,
     "timezones": [
       "UTC+03:00"
@@ -11034,7 +11178,8 @@
       {
         "code": "MGA",
         "name": "Malagasy ariary",
-        "symbol": "Ar"
+        "symbol": "Ar",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -11101,10 +11246,10 @@
     "population": 19129955,
     "latlng": [
       -13.5,
-      34.0
+      34
     ],
     "demonym": "Malawian",
-    "area": 118484.0,
+    "area": 118484,
     "gini": 44.7,
     "timezones": [
       "UTC+02:00"
@@ -11124,7 +11269,8 @@
       {
         "code": "MWK",
         "name": "Malawian kwacha",
-        "symbol": "MK"
+        "symbol": "MK",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -11193,7 +11339,7 @@
       112.5
     ],
     "demonym": "Malaysian",
-    "area": 330803.0,
+    "area": 330803,
     "gini": 41.1,
     "timezones": [
       "UTC+08:00"
@@ -11213,7 +11359,8 @@
       {
         "code": "MYR",
         "name": "Malaysian ringgit",
-        "symbol": "RM"
+        "symbol": "RM",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11269,10 +11416,10 @@
     "population": 540542,
     "latlng": [
       3.25,
-      73.0
+      73
     ],
     "demonym": "Maldivan",
-    "area": 300.0,
+    "area": 300,
     "gini": 31.3,
     "timezones": [
       "UTC+05:00"
@@ -11287,7 +11434,8 @@
       {
         "code": "MVR",
         "name": "Maldivian rufiyaa",
-        "symbol": ".ރ"
+        "symbol": ".ރ",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -11341,12 +11489,12 @@
     "region": "Africa",
     "population": 20250834,
     "latlng": [
-      17.0,
-      -4.0
+      17,
+      -4
     ],
     "demonym": "Malian",
-    "area": 1240192.0,
-    "gini": 33.0,
+    "area": 1240192,
+    "gini": 33,
     "timezones": [
       "UTC"
     ],
@@ -11369,7 +11517,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -11434,7 +11583,7 @@
       14.58333333
     ],
     "demonym": "Maltese",
-    "area": 316.0,
+    "area": 316,
     "gini": 28.7,
     "timezones": [
       "UTC+01:00"
@@ -11449,7 +11598,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11509,11 +11659,11 @@
     "region": "Oceania",
     "population": 59194,
     "latlng": [
-      9.0,
-      168.0
+      9,
+      168
     ],
     "demonym": "Marshallese",
-    "area": 181.0,
+    "area": 181,
     "timezones": [
       "UTC+12:00"
     ],
@@ -11527,7 +11677,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11580,7 +11731,7 @@
     "population": 378243,
     "latlng": [
       14.666667,
-      -61.0
+      -61
     ],
     "demonym": "French",
     "timezones": [
@@ -11596,7 +11747,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11643,11 +11795,11 @@
     "region": "Africa",
     "population": 4649660,
     "latlng": [
-      20.0,
-      -12.0
+      20,
+      -12
     ],
     "demonym": "Mauritanian",
-    "area": 1030700.0,
+    "area": 1030700,
     "gini": 32.6,
     "timezones": [
       "UTC"
@@ -11668,7 +11820,8 @@
       {
         "code": "MRO",
         "name": "Mauritanian ouguiya",
-        "symbol": "UM"
+        "symbol": "UM",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -11742,7 +11895,7 @@
       57.55
     ],
     "demonym": "Mauritian",
-    "area": 2040.0,
+    "area": 2040,
     "gini": 36.8,
     "timezones": [
       "UTC+04:00"
@@ -11757,7 +11910,8 @@
       {
         "code": "MUR",
         "name": "Mauritian rupee",
-        "symbol": "₨"
+        "symbol": "₨",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11835,7 +11989,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11896,11 +12051,11 @@
     "region": "Americas",
     "population": 128932753,
     "latlng": [
-      23.0,
-      -102.0
+      23,
+      -102
     ],
     "demonym": "Mexican",
-    "area": 1964375.0,
+    "area": 1964375,
     "gini": 45.4,
     "timezones": [
       "UTC-08:00",
@@ -11922,7 +12077,8 @@
       {
         "code": "MXN",
         "name": "Mexican peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -11990,7 +12146,7 @@
       158.25
     ],
     "demonym": "Micronesian",
-    "area": 702.0,
+    "area": 702,
     "gini": 40.1,
     "timezones": [
       "UTC+10:00",
@@ -12006,7 +12162,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12054,11 +12211,11 @@
     "region": "Europe",
     "population": 2617820,
     "latlng": [
-      47.0,
-      29.0
+      47,
+      29
     ],
     "demonym": "Moldovan",
-    "area": 33846.0,
+    "area": 33846,
     "gini": 25.7,
     "timezones": [
       "UTC+02:00"
@@ -12077,7 +12234,8 @@
       {
         "code": "MDL",
         "name": "Moldovan leu",
-        "symbol": "L"
+        "symbol": "L",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12152,7 +12310,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12198,11 +12357,11 @@
     "region": "Asia",
     "population": 3278292,
     "latlng": [
-      46.0,
-      105.0
+      46,
+      105
     ],
     "demonym": "Mongolian",
-    "area": 1564110.0,
+    "area": 1564110,
     "gini": 32.7,
     "timezones": [
       "UTC+07:00",
@@ -12222,7 +12381,8 @@
       {
         "code": "MNT",
         "name": "Mongolian tögrög",
-        "symbol": "₮"
+        "symbol": "₮",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -12273,7 +12433,7 @@
       19.3
     ],
     "demonym": "Montenegrin",
-    "area": 13812.0,
+    "area": 13812,
     "gini": 38.5,
     "timezones": [
       "UTC+01:00"
@@ -12295,7 +12455,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12369,7 +12530,7 @@
       -62.2
     ],
     "demonym": "Montserratian",
-    "area": 102.0,
+    "area": 102,
     "timezones": [
       "UTC-04:00"
     ],
@@ -12383,7 +12544,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12441,11 +12603,11 @@
     "region": "Africa",
     "population": 36910558,
     "latlng": [
-      32.0,
-      -5.0
+      32,
+      -5
     ],
     "demonym": "Moroccan",
-    "area": 446550.0,
+    "area": 446550,
     "gini": 39.5,
     "timezones": [
       "UTC"
@@ -12465,7 +12627,8 @@
       {
         "code": "MAD",
         "name": "Moroccan dirham",
-        "symbol": "د.م."
+        "symbol": "د.م.",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12536,11 +12699,11 @@
     "population": 31255435,
     "latlng": [
       -18.25,
-      35.0
+      35
     ],
     "demonym": "Mozambican",
-    "area": 801590.0,
-    "gini": 54.0,
+    "area": 801590,
+    "gini": 54,
     "timezones": [
       "UTC+02:00"
     ],
@@ -12562,7 +12725,8 @@
       {
         "code": "MZN",
         "name": "Mozambican metical",
-        "symbol": "MT"
+        "symbol": "MT",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12624,11 +12788,11 @@
     "region": "Asia",
     "population": 54409794,
     "latlng": [
-      22.0,
-      98.0
+      22,
+      98
     ],
     "demonym": "Burmese",
-    "area": 676578.0,
+    "area": 676578,
     "gini": 30.7,
     "timezones": [
       "UTC+06:30"
@@ -12650,7 +12814,8 @@
       {
         "code": "MMK",
         "name": "Burmese kyat",
-        "symbol": "Ks"
+        "symbol": "Ks",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -12704,11 +12869,11 @@
     "region": "Africa",
     "population": 2540916,
     "latlng": [
-      -22.0,
-      17.0
+      -22,
+      17
     ],
     "demonym": "Namibian",
-    "area": 825615.0,
+    "area": 825615,
     "gini": 59.1,
     "timezones": [
       "UTC+01:00"
@@ -12729,12 +12894,14 @@
       {
         "code": "NAD",
         "name": "Namibian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "ZAR",
         "name": "South African rand",
-        "symbol": "R"
+        "symbol": "R",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12807,7 +12974,7 @@
       166.91666666
     ],
     "demonym": "Nauruan",
-    "area": 21.0,
+    "area": 21,
     "gini": 34.8,
     "timezones": [
       "UTC+12:00"
@@ -12822,7 +12989,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -12876,11 +13044,11 @@
     "region": "Asia",
     "population": 29136808,
     "latlng": [
-      28.0,
-      84.0
+      28,
+      84
     ],
     "demonym": "Nepalese",
-    "area": 147181.0,
+    "area": 147181,
     "gini": 32.8,
     "timezones": [
       "UTC+05:45"
@@ -12899,7 +13067,8 @@
       {
         "code": "NPR",
         "name": "Nepalese rupee",
-        "symbol": "₨"
+        "symbol": "₨",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -12957,7 +13126,7 @@
       5.75
     ],
     "demonym": "Dutch",
-    "area": 41850.0,
+    "area": 41850,
     "gini": 28.1,
     "timezones": [
       "UTC-04:00",
@@ -12977,7 +13146,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13033,7 +13203,7 @@
       165.5
     ],
     "demonym": "New Caledonian",
-    "area": 18575.0,
+    "area": 18575,
     "timezones": [
       "UTC+11:00"
     ],
@@ -13047,7 +13217,8 @@
       {
         "code": "XPF",
         "name": "CFP franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13093,11 +13264,11 @@
     "region": "Oceania",
     "population": 5084300,
     "latlng": [
-      -41.0,
-      174.0
+      -41,
+      174
     ],
     "demonym": "New Zealander",
-    "area": 270467.0,
+    "area": 270467,
     "timezones": [
       "UTC-11:00",
       "UTC-10:00",
@@ -13115,7 +13286,8 @@
       {
         "code": "NZD",
         "name": "New Zealand dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13169,11 +13341,11 @@
     "region": "Americas",
     "population": 6624554,
     "latlng": [
-      13.0,
-      -85.0
+      13,
+      -85
     ],
     "demonym": "Nicaraguan",
-    "area": 130373.0,
+    "area": 130373,
     "gini": 46.2,
     "timezones": [
       "UTC-06:00"
@@ -13192,7 +13364,8 @@
       {
         "code": "NIO",
         "name": "Nicaraguan córdoba",
-        "symbol": "C$"
+        "symbol": "C$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13253,11 +13426,11 @@
     "region": "Africa",
     "population": 24206636,
     "latlng": [
-      16.0,
-      8.0
+      16,
+      8
     ],
     "demonym": "Nigerien",
-    "area": 1267000.0,
+    "area": 1267000,
     "gini": 34.3,
     "timezones": [
       "UTC+01:00"
@@ -13281,7 +13454,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -13343,11 +13517,11 @@
     "region": "Africa",
     "population": 206139587,
     "latlng": [
-      10.0,
-      8.0
+      10,
+      8
     ],
     "demonym": "Nigerian",
-    "area": 923768.0,
+    "area": 923768,
     "gini": 35.1,
     "timezones": [
       "UTC+01:00"
@@ -13368,7 +13542,8 @@
       {
         "code": "NGN",
         "name": "Nigerian naira",
-        "symbol": "₦"
+        "symbol": "₦",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13431,7 +13606,7 @@
       -169.86666666
     ],
     "demonym": "Niuean",
-    "area": 260.0,
+    "area": 260,
     "timezones": [
       "UTC-11:00"
     ],
@@ -13445,12 +13620,14 @@
       {
         "code": "NZD",
         "name": "New Zealand dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "NZD",
         "name": "Niue dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13501,7 +13678,7 @@
       167.95
     ],
     "demonym": "Norfolk Islander",
-    "area": 36.0,
+    "area": 36,
     "timezones": [
       "UTC+11:30"
     ],
@@ -13515,7 +13692,8 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13563,11 +13741,11 @@
     "region": "Asia",
     "population": 25778815,
     "latlng": [
-      40.0,
-      127.0
+      40,
+      127
     ],
     "demonym": "North Korean",
-    "area": 120538.0,
+    "area": 120538,
     "timezones": [
       "UTC+09:00"
     ],
@@ -13586,7 +13764,8 @@
       {
         "code": "KPW",
         "name": "North Korean won",
-        "symbol": "₩"
+        "symbol": "₩",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -13638,7 +13817,7 @@
       145.75
     ],
     "demonym": "American",
-    "area": 464.0,
+    "area": 464,
     "timezones": [
       "UTC+10:00"
     ],
@@ -13652,7 +13831,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13708,11 +13888,11 @@
     "region": "Europe",
     "population": 5379475,
     "latlng": [
-      62.0,
-      10.0
+      62,
+      10
     ],
     "demonym": "Norwegian",
-    "area": 323802.0,
+    "area": 323802,
     "gini": 27.6,
     "timezones": [
       "UTC+01:00"
@@ -13732,7 +13912,8 @@
       {
         "code": "NOK",
         "name": "Norwegian krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13798,11 +13979,11 @@
     "region": "Asia",
     "population": 5106622,
     "latlng": [
-      21.0,
-      57.0
+      21,
+      57
     ],
     "demonym": "Omani",
-    "area": 309500.0,
+    "area": 309500,
     "timezones": [
       "UTC+04:00"
     ],
@@ -13821,7 +14002,8 @@
       {
         "code": "OMR",
         "name": "Omani rial",
-        "symbol": "ر.ع."
+        "symbol": "ر.ع.",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -13881,11 +14063,11 @@
     "region": "Asia",
     "population": 220892331,
     "latlng": [
-      30.0,
-      70.0
+      30,
+      70
     ],
     "demonym": "Pakistani",
-    "area": 881912.0,
+    "area": 881912,
     "gini": 31.6,
     "timezones": [
       "UTC+05:00"
@@ -13906,7 +14088,8 @@
       {
         "code": "PKR",
         "name": "Pakistani rupee",
-        "symbol": "₨"
+        "symbol": "₨",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -13970,7 +14153,7 @@
       134.5
     ],
     "demonym": "Palauan",
-    "area": 459.0,
+    "area": 459,
     "timezones": [
       "UTC+09:00"
     ],
@@ -13984,7 +14167,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14055,17 +14239,20 @@
       {
         "code": "EGP",
         "name": "Egyptian pound",
-        "symbol": "E£"
+        "symbol": "E£",
+        "supports_floating_point": true
       },
       {
         "code": "ILS",
         "name": "Israeli new shekel",
-        "symbol": "₪"
+        "symbol": "₪",
+        "supports_floating_point": true
       },
       {
         "code": "JOD",
         "name": "Jordanian dinar",
-        "symbol": "د.أ"
+        "symbol": "د.أ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14124,11 +14311,11 @@
     "region": "Americas",
     "population": 4314768,
     "latlng": [
-      9.0,
-      -80.0
+      9,
+      -80
     ],
     "demonym": "Panamanian",
-    "area": 75417.0,
+    "area": 75417,
     "gini": 49.8,
     "timezones": [
       "UTC-05:00"
@@ -14147,12 +14334,14 @@
       {
         "code": "PAB",
         "name": "Panamanian balboa",
-        "symbol": "B/."
+        "symbol": "B/.",
+        "supports_floating_point": true
       },
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14212,11 +14401,11 @@
     "region": "Oceania",
     "population": 8947027,
     "latlng": [
-      -6.0,
-      147.0
+      -6,
+      147
     ],
     "demonym": "Papua New Guinean",
-    "area": 462840.0,
+    "area": 462840,
     "gini": 41.9,
     "timezones": [
       "UTC+10:00"
@@ -14234,7 +14423,8 @@
       {
         "code": "PGK",
         "name": "Papua New Guinean kina",
-        "symbol": "K"
+        "symbol": "K",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14283,11 +14473,11 @@
     "region": "Americas",
     "population": 7132530,
     "latlng": [
-      -23.0,
-      -58.0
+      -23,
+      -58
     ],
     "demonym": "Paraguayan",
-    "area": 406752.0,
+    "area": 406752,
     "gini": 45.7,
     "timezones": [
       "UTC-04:00"
@@ -14307,7 +14497,8 @@
       {
         "code": "PYG",
         "name": "Paraguayan guaraní",
-        "symbol": "₲"
+        "symbol": "₲",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14378,11 +14569,11 @@
     "region": "Americas",
     "population": 32971846,
     "latlng": [
-      -10.0,
-      -76.0
+      -10,
+      -76
     ],
     "demonym": "Peruvian",
-    "area": 1285216.0,
+    "area": 1285216,
     "gini": 41.5,
     "timezones": [
       "UTC-05:00"
@@ -14404,7 +14595,8 @@
       {
         "code": "PEN",
         "name": "Peruvian sol",
-        "symbol": "S/."
+        "symbol": "S/.",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14476,11 +14668,11 @@
     "region": "Asia",
     "population": 109581085,
     "latlng": [
-      13.0,
-      122.0
+      13,
+      122
     ],
     "demonym": "Filipino",
-    "area": 342353.0,
+    "area": 342353,
     "gini": 42.3,
     "timezones": [
       "UTC+08:00"
@@ -14495,7 +14687,8 @@
       {
         "code": "PHP",
         "name": "Philippine peso",
-        "symbol": "₱"
+        "symbol": "₱",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14552,7 +14745,7 @@
       -130.1
     ],
     "demonym": "Pitcairn Islander",
-    "area": 47.0,
+    "area": 47,
     "timezones": [
       "UTC-08:00"
     ],
@@ -14566,12 +14759,14 @@
       {
         "code": "NZD",
         "name": "New Zealand dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "PND",
         "name": "Pitcairn Islands dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14618,11 +14813,11 @@
     "region": "Europe",
     "population": 37950802,
     "latlng": [
-      52.0,
-      20.0
+      52,
+      20
     ],
     "demonym": "Polish",
-    "area": 312679.0,
+    "area": 312679,
     "gini": 30.2,
     "timezones": [
       "UTC+01:00"
@@ -14646,7 +14841,8 @@
       {
         "code": "PLN",
         "name": "Polish złoty",
-        "symbol": "zł"
+        "symbol": "zł",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14702,10 +14898,10 @@
     "population": 10305564,
     "latlng": [
       39.5,
-      -8.0
+      -8
     ],
     "demonym": "Portuguese",
-    "area": 92090.0,
+    "area": 92090,
     "gini": 33.5,
     "timezones": [
       "UTC-01:00",
@@ -14724,7 +14920,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14782,7 +14979,7 @@
       -66.5
     ],
     "demonym": "Puerto Rican",
-    "area": 8870.0,
+    "area": 8870,
     "timezones": [
       "UTC-04:00"
     ],
@@ -14796,7 +14993,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14854,7 +15052,7 @@
       51.25
     ],
     "demonym": "Qatari",
-    "area": 11586.0,
+    "area": 11586,
     "timezones": [
       "UTC+03:00"
     ],
@@ -14871,7 +15069,8 @@
       {
         "code": "QAR",
         "name": "Qatari riyal",
-        "symbol": "ر.ق"
+        "symbol": "ر.ق",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -14933,8 +15132,8 @@
       21.166667
     ],
     "demonym": "Kosovar",
-    "area": 10908.0,
-    "gini": 29.0,
+    "area": 10908,
+    "gini": 29,
     "timezones": [
       "UTC+01:00"
     ],
@@ -14954,7 +15153,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15029,7 +15229,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15090,11 +15291,11 @@
     "region": "Europe",
     "population": 19286123,
     "latlng": [
-      46.0,
-      25.0
+      46,
+      25
     ],
     "demonym": "Romanian",
-    "area": 238391.0,
+    "area": 238391,
     "gini": 35.8,
     "timezones": [
       "UTC+02:00"
@@ -15116,7 +15317,8 @@
       {
         "code": "RON",
         "name": "Romanian leu",
-        "symbol": "lei"
+        "symbol": "lei",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15172,8 +15374,8 @@
     "region": "Europe",
     "population": 144104080,
     "latlng": [
-      60.0,
-      100.0
+      60,
+      100
     ],
     "demonym": "Russian",
     "area": 17124442,
@@ -15215,7 +15417,8 @@
       {
         "code": "RUB",
         "name": "Russian ruble",
-        "symbol": "₽"
+        "symbol": "₽",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15273,11 +15476,11 @@
     "region": "Africa",
     "population": 12952209,
     "latlng": [
-      -2.0,
-      30.0
+      -2,
+      30
     ],
     "demonym": "Rwandan",
-    "area": 26338.0,
+    "area": 26338,
     "gini": 43.7,
     "timezones": [
       "UTC+02:00"
@@ -15298,7 +15501,8 @@
       {
         "code": "RWF",
         "name": "Rwandan franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -15376,7 +15580,7 @@
       -63.41666666
     ],
     "demonym": "Saint Barthélemy Islander",
-    "area": 21.0,
+    "area": 21,
     "timezones": [
       "UTC-04:00"
     ],
@@ -15390,7 +15594,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15452,7 +15657,8 @@
       {
         "code": "SHP",
         "name": "Saint Helena pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15515,7 +15721,7 @@
       -62.75
     ],
     "demonym": "Kittian and Nevisian",
-    "area": 261.0,
+    "area": 261,
     "timezones": [
       "UTC-04:00"
     ],
@@ -15529,7 +15735,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15590,7 +15797,7 @@
       -60.96666666
     ],
     "demonym": "Saint Lucian",
-    "area": 616.0,
+    "area": 616,
     "gini": 51.2,
     "timezones": [
       "UTC-04:00"
@@ -15605,7 +15812,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15670,7 +15878,7 @@
       -63.95
     ],
     "demonym": "Saint Martin Islander",
-    "area": 53.0,
+    "area": 53,
     "timezones": [
       "UTC-04:00"
     ],
@@ -15688,7 +15896,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15750,7 +15959,7 @@
       -56.33333333
     ],
     "demonym": "French",
-    "area": 242.0,
+    "area": 242,
     "timezones": [
       "UTC-03:00"
     ],
@@ -15764,7 +15973,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15813,7 +16023,7 @@
       -61.2
     ],
     "demonym": "Saint Vincentian",
-    "area": 389.0,
+    "area": 389,
     "timezones": [
       "UTC-04:00"
     ],
@@ -15827,7 +16037,8 @@
       {
         "code": "XCD",
         "name": "East Caribbean dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15890,7 +16101,7 @@
       -172.33333333
     ],
     "demonym": "Samoan",
-    "area": 2842.0,
+    "area": 2842,
     "gini": 38.7,
     "timezones": [
       "UTC+13:00"
@@ -15905,7 +16116,8 @@
       {
         "code": "WST",
         "name": "Samoan tālā",
-        "symbol": "T"
+        "symbol": "T",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -15963,7 +16175,7 @@
       12.41666666
     ],
     "demonym": "Sammarinese",
-    "area": 61.0,
+    "area": 61,
     "timezones": [
       "UTC+01:00"
     ],
@@ -15980,7 +16192,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16028,11 +16241,11 @@
     "region": "Africa",
     "population": 219161,
     "latlng": [
-      1.0,
-      7.0
+      1,
+      7
     ],
     "demonym": "Sao Tomean",
-    "area": 964.0,
+    "area": 964,
     "gini": 56.3,
     "timezones": [
       "UTC"
@@ -16047,7 +16260,8 @@
       {
         "code": "STD",
         "name": "São Tomé and Príncipe dobra",
-        "symbol": "Db"
+        "symbol": "Db",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -16108,11 +16322,11 @@
     "region": "Asia",
     "population": 34813867,
     "latlng": [
-      25.0,
-      45.0
+      25,
+      45
     ],
     "demonym": "Saudi Arabian",
-    "area": 2149690.0,
+    "area": 2149690,
     "timezones": [
       "UTC+03:00"
     ],
@@ -16135,7 +16349,8 @@
       {
         "code": "SAR",
         "name": "Saudi riyal",
-        "symbol": "ر.س"
+        "symbol": "ر.س",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16194,11 +16409,11 @@
     "region": "Africa",
     "population": 16743930,
     "latlng": [
-      14.0,
-      -14.0
+      14,
+      -14
     ],
     "demonym": "Senegalese",
-    "area": 196722.0,
+    "area": 196722,
     "gini": 40.3,
     "timezones": [
       "UTC"
@@ -16220,7 +16435,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -16283,11 +16499,11 @@
     "region": "Europe",
     "population": 6908224,
     "latlng": [
-      44.0,
-      21.0
+      44,
+      21
     ],
     "demonym": "Serbian",
-    "area": 88361.0,
+    "area": 88361,
     "gini": 36.2,
     "timezones": [
       "UTC+01:00"
@@ -16312,7 +16528,8 @@
       {
         "code": "RSD",
         "name": "Serbian dinar",
-        "symbol": "дин."
+        "symbol": "дин.",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16371,7 +16588,7 @@
       55.66666666
     ],
     "demonym": "Seychellois",
-    "area": 452.0,
+    "area": 452,
     "gini": 32.1,
     "timezones": [
       "UTC+04:00"
@@ -16386,7 +16603,8 @@
       {
         "code": "SCR",
         "name": "Seychellois rupee",
-        "symbol": "₨"
+        "symbol": "₨",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16456,7 +16674,7 @@
       -11.5
     ],
     "demonym": "Sierra Leonean",
-    "area": 71740.0,
+    "area": 71740,
     "gini": 35.7,
     "timezones": [
       "UTC"
@@ -16475,7 +16693,8 @@
       {
         "code": "SLL",
         "name": "Sierra Leonean leone",
-        "symbol": "Le"
+        "symbol": "Le",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -16541,7 +16760,7 @@
       103.8
     ],
     "demonym": "Singaporean",
-    "area": 710.0,
+    "area": 710,
     "timezones": [
       "UTC+08:00"
     ],
@@ -16555,7 +16774,8 @@
       {
         "code": "SGD",
         "name": "Singapore dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16629,7 +16849,7 @@
       -63.05
     ],
     "demonym": "Dutch",
-    "area": 34.0,
+    "area": 34,
     "timezones": [
       "UTC-04:00"
     ],
@@ -16646,7 +16866,8 @@
       {
         "code": "ANG",
         "name": "Netherlands Antillean guilder",
-        "symbol": "ƒ"
+        "symbol": "ƒ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16703,8 +16924,8 @@
       19.5
     ],
     "demonym": "Slovak",
-    "area": 49037.0,
-    "gini": 25.0,
+    "area": 49037,
+    "gini": 25,
     "timezones": [
       "UTC+01:00"
     ],
@@ -16725,7 +16946,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16783,7 +17005,7 @@
       14.81666666
     ],
     "demonym": "Slovene",
-    "area": 20273.0,
+    "area": 20273,
     "gini": 24.6,
     "timezones": [
       "UTC+01:00"
@@ -16804,7 +17026,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16856,11 +17079,11 @@
     "region": "Oceania",
     "population": 686878,
     "latlng": [
-      -8.0,
-      159.0
+      -8,
+      159
     ],
     "demonym": "Solomon Islander",
-    "area": 28896.0,
+    "area": 28896,
     "gini": 37.1,
     "timezones": [
       "UTC+11:00"
@@ -16875,7 +17098,8 @@
       {
         "code": "SBD",
         "name": "Solomon Islands dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -16925,11 +17149,11 @@
     "region": "Africa",
     "population": 15893219,
     "latlng": [
-      10.0,
-      49.0
+      10,
+      49
     ],
     "demonym": "Somali",
-    "area": 637657.0,
+    "area": 637657,
     "gini": 36.8,
     "timezones": [
       "UTC+03:00"
@@ -16949,7 +17173,8 @@
       {
         "code": "SOS",
         "name": "Somali shilling",
-        "symbol": "Sh"
+        "symbol": "Sh",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -17026,12 +17251,12 @@
     "region": "Africa",
     "population": 59308690,
     "latlng": [
-      -29.0,
-      24.0
+      -29,
+      24
     ],
     "demonym": "South African",
-    "area": 1221037.0,
-    "gini": 63.0,
+    "area": 1221037,
+    "gini": 63,
     "timezones": [
       "UTC+02:00"
     ],
@@ -17053,7 +17278,8 @@
       {
         "code": "ZAR",
         "name": "South African rand",
-        "symbol": "R"
+        "symbol": "R",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17168,7 +17394,7 @@
     "population": 30,
     "latlng": [
       -54.5,
-      -37.0
+      -37
     ],
     "demonym": "South Georgia and the South Sandwich Islander",
     "timezones": [
@@ -17184,7 +17410,8 @@
       {
         "code": "FKP",
         "name": "Falkland Islands Pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17247,11 +17474,11 @@
     "region": "Asia",
     "population": 51780579,
     "latlng": [
-      37.0,
+      37,
       127.5
     ],
     "demonym": "South Korean",
-    "area": 100210.0,
+    "area": 100210,
     "gini": 31.4,
     "timezones": [
       "UTC+09:00"
@@ -17269,7 +17496,8 @@
       {
         "code": "KRW",
         "name": "South Korean won",
-        "symbol": "₩"
+        "symbol": "₩",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17317,11 +17545,11 @@
     "region": "Europe",
     "population": 47351567,
     "latlng": [
-      40.0,
-      -4.0
+      40,
+      -4
     ],
     "demonym": "Spanish",
-    "area": 505992.0,
+    "area": 505992,
     "gini": 34.7,
     "timezones": [
       "UTC",
@@ -17344,7 +17572,8 @@
       {
         "code": "EUR",
         "name": "Euro",
-        "symbol": "€"
+        "symbol": "€",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17398,11 +17627,11 @@
     "region": "Asia",
     "population": 21919000,
     "latlng": [
-      7.0,
-      81.0
+      7,
+      81
     ],
     "demonym": "Sri Lankan",
-    "area": 65610.0,
+    "area": 65610,
     "gini": 39.3,
     "timezones": [
       "UTC+05:30"
@@ -17420,7 +17649,8 @@
       {
         "code": "LKR",
         "name": "Sri Lankan rupee",
-        "symbol": "Rs"
+        "symbol": "Rs",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -17480,11 +17710,11 @@
     "region": "Africa",
     "population": 43849269,
     "latlng": [
-      15.0,
-      30.0
+      15,
+      30
     ],
     "demonym": "Sudanese",
-    "area": 1886068.0,
+    "area": 1886068,
     "gini": 34.2,
     "timezones": [
       "UTC+03:00"
@@ -17508,7 +17738,8 @@
       {
         "code": "SDG",
         "name": "Sudanese pound",
-        "symbol": "ج.س."
+        "symbol": "ج.س.",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -17582,11 +17813,11 @@
     "region": "Africa",
     "population": 11193729,
     "latlng": [
-      7.0,
-      30.0
+      7,
+      30
     ],
     "demonym": "South Sudanese",
-    "area": 619745.0,
+    "area": 619745,
     "gini": 44.1,
     "timezones": [
       "UTC+03:00"
@@ -17609,7 +17840,8 @@
       {
         "code": "SSP",
         "name": "South Sudanese pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -17672,11 +17904,11 @@
     "region": "Americas",
     "population": 586634,
     "latlng": [
-      4.0,
-      -56.0
+      4,
+      -56
     ],
     "demonym": "Surinamer",
-    "area": 163820.0,
+    "area": 163820,
     "gini": 57.9,
     "timezones": [
       "UTC-03:00"
@@ -17697,7 +17929,8 @@
       {
         "code": "SRD",
         "name": "Surinamese dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17770,8 +18003,8 @@
     "region": "Europe",
     "population": 2562,
     "latlng": [
-      78.0,
-      20.0
+      78,
+      20
     ],
     "demonym": "Norwegian",
     "timezones": [
@@ -17787,7 +18020,8 @@
       {
         "code": "NOK",
         "name": "Norwegian krone",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17841,7 +18075,7 @@
       31.5
     ],
     "demonym": "Swazi",
-    "area": 61399.0,
+    "area": 61399,
     "gini": 54.6,
     "timezones": [
       "UTC+02:00"
@@ -17860,7 +18094,8 @@
       {
         "code": "SZL",
         "name": "Swazi lilangeni",
-        "symbol": "L"
+        "symbol": "L",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -17927,12 +18162,12 @@
     "region": "Europe",
     "population": 10353442,
     "latlng": [
-      62.0,
-      15.0
+      62,
+      15
     ],
     "demonym": "Swedish",
-    "area": 450295.0,
-    "gini": 30.0,
+    "area": 450295,
+    "gini": 30,
     "timezones": [
       "UTC+01:00"
     ],
@@ -17950,7 +18185,8 @@
       {
         "code": "SEK",
         "name": "Swedish krona",
-        "symbol": "kr"
+        "symbol": "kr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18007,11 +18243,11 @@
     "region": "Europe",
     "population": 8636896,
     "latlng": [
-      47.0,
-      8.0
+      47,
+      8
     ],
     "demonym": "Swiss",
-    "area": 41284.0,
+    "area": 41284,
     "gini": 33.1,
     "timezones": [
       "UTC+01:00"
@@ -18033,7 +18269,8 @@
       {
         "code": "CHF",
         "name": "Swiss franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18103,11 +18340,11 @@
     "region": "Asia",
     "population": 17500657,
     "latlng": [
-      35.0,
-      38.0
+      35,
+      38
     ],
     "demonym": "Syrian",
-    "area": 185180.0,
+    "area": 185180,
     "gini": 37.5,
     "timezones": [
       "UTC+02:00"
@@ -18129,7 +18366,8 @@
       {
         "code": "SYP",
         "name": "Syrian pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -18191,10 +18429,10 @@
     "population": 23503349,
     "latlng": [
       23.5,
-      121.0
+      121
     ],
     "demonym": "Taiwanese",
-    "area": 36193.0,
+    "area": 36193,
     "timezones": [
       "UTC+08:00"
     ],
@@ -18208,7 +18446,8 @@
       {
         "code": "TWD",
         "name": "New Taiwan dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18258,12 +18497,12 @@
     "region": "Asia",
     "population": 9537642,
     "latlng": [
-      39.0,
-      71.0
+      39,
+      71
     ],
     "demonym": "Tadzhik",
-    "area": 143100.0,
-    "gini": 34.0,
+    "area": 143100,
+    "gini": 34,
     "timezones": [
       "UTC+05:00"
     ],
@@ -18283,7 +18522,8 @@
       {
         "code": "TJS",
         "name": "Tajikistani somoni",
-        "symbol": "ЅМ"
+        "symbol": "ЅМ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18337,11 +18577,11 @@
     "region": "Africa",
     "population": 59734213,
     "latlng": [
-      -6.0,
-      35.0
+      -6,
+      35
     ],
     "demonym": "Tanzanian",
-    "area": 945087.0,
+    "area": 945087,
     "gini": 40.5,
     "timezones": [
       "UTC+03:00"
@@ -18366,7 +18606,8 @@
       {
         "code": "TZS",
         "name": "Tanzanian shilling",
-        "symbol": "Sh"
+        "symbol": "Sh",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -18436,11 +18677,11 @@
     "region": "Asia",
     "population": 69799978,
     "latlng": [
-      15.0,
-      100.0
+      15,
+      100
     ],
     "demonym": "Thai",
-    "area": 513120.0,
+    "area": 513120,
     "gini": 34.9,
     "timezones": [
       "UTC+07:00"
@@ -18461,7 +18702,8 @@
       {
         "code": "THB",
         "name": "Thai baht",
-        "symbol": "฿"
+        "symbol": "฿",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18521,7 +18763,7 @@
       125.91666666
     ],
     "demonym": "East Timorese",
-    "area": 14874.0,
+    "area": 14874,
     "gini": 28.7,
     "timezones": [
       "UTC+09:00"
@@ -18539,7 +18781,8 @@
       {
         "code": "USD",
         "name": "United States Dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18588,11 +18831,11 @@
     "region": "Africa",
     "population": 8278737,
     "latlng": [
-      8.0,
+      8,
       1.16666666
     ],
     "demonym": "Togolese",
-    "area": 56785.0,
+    "area": 56785,
     "gini": 43.1,
     "timezones": [
       "UTC"
@@ -18612,7 +18855,8 @@
       {
         "code": "XOF",
         "name": "West African CFA franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -18671,11 +18915,11 @@
     "region": "Oceania",
     "population": 1411,
     "latlng": [
-      -9.0,
-      -172.0
+      -9,
+      -172
     ],
     "demonym": "Tokelauan",
-    "area": 12.0,
+    "area": 12,
     "timezones": [
       "UTC+13:00"
     ],
@@ -18689,7 +18933,8 @@
       {
         "code": "NZD",
         "name": "New Zealand dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18734,11 +18979,11 @@
     "region": "Oceania",
     "population": 105697,
     "latlng": [
-      -20.0,
-      -175.0
+      -20,
+      -175
     ],
     "demonym": "Tongan",
-    "area": 747.0,
+    "area": 747,
     "gini": 37.6,
     "timezones": [
       "UTC+13:00"
@@ -18753,7 +18998,8 @@
       {
         "code": "TOP",
         "name": "Tongan paʻanga",
-        "symbol": "T$"
+        "symbol": "T$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18806,11 +19052,11 @@
     "region": "Americas",
     "population": 1399491,
     "latlng": [
-      11.0,
-      -61.0
+      11,
+      -61
     ],
     "demonym": "Trinidadian",
-    "area": 5130.0,
+    "area": 5130,
     "gini": 40.3,
     "timezones": [
       "UTC-04:00"
@@ -18825,7 +19071,8 @@
       {
         "code": "TTD",
         "name": "Trinidad and Tobago dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18884,11 +19131,11 @@
     "region": "Africa",
     "population": 11818618,
     "latlng": [
-      34.0,
-      9.0
+      34,
+      9
     ],
     "demonym": "Tunisian",
-    "area": 163610.0,
+    "area": 163610,
     "gini": 32.8,
     "timezones": [
       "UTC+01:00"
@@ -18907,7 +19154,8 @@
       {
         "code": "TND",
         "name": "Tunisian dinar",
-        "symbol": "د.ت"
+        "symbol": "د.ت",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -18978,11 +19226,11 @@
     "region": "Asia",
     "population": 84339067,
     "latlng": [
-      39.0,
-      35.0
+      39,
+      35
     ],
     "demonym": "Turkish",
-    "area": 783562.0,
+    "area": 783562,
     "gini": 41.9,
     "timezones": [
       "UTC+03:00"
@@ -19007,7 +19255,8 @@
       {
         "code": "TRY",
         "name": "Turkish lira",
-        "symbol": "₺"
+        "symbol": "₺",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19053,11 +19302,11 @@
     "region": "Asia",
     "population": 6031187,
     "latlng": [
-      40.0,
-      60.0
+      40,
+      60
     ],
     "demonym": "Turkmen",
-    "area": 488100.0,
+    "area": 488100,
     "gini": 40.8,
     "timezones": [
       "UTC+05:00"
@@ -19078,7 +19327,8 @@
       {
         "code": "TMT",
         "name": "Turkmenistan manat",
-        "symbol": "m"
+        "symbol": "m",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19134,7 +19384,7 @@
       -71.58333333
     ],
     "demonym": "Turks and Caicos Islander",
-    "area": 948.0,
+    "area": 948,
     "timezones": [
       "UTC-04:00"
     ],
@@ -19148,7 +19398,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19193,11 +19444,11 @@
     "region": "Oceania",
     "population": 11792,
     "latlng": [
-      -8.0,
-      178.0
+      -8,
+      178
     ],
     "demonym": "Tuvaluan",
-    "area": 26.0,
+    "area": 26,
     "gini": 39.1,
     "timezones": [
       "UTC+12:00"
@@ -19212,12 +19463,14 @@
       {
         "code": "AUD",
         "name": "Australian dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       },
       {
         "code": "TVD[G]",
         "name": "Tuvaluan dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19265,11 +19518,11 @@
     "region": "Africa",
     "population": 45741000,
     "latlng": [
-      1.0,
-      32.0
+      1,
+      32
     ],
     "demonym": "Ugandan",
-    "area": 241550.0,
+    "area": 241550,
     "gini": 42.8,
     "timezones": [
       "UTC+03:00"
@@ -19291,7 +19544,8 @@
       {
         "code": "UGX",
         "name": "Ugandan shilling",
-        "symbol": "Sh"
+        "symbol": "Sh",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -19357,11 +19611,11 @@
     "region": "Europe",
     "population": 44134693,
     "latlng": [
-      49.0,
-      32.0
+      49,
+      32
     ],
     "demonym": "Ukrainian",
-    "area": 603700.0,
+    "area": 603700,
     "gini": 26.6,
     "timezones": [
       "UTC+02:00"
@@ -19385,7 +19639,8 @@
       {
         "code": "UAH",
         "name": "Ukrainian hryvnia",
-        "symbol": "₴"
+        "symbol": "₴",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19432,12 +19687,12 @@
     "region": "Asia",
     "population": 9890400,
     "latlng": [
-      24.0,
-      54.0
+      24,
+      54
     ],
     "demonym": "Emirati",
-    "area": 83600.0,
-    "gini": 26.0,
+    "area": 83600,
+    "gini": 26,
     "timezones": [
       "UTC+04:00"
     ],
@@ -19455,7 +19710,8 @@
       {
         "code": "AED",
         "name": "United Arab Emirates dirham",
-        "symbol": "د.إ"
+        "symbol": "د.إ",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19514,11 +19770,11 @@
     "region": "Europe",
     "population": 67215293,
     "latlng": [
-      54.0,
-      -2.0
+      54,
+      -2
     ],
     "demonym": "British",
-    "area": 242900.0,
+    "area": 242900,
     "gini": 35.1,
     "timezones": [
       "UTC-08:00",
@@ -19544,7 +19800,8 @@
       {
         "code": "GBP",
         "name": "British pound",
-        "symbol": "£"
+        "symbol": "£",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19592,11 +19849,11 @@
     "region": "Americas",
     "population": 329484123,
     "latlng": [
-      38.0,
-      -97.0
+      38,
+      -97
     ],
     "demonym": "American",
-    "area": 9629091.0,
+    "area": 9629091,
     "gini": 41.4,
     "timezones": [
       "UTC-12:00",
@@ -19625,7 +19882,8 @@
       {
         "code": "USD",
         "name": "United States dollar",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19683,11 +19941,11 @@
     "region": "Americas",
     "population": 3473727,
     "latlng": [
-      -33.0,
-      -56.0
+      -33,
+      -56
     ],
     "demonym": "Uruguayan",
-    "area": 181034.0,
+    "area": 181034,
     "gini": 39.7,
     "timezones": [
       "UTC-03:00"
@@ -19706,7 +19964,8 @@
       {
         "code": "UYU",
         "name": "Uruguayan peso",
-        "symbol": "$"
+        "symbol": "$",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19772,11 +20031,11 @@
     "region": "Asia",
     "population": 34232050,
     "latlng": [
-      41.0,
-      64.0
+      41,
+      64
     ],
     "demonym": "Uzbekistani",
-    "area": 447400.0,
+    "area": 447400,
     "gini": 35.3,
     "timezones": [
       "UTC+05:00"
@@ -19798,7 +20057,8 @@
       {
         "code": "UZS",
         "name": "Uzbekistani so'm",
-        "symbol": "so'm"
+        "symbol": "so'm",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19853,11 +20113,11 @@
     "region": "Oceania",
     "population": 307150,
     "latlng": [
-      -16.0,
-      167.0
+      -16,
+      167
     ],
     "demonym": "Ni-Vanuatu",
-    "area": 12189.0,
+    "area": 12189,
     "gini": 37.6,
     "timezones": [
       "UTC+11:00"
@@ -19872,7 +20132,8 @@
       {
         "code": "VUV",
         "name": "Vanuatu vatu",
-        "symbol": "Vt"
+        "symbol": "Vt",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -19932,11 +20193,11 @@
     "region": "Americas",
     "population": 28435943,
     "latlng": [
-      8.0,
-      -66.0
+      8,
+      -66
     ],
     "demonym": "Venezuelan",
-    "area": 916445.0,
+    "area": 916445,
     "gini": 44.8,
     "timezones": [
       "UTC-04:00"
@@ -19956,7 +20217,8 @@
       {
         "code": "VEF",
         "name": "Venezuelan bolívar",
-        "symbol": "Bs S"
+        "symbol": "Bs S",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -20025,7 +20287,7 @@
       107.83333333
     ],
     "demonym": "Vietnamese",
-    "area": 331212.0,
+    "area": 331212,
     "gini": 35.7,
     "timezones": [
       "UTC+07:00"
@@ -20045,7 +20307,8 @@
       {
         "code": "VND",
         "name": "Vietnamese đồng",
-        "symbol": "₫"
+        "symbol": "₫",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -20103,7 +20366,7 @@
       -176.2
     ],
     "demonym": "Wallis and Futuna Islander",
-    "area": 142.0,
+    "area": 142,
     "timezones": [
       "UTC+12:00"
     ],
@@ -20117,7 +20380,8 @@
       {
         "code": "XPF",
         "name": "CFP franc",
-        "symbol": "Fr"
+        "symbol": "Fr",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -20164,10 +20428,10 @@
     "population": 510713,
     "latlng": [
       24.5,
-      -13.0
+      -13
     ],
     "demonym": "Sahrawi",
-    "area": 266000.0,
+    "area": 266000,
     "timezones": [
       "UTC+00:00"
     ],
@@ -20186,12 +20450,14 @@
       {
         "code": "MAD",
         "name": "Moroccan dirham",
-        "symbol": "د.م."
+        "symbol": "د.م.",
+        "supports_floating_point": true
       },
       {
         "code": "DZD",
         "name": "Algerian dinar",
-        "symbol": "د.ج"
+        "symbol": "د.ج",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -20251,11 +20517,11 @@
     "region": "Asia",
     "population": 29825968,
     "latlng": [
-      15.0,
-      48.0
+      15,
+      48
     ],
     "demonym": "Yemeni",
-    "area": 527968.0,
+    "area": 527968,
     "gini": 36.7,
     "timezones": [
       "UTC+03:00"
@@ -20274,7 +20540,8 @@
       {
         "code": "YER",
         "name": "Yemeni rial",
-        "symbol": "﷼"
+        "symbol": "﷼",
+        "supports_floating_point": false
       }
     ],
     "languages": [
@@ -20332,11 +20599,11 @@
     "region": "Africa",
     "population": 18383956,
     "latlng": [
-      -15.0,
-      30.0
+      -15,
+      30
     ],
     "demonym": "Zambian",
-    "area": 752618.0,
+    "area": 752618,
     "gini": 57.1,
     "timezones": [
       "UTC+02:00"
@@ -20361,7 +20628,8 @@
       {
         "code": "ZMW",
         "name": "Zambian kwacha",
-        "symbol": "ZK"
+        "symbol": "ZK",
+        "supports_floating_point": true
       }
     ],
     "languages": [
@@ -20421,11 +20689,11 @@
     "region": "Africa",
     "population": 14862927,
     "latlng": [
-      -20.0,
-      30.0
+      -20,
+      30
     ],
     "demonym": "Zimbabwean",
-    "area": 390757.0,
+    "area": 390757,
     "gini": 50.3,
     "timezones": [
       "UTC+02:00"
@@ -20446,7 +20714,8 @@
       {
         "code": "ZMW",
         "name": "Zambian kwacha",
-        "symbol": "K"
+        "symbol": "K",
+        "supports_floating_point": true
       }
     ],
     "languages": [

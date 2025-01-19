@@ -18,7 +18,7 @@ import { users } from './users';
 import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-export const paymentMethodProviders = pgEnum('payment_method_provider', ['momo']);
+export const paymentMethodProviders = pgEnum('payment_method_provider', ['momo','virtual']);
 export const paymentMethodStatus = pgEnum('payment_method_status', ['active', 'inactive', 're-connection required']);
 export const paymentMethods = pgTable('payment_methods', {
   id: uuid().primaryKey().defaultRandom(),

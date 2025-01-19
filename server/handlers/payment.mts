@@ -1,14 +1,27 @@
 import { extractUser } from "@helpers/auth.mjs";
 import { useFinanceDb } from "@helpers/db.mjs";
 import { handleError } from "@helpers/error.mjs";
+import { PaymentMethodProviderSchema } from "@lib/models/payment-method-lookup";
 import { useLogger } from "@logger/common";
 import { paymentMethods } from "@schemas/finance";
 import { RemoveMomoPaymentMethodSchema, UpdatePaymentMethodSchema } from "@zod-schemas/payment-method.mjs";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, ne, sql } from "drizzle-orm";
 import { Request, Response } from "express";
+import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
 const logger = useLogger({ service: 'payments' });
+const productionProviders = [{ label: 'MTN Mobile Money', name: 'momo', image: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Mtn_mobile_money_logo.png' }];
+const devProviders = [{ label: 'Virtual Transfers', name: 'virtual' }];
+
+export async function handleFindPaymentProviders(req: Request, res: Response) {
+  const ans: any = [...productionProviders];
+  if (req.header('x-nf-deploy-context') === 'dev' || req.header('x-nf-deploy-published') !== '1')
+    ans.push(...devProviders);
+
+  res.json(z.array(PaymentMethodProviderSchema).parse(ans));
+}
+
 export async function handleRemovePaymentMethod(req: Request, res: Response) {
   logger.info('removing payment method');
   const { success, data, error } = RemoveMomoPaymentMethodSchema.safeParse(req.query);
@@ -67,7 +80,12 @@ export async function findUserPaymentMethods(req: Request, res: Response) {
       provider: true,
       status: true
     },
-    where: (method, { eq }) => eq(method.owner, user.id)
+    where: (method, { eq }) => {
+      if (req.header('x-nf-deploy-context') === 'dev' || req.header('x-nf-deploy-published') !== '1') {
+        return eq(method.owner, user.id);
+      }
+      return and(eq(method.owner, user.id), ne(method.provider, 'virtual'));
+    }
   });
 
   res.json(paymentMethods);
@@ -81,4 +99,17 @@ export async function doRemovePaymentMethods(userId: number) {
 async function removePaymentMethod(userId: number, provider: 'momo') {
   const db = useFinanceDb();
   return await db.transaction(t => t.delete(paymentMethods).where(and(eq(paymentMethods.owner, userId), eq(paymentMethods.provider, provider))));
+}
+
+export async function doCreateVirtualPaymentMethod(userId: number) {
+  logger.info('creating virtual payment method', { userId });
+  const db = useFinanceDb();
+  await db.transaction(t => t.insert(paymentMethods).values({
+    owner: userId,
+    params: { userId },
+    provider: 'virtual',
+    status: 'active'
+  }).onConflictDoNothing({
+    target: [paymentMethods.provider, paymentMethods.owner]
+  }))
 }

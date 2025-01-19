@@ -1,9 +1,14 @@
-import { extractUser }                                              from '@helpers/auth.mjs';
-import { useFinanceDb }                                             from '@helpers/db.mjs';
-import { handleError }                                              from '@helpers/error.mjs';
+import { extractUser } from '@helpers/auth.mjs';
+import { useFinanceDb } from '@helpers/db.mjs';
+import { handleError } from '@helpers/error.mjs';
+import { useLogger } from '@logger/common';
 import { BalancesSchema, fundingBalances, rewardBalances, wallets } from '@schemas/finance';
-import { eq }                                                       from 'drizzle-orm';
-import { Request, Response }                                        from 'express';
+import { eq } from 'drizzle-orm';
+import { Request, Response } from 'express';
+
+const logger = useLogger({
+  service: 'wallet'
+});
 
 export async function getUserWalletBalances(req: Request, res: Response) {
   const db = useFinanceDb();
@@ -18,15 +23,18 @@ export async function getUserWalletBalances(req: Request, res: Response) {
 }
 
 export async function doDeleteUserWallet(userId: number) {
+  logger.info('removing user wallet', { userId });
   const db = useFinanceDb();
   await db.transaction(t => {
     return t.delete(wallets).where(eq(wallets.ownedBy, userId));
   });
 }
 
-export async function doCreateUserWallet(userId: number) {
+export async function doCreateUserWallet(userId: number, startingBalance: number = 0) {
+  logger.info('creating user wallet', { startingBalance, userId });
   const db = useFinanceDb();
   await db.transaction(t => t.insert(wallets).values({
-    ownedBy: userId
+    ownedBy: userId,
+    startingBalance
   }));
 }

@@ -1,3 +1,0 @@
-CREATE VIEW "public"."vw_credit_allocations" AS (select "credit_allocations"."id", "credit_allocations"."wallet", "credit_allocations"."allocated", 
-        COALESCE(SUM("wallet_transactions"."value"), 0)
-       as "exhausted" from "credit_allocations" left join "wallet_transactions" on ("credit_allocations"."id" = "wallet_transactions"."credit_allocation" and "wallet_transactions"."type" = 'reward' and "wallet_transactions"."from" = "credit_allocations"."wallet") group by "credit_allocations"."id");

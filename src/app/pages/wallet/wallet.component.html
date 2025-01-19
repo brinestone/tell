@@ -70,7 +70,7 @@
     <ng-template #header>
       <h1 class="text-lg font-bold">Top up your Account</h1>
     </ng-template>
-    <tm-top-up-form />
+    <tm-top-up-form (error)="onTopUpFormErrored($event)" (onSubmit)="onTopUpFormSubmitted()" />
   </p-drawer>
 
 </div>

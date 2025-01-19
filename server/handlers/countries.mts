@@ -1,12 +1,30 @@
-import { ExchangeRateResponse } from '@lib/models/country-data';
+import { Currency, ExchangeRateResponse } from '@lib/models/country-data';
 import { useLogger } from '@logger/common';
 import { getStore } from '@netlify/blobs';
 import { Context } from '@netlify/functions';
 import { ExchangerateQuerySchema, GetCountryByIso2CodeSchema } from '@zod-schemas/countries.mjs';
 import _ from 'lodash';
 import AllCountries from '../../assets/countries.json';
+import { fromError } from 'zod-validation-error';
 
 const logger = useLogger({ service: 'countries' });
+
+export function handleFindAllCurrencies(_: Request, ctx: Context) {
+  return ctx.json(findAllCurrencies());
+}
+
+export function currencyExistsByCode(code: string) {
+  const dict = new Map<string, Currency>();
+  AllCountries.flatMap(c => c.currencies ?? []).forEach(c => dict.set(c.code, c));
+  return dict.has(code);
+}
+
+export function findAllCurrencies() {
+  const dict = new Map<string, Currency>();
+  AllCountries.flatMap(c => c.currencies ?? []).forEach(c => dict.set(c.code, c));
+  return [...dict.values()];
+}
+
 export async function getAllCountries(_: Request, ctx: Context) {
   return ctx.json(AllCountries);
 }
@@ -31,7 +49,12 @@ export async function findExchangeRates(req: Request, ctx: Context) {
     acc[k] = v;
     return acc
   }, {} as Record<string, string>);
-  const { dest, src } = ExchangerateQuerySchema.parse(params);
+  const { success, error, data } = ExchangerateQuerySchema.safeParse(params);
+  if (!success) {
+    return new Response(JSON.stringify({ message: fromError(error) }), { status: 400, headers: { 'content-type': 'application/json' } });
+  }
+
+  const { src, dest } = data;
   const ratesStore = getStore({
     name: 'exchangeRates',
     consistency: 'strong'

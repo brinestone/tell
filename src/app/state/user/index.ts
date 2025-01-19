@@ -1,10 +1,10 @@
-import { HttpClient, HttpErrorResponse }                                              from '@angular/common/http';
-import { EnvironmentProviders, inject, Injectable }                                   from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { EnvironmentProviders, inject, Injectable } from '@angular/core';
 import {
   PaymentMethodLookup
-}                                                                                     from '@lib/models/payment-method-lookup';
+} from '@lib/models/payment-method-lookup';
 import { AccessTokenClaimsSchema, DisplayPrefs, RefreshTokenClaimsSchema, UserPrefs } from '@lib/models/user';
-import { Navigate }                                                                   from '@ngxs/router-plugin';
+import { Navigate } from '@ngxs/router-plugin';
 import {
   Action,
   createPropertySelectors,
@@ -13,11 +13,11 @@ import {
   State,
   StateContext,
   StateToken
-}                                                                                     from '@ngxs/store';
-import { patch }                                                                      from '@ngxs/store/operators';
-import { jwtDecode }                                                                  from 'jwt-decode';
-import { catchError, EMPTY, map, Observable, switchMap, tap, throwError }             from 'rxjs';
-import { z }                                                                          from 'zod';
+} from '@ngxs/store';
+import { patch } from '@ngxs/store/operators';
+import { jwtDecode } from 'jwt-decode';
+import { catchError, EMPTY, map, Observable, switchMap, tap, throwError } from 'rxjs';
+import { z } from 'zod';
 import {
   FinishGoogleSignInFlow,
   GoogleSignInFlow,
@@ -29,9 +29,9 @@ import {
   SignedOut,
   SignOut,
   UpdatePrefs
-}                                                                                     from './actions';
-import { Location }                                                                   from '@angular/common';
-import { Router }                                                                     from '@angular/router';
+} from './actions';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 export * from './actions';
 
@@ -107,6 +107,10 @@ export class UserState implements NgxsOnInit {
           accessToken,
           principal: PrincipalSchema.parse(access)
         }));
+      }),
+      catchError(() => {
+        ctx.dispatch(new SignOut(this.router.url));
+        return EMPTY;
       })
     )
   }
