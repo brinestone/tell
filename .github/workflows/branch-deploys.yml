@@ -21,6 +21,7 @@ jobs:
       DATABASE_URL: ${{ secrets.STAGING_DB }}
       SYSTEM_WALLET: ${{ secrets.STAGING_SYSTEM_WALLET }}
       SYSTEM_STARTING_BALANCE: ${{ secrets.STAGING_SYSTEM_STARTING_BALANCE }}
+      ORIGIN: https://staging--tellthem.netlify.app
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4

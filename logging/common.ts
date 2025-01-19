@@ -1,9 +1,8 @@
+import { Logtail } from '@logtail/node';
+import DatadogWinston from 'datadog-winston';
+import { hostname } from 'node:os';
 import winston from 'winston';
 import Transport from 'winston-transport';
-import { Logtail } from '@logtail/node';
-import { from, retry } from 'rxjs';
-import { hostname } from 'node:os';
-import DatadogWinston from 'datadog-winston';
 
 class LogTailTransport extends Transport {
   private logTail: Logtail;
