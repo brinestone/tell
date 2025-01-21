@@ -13,7 +13,7 @@ import { Fluid } from 'primeng/fluid';
 import { InputNumber } from 'primeng/inputnumber';
 import { Message } from 'primeng/message';
 import { Select } from 'primeng/select';
-import { concatMap, distinctUntilKeyChanged, EMPTY } from 'rxjs';
+import { concatMap, distinctUntilKeyChanged, EMPTY, tap } from 'rxjs';
 
 @Component({
   selector: 'tm-top-up-form',
@@ -135,14 +135,14 @@ export class TopUpFormComponent {
             dest: 'XAF'
           }
         })
-      })
+      }),
     ).subscribe({
       next: ({ XAF }) => {
         this.exchangeRate.set(XAF);
       },
       error: (error: HttpErrorResponse) => {
         this.error.emit(error.error ?? error);
-      },
+      }
     })
   }
 }

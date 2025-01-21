@@ -1,5 +1,5 @@
 {
-  "id": "dbf2407a-c5ef-4d26-8839-0035147ea608",
+  "id": "966723f1-b0c3-406c-b2b9-498942dd6a70",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -25,15 +25,15 @@
             "cycle": false
           }
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -45,21 +45,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "credit_allocation": {
-          "name": "credit_allocation",
+        "creditAllocation": {
+          "name": "creditAllocation",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "publish_after": {
-          "name": "publish_after",
+        "publishAfter": {
+          "name": "publishAfter",
           "type": "date",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "publish_before": {
-          "name": "publish_before",
+        "publishBefore": {
+          "name": "publishBefore",
           "type": "date",
           "primaryKey": false,
           "notNull": false
@@ -80,12 +80,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "campaign_publications_credit_allocation_credit_allocations_id_fk": {
-          "name": "campaign_publications_credit_allocation_credit_allocations_id_fk",
+        "campaign_publications_creditAllocation_credit_allocations_id_fk": {
+          "name": "campaign_publications_creditAllocation_credit_allocations_id_fk",
           "tableFrom": "campaign_publications",
           "tableTo": "credit_allocations",
           "columnsFrom": [
-            "credit_allocation"
+            "creditAllocation"
           ],
           "columnsTo": [
             "id"
@@ -161,15 +161,15 @@
           "notNull": false,
           "default": "'{}'"
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -182,14 +182,14 @@
           "notNull": false,
           "default": "'{}'"
         },
-        "created_by": {
-          "name": "created_by",
+        "createdBy": {
+          "name": "createdBy",
           "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
-        "redirect_url": {
-          "name": "redirect_url",
+        "redirectUrl": {
+          "name": "redirectUrl",
           "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false
@@ -197,12 +197,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "campaigns_created_by_users_id_fk": {
-          "name": "campaigns_created_by_users_id_fk",
+        "campaigns_createdBy_users_id_fk": {
+          "name": "campaigns_createdBy_users_id_fk",
           "tableFrom": "campaigns",
           "tableTo": "users",
           "columnsFrom": [
-            "created_by"
+            "createdBy"
           ],
           "columnsTo": [
             "id"
@@ -297,15 +297,15 @@
           "notNull": true,
           "default": "'active'"
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -373,8 +373,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "payment_method": {
-          "name": "payment_method",
+        "paymentMethod": {
+          "name": "paymentMethod",
           "type": "payment_method_provider",
           "typeSchema": "public",
           "primaryKey": false,
@@ -387,33 +387,45 @@
           "primaryKey": false,
           "notNull": true
         },
-        "external_transaction_id": {
-          "name": "external_transaction_id",
+        "externalTransactionId": {
+          "name": "externalTransactionId",
           "type": "varchar(400)",
           "primaryKey": false,
           "notNull": false
         },
-        "recorded_at": {
-          "name": "recorded_at",
+        "recordedAt": {
+          "name": "recordedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "completed_at": {
-          "name": "completed_at",
+        "completedAt": {
+          "name": "completedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "cancelled_at": {
-          "name": "cancelled_at",
+        "cancelledAt": {
+          "name": "cancelledAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
         "value": {
           "name": "value",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "exchangeRateSnapshot": {
+          "name": "exchangeRateSnapshot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "convertedValue": {
+          "name": "convertedValue",
           "type": "real",
           "primaryKey": false,
           "notNull": true
@@ -462,28 +474,21 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "exhausted": {
-          "name": "exhausted",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
         "allocated": {
           "name": "allocated",
-          "type": "real",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -547,7 +552,7 @@
           "name": "from",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "to": {
           "name": "to",
@@ -555,21 +560,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "recorded_at": {
-          "name": "recorded_at",
+        "recordedAt": {
+          "name": "recordedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "completed_at": {
-          "name": "completed_at",
+        "completedAt": {
+          "name": "completedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "cancelled_at": {
-          "name": "cancelled_at",
+        "cancelledAt": {
+          "name": "cancelledAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -595,14 +600,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "account_transaction": {
-          "name": "account_transaction",
+        "accountTransaction": {
+          "name": "accountTransaction",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "credit_allocation": {
-          "name": "credit_allocation",
+        "creditAllocation": {
+          "name": "creditAllocation",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -636,12 +641,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "wallet_transactions_account_transaction_payment_transactions_id_fk": {
-          "name": "wallet_transactions_account_transaction_payment_transactions_id_fk",
+        "wallet_transactions_accountTransaction_payment_transactions_id_fk": {
+          "name": "wallet_transactions_accountTransaction_payment_transactions_id_fk",
           "tableFrom": "wallet_transactions",
           "tableTo": "payment_transactions",
           "columnsFrom": [
-            "account_transaction"
+            "accountTransaction"
           ],
           "columnsTo": [
             "id"
@@ -649,12 +654,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "wallet_transactions_credit_allocation_credit_allocations_id_fk": {
-          "name": "wallet_transactions_credit_allocation_credit_allocations_id_fk",
+        "wallet_transactions_creditAllocation_credit_allocations_id_fk": {
+          "name": "wallet_transactions_creditAllocation_credit_allocations_id_fk",
           "tableFrom": "wallet_transactions",
           "tableTo": "credit_allocations",
           "columnsFrom": [
-            "credit_allocation"
+            "creditAllocation"
           ],
           "columnsTo": [
             "id"
@@ -680,28 +685,28 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "owned_by": {
-          "name": "owned_by",
+        "ownedBy": {
+          "name": "ownedBy",
           "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "starting_balance": {
-          "name": "starting_balance",
+        "startingBalance": {
+          "name": "startingBalance",
           "type": "bigint",
           "primaryKey": false,
           "notNull": false,
@@ -710,12 +715,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "wallets_owned_by_users_id_fk": {
-          "name": "wallets_owned_by_users_id_fk",
+        "wallets_ownedBy_users_id_fk": {
+          "name": "wallets_ownedBy_users_id_fk",
           "tableFrom": "wallets",
           "tableTo": "users",
           "columnsFrom": [
-            "owned_by"
+            "ownedBy"
           ],
           "columnsTo": [
             "id"
@@ -825,15 +830,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -866,8 +871,8 @@
           "notNull": true,
           "default": "'active'"
         },
-        "provider_id": {
-          "name": "provider_id",
+        "providerId": {
+          "name": "providerId",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -911,21 +916,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "last_access_token": {
-          "name": "last_access_token",
+        "lastAccessToken": {
+          "name": "lastAccessToken",
           "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -1103,15 +1108,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -1193,15 +1198,15 @@
             "cycle": false
           }
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -1213,8 +1218,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "image_url": {
-          "name": "image_url",
+        "imageUrl": {
+          "name": "imageUrl",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1418,7 +1423,7 @@
           "notNull": true
         }
       },
-      "definition": "select \"wallets\".\"id\", \n      \"wallets\".\"starting_balance\" +\n      SUM(\n        CASE\n          WHEN \"credit_allocations\".\"status\" = 'active' THEN \"credit_allocations\".\"allocated\"\n          ELSE 0\n        END\n      ) * -1 +\n      SUM(\n        CASE\n          WHEN (\"wallet_transactions\".\"from\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'funding' and \"wallet_transactions\".\"status\" = 'complete') THEN -\"wallet_transactions\".\"value\"\n          WHEN (\"wallet_transactions\".\"to\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'funding' and \"wallet_transactions\".\"status\" = 'complete') THEN \"wallet_transactions\".\"value\"\n          ELSE 0\n        END\n      )::BIGINT as \"balance\", \"wallets\".\"owned_by\" from \"wallets\" left join \"wallet_transactions\" on (\"wallets\".\"id\" = \"wallet_transactions\".\"from\" or \"wallets\".\"id\" = \"wallet_transactions\".\"to\") left join \"users\" on \"wallets\".\"owned_by\" = \"users\".\"id\" left join \"credit_allocations\" on \"wallets\".\"id\" = \"credit_allocations\".\"wallet\" group by \"wallets\".\"id\", \"wallets\".\"owned_by\"",
+      "definition": "select \"wallets\".\"id\", \"wallets\".\"ownedBy\", \n        \"wallets\".\"startingBalance\" -\n        COALESCE(\"total_allocated\",0) -\n        COALESCE(\"total_outgoing\",0) +\n        COALESCE(\"total_incoming\",0)\n       as \"balance\" from \"wallets\" left join (select \"to\", COALESCE(SUM(\"value\"), 0) as \"total_incoming\" from \"wallet_transactions\" where \"wallet_transactions\".\"status\" = 'complete' group by \"wallet_transactions\".\"to\") \"incoming_transactions\" on \"incoming_transactions\".\"to\" = \"wallets\".\"id\" left join (select \"from\", COALESCE(SUM(\"value\"), 0) as \"total_outgoing\" from \"wallet_transactions\" where \"wallet_transactions\".\"status\" = 'complete' group by \"wallet_transactions\".\"from\") \"outgoing_transactions\" on \"outgoing_transactions\".\"from\" = \"wallets\".\"id\" left join (select \"wallet\", COALESCE(SUM(\"allocated\"), 0) as \"total_allocated\" from \"credit_allocations\" where \"credit_allocations\".\"status\" = 'active' group by \"credit_allocations\".\"wallet\") \"allocation_summary\" on \"allocation_summary\".\"wallet\" = \"wallets\".\"id\"",
       "name": "vw_funding_balances",
       "schema": "public",
       "isExisting": false,
@@ -1440,7 +1445,7 @@
           "notNull": true
         }
       },
-      "definition": "select \"wallets\".\"id\", \n      SUM(\n        CASE\n          WHEN (\"wallet_transactions\".\"from\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN -\"wallet_transactions\".\"value\"\n          WHEN (\"wallet_transactions\".\"to\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN \"wallet_transactions\".\"value\"\n          ELSE 0\n        END\n      )::BIGINT as \"balance\", \"wallets\".\"owned_by\" from \"wallets\" left join \"wallet_transactions\" on (\"wallets\".\"id\" = \"wallet_transactions\".\"from\" or \"wallets\".\"id\" = \"wallet_transactions\".\"to\") left join \"users\" on \"wallets\".\"owned_by\" = \"users\".\"id\" group by \"wallets\".\"id\", \"wallets\".\"owned_by\"",
+      "definition": "select \"wallets\".\"id\", \n      SUM(\n        CASE\n          WHEN (\"wallet_transactions\".\"from\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN -\"wallet_transactions\".\"value\"\n          WHEN (\"wallet_transactions\".\"to\" = \"wallets\".\"id\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"status\" = 'complete') THEN \"wallet_transactions\".\"value\"\n          ELSE 0\n        END\n      )::BIGINT as \"balance\", \"wallets\".\"ownedBy\" from \"wallets\" left join \"wallet_transactions\" on (\"wallets\".\"id\" = \"wallet_transactions\".\"from\" or \"wallets\".\"id\" = \"wallet_transactions\".\"to\") left join \"users\" on \"wallets\".\"ownedBy\" = \"users\".\"id\" group by \"wallets\".\"id\", \"wallets\".\"ownedBy\"",
       "name": "vw_reward_balances",
       "schema": "public",
       "isExisting": false,
@@ -1463,12 +1468,12 @@
         },
         "allocated": {
           "name": "allocated",
-          "type": "real",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         }
       },
-      "definition": "select \"credit_allocations\".\"id\", \"credit_allocations\".\"wallet\", \"credit_allocations\".\"allocated\", \n        COALESCE(SUM(\"wallet_transactions\".\"value\"), 0)\n       as \"exhausted\" from \"credit_allocations\" left join \"wallet_transactions\" on (\"credit_allocations\".\"id\" = \"wallet_transactions\".\"credit_allocation\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"from\" = \"credit_allocations\".\"wallet\") group by \"credit_allocations\".\"id\"",
+      "definition": "select \"credit_allocations\".\"id\", \"credit_allocations\".\"wallet\", \"credit_allocations\".\"allocated\", \n        SUM(\n          CASE\n            WHEN (\"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"from\" = \"credit_allocations\".\"wallet\") THEN \"wallet_transactions\".\"value\"\n            ELSE 0\n          END\n        )\n       as \"exhausted\" from \"credit_allocations\" left join \"wallet_transactions\" on (\"credit_allocations\".\"id\" = \"wallet_transactions\".\"creditAllocation\" and \"wallet_transactions\".\"type\" = 'reward' and \"wallet_transactions\".\"from\" = \"credit_allocations\".\"wallet\") group by \"credit_allocations\".\"id\"",
       "name": "vw_credit_allocations",
       "schema": "public",
       "isExisting": false,

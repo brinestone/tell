@@ -1,4 +1,4 @@
-import { and, eq, or, sql } from 'drizzle-orm';
+import { and, eq, or, sql, sum } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -59,8 +59,7 @@ export const walletTransactions = pgTable('wallet_transactions', {
 export const creditAllocationStatus = pgEnum('credit_allocation_status', ['active', 'cancelled', 'complete']);
 export const walletCreditAllocations = pgTable('credit_allocations', {
   id: uuid().primaryKey().defaultRandom(),
-  exhausted: real().notNull().default(0),
-  allocated: real().notNull(),
+  allocated: bigint({ mode: 'number' }).notNull(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).defaultNow(),
   status: creditAllocationStatus().notNull().default('active'),
@@ -85,30 +84,46 @@ export const paymentTransactions = pgTable('payment_transactions', {
 });
 
 export const fundingBalances = pgView('vw_funding_balances')
-  .as(qb => qb.select({
-    id: wallets.id,
-    balance: sql<number>`
-      ${wallets.startingBalance} +
-      SUM(
-        CASE
-          WHEN ${eq(walletCreditAllocations.status, 'active')} THEN ${walletCreditAllocations.allocated}
-          ELSE 0
-        END
-      ) * -1 +
-      SUM(
-        CASE
-          WHEN ${and(eq(walletTransactions.from, wallets.id), eq(walletTransactions.type, 'funding'), eq(walletTransactions.status, 'complete'))} THEN -${walletTransactions.value}
-          WHEN ${and(eq(walletTransactions.to, wallets.id), eq(walletTransactions.type, 'funding'), eq(walletTransactions.status, 'complete'))} THEN ${walletTransactions.value}
-          ELSE 0
-        END
-      )::BIGINT`.as('balance'),
-    ownerId: wallets.ownedBy
-  }).from(wallets)
-    .leftJoin(walletTransactions, (wallet) => or(eq(wallet.id, walletTransactions.from), eq(wallet.id, walletTransactions.to)))
-    .leftJoin(users, (wallet) => eq(wallet.ownerId, users.id))
-    .leftJoin(walletCreditAllocations, (wallet) => eq(wallet.id, walletCreditAllocations.wallet))
-    .groupBy(wallets.id, wallets.ownedBy)
-  );
+  .as(qb => {
+    const incomingTransactions = qb.select({
+      walletId: walletTransactions.to,
+      totalIncoming: sql<number>`COALESCE(SUM(${walletTransactions.value}), 0)`.as('total_incoming')
+    })
+      .from(walletTransactions)
+      .where(eq(walletTransactions.status, 'complete'))
+      .groupBy(walletTransactions.to)
+      .as('incoming_transactions');
+
+    const outgoingTransactions = qb.select({
+      walletId: walletTransactions.from,
+      totalOutgoing: sql<number>`COALESCE(SUM(${walletTransactions.value}), 0)`.as('total_outgoing')
+    }).from(walletTransactions)
+      .where(eq(walletTransactions.status, 'complete'))
+      .groupBy(walletTransactions.from)
+      .as('outgoing_transactions');
+
+    const allocationSummary = qb.select({
+      walletId: walletCreditAllocations.wallet,
+      totalAllocated: sql<number>`COALESCE(SUM(${walletCreditAllocations.allocated}), 0)`.as('total_allocated')
+    }).from(walletCreditAllocations)
+      .where(eq(walletCreditAllocations.status, 'active'))
+      .groupBy(walletCreditAllocations.wallet)
+      .as('allocation_summary');
+
+    return qb.select({
+      id: wallets.id,
+      ownerId: wallets.ownedBy,
+      balance: sql<number>`
+        ${wallets.startingBalance} -
+        COALESCE(${allocationSummary.totalAllocated},0) -
+        COALESCE(${outgoingTransactions.totalOutgoing},0) +
+        COALESCE(${incomingTransactions.totalIncoming},0)
+      `.as('balance')
+    }).from(wallets)
+      .leftJoin(incomingTransactions, w => eq(incomingTransactions.walletId, w.id))
+      .leftJoin(outgoingTransactions, w => eq(outgoingTransactions.walletId, w.id))
+      .leftJoin(allocationSummary, w => eq(allocationSummary.walletId, w.id))
+  });
 
 export const rewardBalances = pgView('vw_reward_balances')
   .as(qb => qb.select({
@@ -135,7 +150,12 @@ export const vwCreditAllocations = pgView('vw_credit_allocations').as(
       wallet: walletCreditAllocations.wallet,
       allocated: walletCreditAllocations.allocated,
       exhausted: sql<number>`
-        COALESCE(SUM(${walletTransactions.value}), 0)
+        SUM(
+          CASE
+            WHEN ${and(eq(walletTransactions.type, 'reward'), eq(walletTransactions.from, walletCreditAllocations.wallet))} THEN ${walletTransactions.value}
+            ELSE 0
+          END
+        )
       `.as('exhausted')
     })
       .from(walletCreditAllocations)

@@ -6,7 +6,7 @@ import { useLogger } from '@logger/common';
 import { CampaignLookupSchema, campaignPublications, campaigns, newCampaignSchema, newPublicationSchema, updateCampaignSchema } from '@schemas/campaigns';
 import { fundingBalances, vwCreditAllocations, walletCreditAllocations } from '@schemas/finance';
 import { CampaignIdExtractorSchema, CampaignLookupPaginationValidationSchema } from '@zod-schemas/campaigns.mjs';
-import { and, count, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq, inArray } from 'drizzle-orm';
 import express from 'express';
 import { z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -29,7 +29,10 @@ export async function deleteCampaign(req: express.Request, res: express.Response
     const user = extractUser(req);
     const db = useCampaignsDb();
     await db.transaction(async t => {
-      await t.delete(campaignPublications).where(eq(campaignPublications.campaign, campaign));
+      const publications = await t.select({ id: campaignPublications.id, allocation: campaignPublications.creditAllocation }).from(campaignPublications).where(eq(campaignPublications.campaign, campaign));
+
+      await t.delete(walletCreditAllocations).where(inArray(walletCreditAllocations.id, publications.map(({ allocation }) => allocation)));
+      await t.delete(campaignPublications).where(inArray(campaignPublications.id, publications.map(({ id }) => id)));
       await t.delete(campaigns).where(and(eq(campaigns.id, campaign), eq(campaigns.createdBy, user.id)));
     });
     res.status(200).json({});

@@ -1,1 +1,0 @@
-ALTER TABLE "payment_transactions" ADD COLUMN "converted_value" real NOT NULL;

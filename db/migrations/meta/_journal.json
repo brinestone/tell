@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1737269652579,
-      "tag": "0000_melted_imperial_guard",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1737307129025,
-      "tag": "0001_panoramic_namora",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1737307194352,
-      "tag": "0002_ambitious_spirit",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1737309892074,
-      "tag": "0003_ancient_storm",
+      "when": 1737462973413,
+      "tag": "0000_breezy_surge",
       "breakpoints": true
     }
   ]
