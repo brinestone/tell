@@ -1,27 +1,16 @@
-name: Staging Deploy
+name: "Production database migration"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - next
-    paths:
-      - "server/**/*.*"
-      - "src/**/*.*"
-      - "lib/**/*.*"
-      - "netlify.toml"
 
 jobs:
-  build_and_deploy:
-    name: Build and deploy to Netlify
+  migrate_db:
     runs-on: ubuntu-22.04
     env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      DATABASE_URL: ${{ secrets.STAGING_DB }}
-      SYSTEM_WALLET: ${{ secrets.STAGING_SYSTEM_WALLET }}
-      SYSTEM_STARTING_BALANCE: ${{ vars.STAGING_SYSTEM_STARTING_BALANCE }}
-      ORIGIN: ${{ vars.STAGING_ORIGIN }}
+      DATABASE_URL: ${{ secrets.PRODUCTION_DB }}
+      SYSTEM_WALLET: ${{ secrets.PRODUCTION_SYSTEM_WALLET }}
+      SYSTEM_STARTING_BALANCE: ${{ vars.PRODUCTION_SYSTEM_STARTING_BALANCE }}
+      ORIGIN: ${{ vars.PRODUCTION_ORIGIN }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -50,6 +39,4 @@ jobs:
         if: steps.setup-cache.outputs.cache-hit != 'true'
         run: pnpm i
       - name: Migrate Database Schema
-        run: pnpm migrate.staging
-      - name: Build ⚙️ & Deploy ⬆️
-        run: netlify deploy --alias="staging" --build --context branch-deploy --message="${{ github.event.head_commit.message }}"
+        run: pnpm migrate.prod
