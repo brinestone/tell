@@ -1,4 +1,12 @@
-<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="grid grid-cols-[auto_1fr] gap-3">
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="grid grid-cols-[auto_1fr] gap-3 py-3">
+  @if(registeredPaymentMethods().length == 0) {
+  <div class="col-span-2">
+    <p-message severity="warn" variant="outlined" icon="pi pi-exclamation-triangle" size="small">
+      You have not added any payment methods. You can add one by clicking <strong><a routerLink="/settings"
+          class="inline">here</a></strong>
+    </p-message>
+  </div>
+  }@else {
   <div>
     <label for="top-up-pm" class="font-medium">Payment method <span class="text-red-500">*</span></label>
   </div>
@@ -9,6 +17,7 @@
         [checkmark]="true" />
     </p-fluid>
   </div>
+  }
   <div>
     <label for="top-up-currency" class="font-medium">Currency <span class="text-red-500">*</span></label>
   </div>
@@ -57,7 +66,7 @@
     </div>
   </div>
   <div class="col-span-2">
-    <p-button [disabled]="form.invalid || submitting()"
-      [label]="submitting() ? 'Processing...' : 'Finish'" type="submit" styleClass="block w-full" size="small" />
+    <p-button [disabled]="form.invalid || submitting()" [label]="submitting() ? 'Processing...' : 'Finish'"
+      type="submit" styleClass="block w-full" size="small" />
   </div>
 </form>

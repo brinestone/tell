@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { paymentMethods, preferences } from '@app/state/user';
 import { environment } from '@env/environment.development';
 import { Currency } from '@lib/models/country-data';
@@ -22,6 +23,7 @@ import { concatMap, distinctUntilKeyChanged, EMPTY, tap } from 'rxjs';
     Fluid,
     InputNumber,
     ReactiveFormsModule,
+    RouterLink,
     Button,
     DecimalPipe,
     Message,
