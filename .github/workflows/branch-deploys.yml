@@ -1,14 +1,16 @@
-name: Branch Deploys for Netlify
+name: Staging Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - next
     paths:
-      - "netlify/functions/**/*.*"
+      - "server/**/*.*"
       - "src/**/*.*"
       - "lib/**/*.*"
       - "netlify.toml"
+      - ".github/workflows/branch-deploys.yml"
 
 jobs:
   build_and_deploy:
@@ -17,6 +19,10 @@ jobs:
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      DATABASE_URL: ${{ secrets.STAGING_DB }}
+      SYSTEM_WALLET: ${{ secrets.STAGING_SYSTEM_WALLET }}
+      SYSTEM_STARTING_BALANCE: ${{ secrets.STAGING_SYSTEM_STARTING_BALANCE }}
+      ORIGIN: https://staging--tellthem.netlify.app
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -40,8 +46,11 @@ jobs:
           path: |
             node_modules
             ${{ steps.get-store-path.outputs.store-path }}
+            .netlify
       - name: Install Dependencies 📦
         if: steps.setup-cache.outputs.cache-hit != 'true'
         run: pnpm i
+      - name: Migrate Database Schema
+        run: pnpm migrate.staging
       - name: Build ⚙️ & Deploy ⬆️
-        run: netlify deploy --alias="${{ github.ref_name }}" --build --context deploy-preview --message="${{ github.event.head_commit.message }}"
+        run: netlify deploy --alias="staging" --build --context branch-deploy --message="${{ github.event.head_commit.message }}"

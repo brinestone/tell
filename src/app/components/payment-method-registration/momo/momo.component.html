@@ -1,0 +1,71 @@
+<div class="flex items-center gap-2">
+  <div class="p-2 flex items-center justify-center bg-yellow-400 rounded-md">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Mtn_mobile_money_logo.png" alt="momo logo" width="50">
+  </div>
+  <div class="space-y-1">
+    <h2 class="font-semibold">MTN Mobile Money &trade; <i class="pi pi-question-circle" pTooltip="All payment transactions from the
+      number you use will have to be
+      approved by you. We will never ask you for your secret PIN"></i></h2>
+    <div><p-tag [rounded]="true" [value]="connectionStatusText()" [severity]="connectionStatusSeverityText()"></p-tag>
+    </div>
+    @if(!showMomoNumberInput()) {
+    <p class="text-sm text-muted-color max-w-[300px]">Connect your MTN Mobile Money number. <strong>Not your
+        PIN</strong></p>
+    }@else {
+    <form (ngSubmit)="onFormSubmit()" [formGroup]="form" class="inline-flex gap-2 items-start flex-wrap">
+      <div>
+        <p-select formControlName="code" placeholder="Select Country" [filter]="true"
+          [filterFields]="['alpha2Code','alpha3Code','nativeName','name']" filterMatchMode="contains"
+          optionValue="alpha2Code" [options]="momoCountries()" appendTo="body" [virtualScroll]="true"
+          [virtualScrollItemSize]="38" [loading]="loadingMomoCountries()">
+          <ng-template #selectedItem let-item>
+            <div class="flex justify-between gap-1 items-center md:w-[3rem]">
+              <img [src]="item.flags.png" width="21" class="m-0" [alt]="item.nativeName">
+              <span class="hidden md:inline">+{{ item.callingCodes[0] }}</span>
+            </div>
+          </ng-template>
+          <ng-template #item let-country>
+            <div class="flex items-center gap-2">
+              <img [src]="country.flags.svg" width="25" [alt]="country.nativeName">
+              <span>{{ country.nativeName }}</span>
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+      <div class="space-y-1">
+        <p-input-group>
+          <input [placeholder]="samplePhoneNumber$ | async" [code]="form.value.code ?? undefined"
+            formControlName="number" type="tel" tmPhone pInputText size="small">
+          <p-inputgroup-addon>
+            <p-button [disabled]="form.invalid || submitting()" type="submit" [text]="true" severity="success"
+              label="Connect" [loading]="submitting()" />
+          </p-inputgroup-addon>
+          <p-inputgroup-addon>
+            <p-button type="reset" [disabled]="submitting()" (onClick)="showMomoNumberInput.set(false)" [text]="true"
+              severity="danger" label="Cancel" />
+          </p-inputgroup-addon>
+        </p-input-group>
+        @if(form.hasError('phoneInvalid') && form.dirty) {
+        <div>
+          <p-message severity="error" size="small" variant="simple">
+            Invalid phone number
+          </p-message>
+        </div>
+        }
+      </div>
+    </form>
+    }
+  </div>
+</div>
+@if(!showMomoNumberInput()) {
+<div class="flex items-center gap-2">
+  @if(!momoPaymentMethodConnected()) {
+  <p-button (onClick)="showMomoNumberInput.set(true)" size="small" [text]="true" label="Connect" />
+  }@else {
+  <p-confirm-popup />
+  <p-button icon="pi pi-pencil" (onClick)="showMomoNumberInput.set(true)" size="small" [text]="true" />
+  <p-button [disabled]="disconnecting()" [loading]="disconnecting()" (onClick)="onDisconnectButtonClicked($event)"
+    size="small" [text]="true" icon="pi pi-trash" severity="danger" />
+  }
+</div>
+}

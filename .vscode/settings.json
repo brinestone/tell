@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "**/*.scss": "tailwindcss"
+    },
+    "github-actions.workflows.pinned.workflows": [
+        ".github/workflows/branch-deploys.yml"
+    ]
+}

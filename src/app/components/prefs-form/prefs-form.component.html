@@ -1,0 +1,64 @@
+<form [formGroup]="form" class="grid grid-cols-[auto_1fr] gap-2">
+  <div>
+    <label for="pref-theme" class="font-medium">Theme</label>
+  </div>
+  <div>
+    <p-select [loading]="loadingPrefs()" formControlName="theme" styleClass="min-w-60" inputId="pref-theme"
+              size="small" [options]="themeOptions"
+              optionLabel="label"
+              optionValue="value"/>
+  </div>
+  <div>
+    <label for="pref-country" class="font-medium">Country</label>
+  </div>
+  <div>
+    <p-select formControlName="country" [loading]="countries.isLoading() || loadingPrefs()"
+              filterBy="nativeName,name,alpha3Code,alpha2Code"
+              [filter]="true" [virtualScroll]="true" [virtualScrollItemSize]="38"
+              [options]="countries.value()" dataKey="alpha2Code" optionValue="alpha2Code"
+              inputId="pref-country"
+              size="small" styleClass="min-w-60">
+      <ng-template #selectedItem #item let-country>
+        <div class="flex items-center gap-2">
+          <img [src]="country.flags.svg" width="25" [alt]="country.nativeName">
+          <span>{{ country.nativeName }}</span>
+        </div>
+      </ng-template>
+    </p-select>
+  </div>
+  <div>
+    <label for="pref-lang" class="font-medium">Language</label>
+  </div>
+  <div>
+    <p-select formControlName="language" [loading]="countries.isLoading() || loadingPrefs()" [filter]="true"
+              [options]="languages.value()"
+              optionValue="iso639_1"
+              appendTo="body"
+              optionLabel="nativeName"
+              filterBy="name,nativeName,iso639_2,iso639_1"
+              inputId="pref-lang" size="small" styleClass="min-w-60"/>
+  </div>
+  <div>
+    <label for="pref-currency" class="font-medium">Currency</label>
+  </div>
+  <div>
+    <p-select formControlName="currency" [loading]="countries.isLoading() || loadingPrefs()" [filter]="true"
+              [options]="currencies.value()" optionValue="code"
+              appendTo="body" inputId="pref-currency" filterBy="name,code,symbol" size="small" styleClass="min-w-60">
+      <ng-template #selectedItem #item let-currency>
+        <div class="flex items-center gap-2">
+          <span class="text-muted-color text-xs">{{ currency.code }} ({{ currency.symbol }})</span>
+          <span>{{ currency.name }}</span>
+        </div>
+      </ng-template>
+    </p-select>
+  </div>
+  <!-- @if (form.dirty) {
+    <div class="col-span-2 flex items-center gap-3">
+      <p-button size="small" type="submit" label="Save" [disabled]="form.invalid || submitting()"
+                [loading]="submitting()"/>
+      <p-button [disabled]="submitting()" size="small" type="reset" label="Discard changes" [outlined]="true"
+                severity="secondary"/>
+    </div>
+  } -->
+</form>

@@ -14,7 +14,46 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "baseUrl": "./",
+    "paths": {
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@functions/*": [
+        "server/functions/*"
+      ],
+      "@helpers/*": [
+        "server/helpers/*"
+      ],
+      "@handlers/*": [
+        "server/handlers/*"
+      ],
+      "@events/*": [
+        "server/events/*"
+      ],
+      "@schemas/*": [
+        "db/schema/*"
+      ],
+      "@middleware/*": [
+        "server/middleware/*"
+      ],
+      "@logger/*": [
+        "logging/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      "@zod-schemas/*": [
+        "server/schemas/*"
+      ],
+      "@constants/*": [
+        "server/constants/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

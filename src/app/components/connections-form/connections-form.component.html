@@ -1,0 +1,9 @@
+<p class="text-muted-color text-sm">In order to promote campaigns, you must connect at least one of your social
+  media accounts from the provider
+  platforms from below</p>
+<div class="space-y-2">
+  <tm-telegram-connection-form [disconnecting]="disconnectingTelegram()"
+    (disconnect)="onDisconnectTelegramConnectionRequested()" (submission)="onTelegramVerificationCodeSubmitted($event)"
+    [acountLoading]="connections.isLoading()" [telegramConnection]="telegramConnection()"
+    [submitting]="verifyingTelegramCode()" [telegramBotUrl]="telegramBotLink" />
+</div>

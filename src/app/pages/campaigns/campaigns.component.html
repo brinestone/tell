@@ -1,0 +1,60 @@
+<div class="mx-auto container space-y-4 pt-4 md:pt-10 pb-10 px-3">
+  <h1 class="text-3xl font-bold">Campaigns</h1>
+  <div class="md:grid md:grid-cols-[1fr_auto] md:gap-x-3">
+    <p-panel>
+      <p-table #dt [scrollable]="true" scrollHeight="flex" dataKey="id" [value]="campaigns.value()?.data ?? []"
+        [paginator]="(campaigns.value()?.data?.length ?? 0) > 10" [rows]="10" [loading]="campaigns.isLoading()"
+        [totalRecords]="campaigns.value()?.total ?? 0">
+        <ng-template #caption>
+          <div class="inline-flex gap-3 items-end flex-wrap">
+            <p-button (onClick)="showCampaignModal.set(true)" [outlined]="true" title="New Campaign"
+              label="New Campaign" icon="pi pi-plus" />
+            <p-icon-field>
+              <p-inputicon>
+                <i class="pi" [class.pi-filter]="filterInput.value.length == 0"
+                  [class.pi-filter-fill]="filterInput.value.length > 0"></i>
+              </p-inputicon>
+              <input (input)="dt.filter(filterInput.value, 'title', 'contains')" size="small" #filterInput pInputText
+                type="search" placeholder="Filter">
+            </p-icon-field>
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th>Title</th>
+            <th>Categories</th>
+            <th>Last Updated</th>
+            <th class="w-[1rem]"></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-campaign let-index="rowIndex">
+          <tr [pSelectableRow]="campaign" pRipple>
+            <td>
+              <a [routerLink]="[campaign.id]"
+                class="line-clamp-1 overflow-ellipsis hover:text-primary transition-colors inline">{{ campaign.title
+                }}</a>
+            </td>
+            <td [ngPlural]="campaign.categoryCount ?? 0">
+              <ng-template ngPluralCase="0">Not set</ng-template>
+              <ng-template ngPluralCase="1">1 category</ng-template>
+              <ng-template ngPluralCase="other">{{ campaign.categoryCount }} categories</ng-template>
+              <ng-template ngPluralCase=">99">99+ categories</ng-template>
+            </td>
+            <td>{{ campaign.updatedAt | date }}</td>
+            <td class="w-[1rem]">
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+</div>
+
+<p-dialog maskStyleClass="backdrop-blur-sm" [draggable]="false" [breakpoints]="{'768px': '99vw'}"
+  [style]="{width: 'auto'}" [(visible)]="showCampaignModal" [modal]="true"
+  [closeButtonProps]="{tabindex: -1,rounded: true ,severity: 'secondary',text: true}">
+  <ng-template #header>
+    <h1 class="text-lg font-bold">New Campaign</h1>
+  </ng-template>
+  <tm-campaign-form (onErrored)="onCampaignFormErrored($event)" (onSubmitted)="onCampaignFormSubmitted()" />
+</p-dialog>

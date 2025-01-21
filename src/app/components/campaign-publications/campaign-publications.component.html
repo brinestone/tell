@@ -1,0 +1,83 @@
+@defer(when !publications.isLoading()) {
+<p-dataView [rows]="10" [paginator]="(publications.value()?.length ?? 0)> 10" [value]="publications.value()"
+  layout="list">
+  <ng-template #header>
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        @if (campaign()?.redirectUrl && availableFundingCredits() > 0) {
+        <p-button (onClick)="showNewPublicationModal.set(true)" size="small" label="Publish" icon="pi pi-megaphone" />
+        } @else {
+        <div class="space-y-2">
+          @if (!campaign()?.redirectUrl) {
+          <div>
+            <p-message icon="pi pi-exclamation-triangle" size="small" variant="outlined" severity="warn">
+              This campaign cannot be published because a valid redirect URL has not been defined for it. Please define
+              it
+              in the settings tab
+            </p-message>
+          </div>
+          }
+          @if (availableFundingCredits() < 25) { <div>
+            <p-message icon="pi pi-exclamation-triangle" size="small" variant="outlined" severity="warn">
+              This campaign cannot be published because your funding balance is too low.
+              Please top up your funding wallet by clicking <a class="" routerLink="/wallet"
+                [queryParams]="{'top-up': true}">here</a>
+            </p-message>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    </div>
+  </ng-template>
+  <ng-template #empty>
+    Nothing published yet
+  </ng-template>
+  <ng-template #list let-pubs>
+    <div class="space-y-2 py-3">
+      @for (pub of pubs; track pub) {
+      <p-card>
+        <div class="space-y-1">
+          <h2 class="text-lg font-semibold">{{ pub.publishAfter | date }} @if(pub.publishBefore) {
+            - {{ pub.publishBefore | date }}
+            }
+          </h2>
+          <div>
+            <p-progress-bar [value]="(pub.creditAllocation.exhausted / pub.creditAllocation.allocated) * 100">
+              <ng-template #content let-value>
+                <span>{{pub.creditAllocation.exhausted | number}}/{{pub.creditAllocation.allocated | number}}
+                  credits</span>
+              </ng-template>
+            </p-progress-bar>
+          </div>
+        </div>
+      </p-card>
+      @if(!$last) {
+      <p-divider />
+      }
+      }
+    </div>
+  </ng-template>
+</p-dataView>
+
+<p-dialog [closeButtonProps]="{
+  tabindex: -1,
+  rounded: true,
+  size: 'small',
+  text: true,
+  severity: 'secondary'
+  }" maskStyleClass="backdrop-blur-sm" [draggable]="false" [resizable]="false" [modal]="true" [dismissableMask]="true"
+  [closeOnEscape]="true" [breakpoints]="{'768px': '99vw'}" [style]="{width: 'auto'}"
+  [(visible)]="showNewPublicationModal">
+  <ng-template #header>
+    <h1 class="text-2xl font-bold">Publication</h1>
+  </ng-template>
+  <tm-publication-form (onSubmit)="onPublicationSubmitted()" [campaign]="campaign()"
+    [totalCredits]="availableFundingCredits()" />
+</p-dialog>
+
+}@placeholder (minimum 5s) {
+<p-message icon="pi pi-info-circle" size="small" variant="outlined" severity="info">
+  Loading publications...
+</p-message>
+}

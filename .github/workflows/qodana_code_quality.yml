@@ -5,7 +5,10 @@ on:
   push:
     branches: # Specify your branches here
       - master # The 'main' branch
-      - 'releases/*' # The release branches
+      - f/*
+      - b/*
+      - next
+      - 'r/*' # The release branches
 
 jobs:
   qodana:
