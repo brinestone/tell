@@ -16,13 +16,11 @@ neonConfig.webSocketConstructor = global.WebSocket ?? ws;
 const logger = process.env['NODE_ENV'] === 'development' ? new DefaultLogger({ writer: new DefaultWriter() }) : false
 console.log('db url = ', process.env['DATABASE_URL'])
 const db = drizzle(new Pool({ connectionString: String(process.env['DATABASE_URL']) }), { logger });
-db.$client.connect().then(() =>
-  db.transaction(async t => {
-    for await (const { seed, name } of seeders) {
-      console.log(`Seeding "${name} ⚙️`);
-      await seed(t as unknown as PgTransaction<any>);
-      console.log(`Seeded "${name}" ✅`);
-    }
-  }))
-  .then(() => db.$client.end())
+db.transaction(async t => {
+  for await (const { seed, name } of seeders) {
+    console.log(`Seeding "${name} ⚙️`);
+    await seed(t as unknown as PgTransaction<any>);
+    console.log(`Seeded "${name}" ✅`);
+  }
+}).then(() => db.$client.end())
   .catch(console.error);
