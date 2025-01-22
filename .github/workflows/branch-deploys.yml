@@ -18,7 +18,7 @@ jobs:
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      DATABASE_URL: ${{ secrets.STAGING_DB }}
+      DATABASE_URL: ${{ vars.STAGING_DB }}
       SYSTEM_WALLET: ${{ secrets.STAGING_SYSTEM_WALLET }}
       SYSTEM_STARTING_BALANCE: ${{ vars.STAGING_SYSTEM_STARTING_BALANCE }}
       ORIGIN: ${{ vars.STAGING_ORIGIN }}
