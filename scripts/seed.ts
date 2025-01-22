@@ -11,6 +11,7 @@ type Seeder = { name: string, seed: (t: PgTransaction<any>) => Promise<void> }
 const seeders: Seeder[] = [users, categories, wallets];
 
 const logger = process.env['NODE_ENV'] === 'development' ? new DefaultLogger({ writer: new DefaultWriter() }) : false
+console.log('db url = ', process.env['DATABASE_URL'])
 const db = drizzle({ connection: String(process.env['DATABASE_URL']), logger })
 
 db.transaction(async t => {
