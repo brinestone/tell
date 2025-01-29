@@ -1,6 +1,6 @@
 [[redirects]]
 from = "/api/*"
-to = "${API_ORIGIN}/" + substr(req.path, 5)
+to = "${API_ORIGIN}/:splat"
 status = 301
 
 [context.branch-deploy]
