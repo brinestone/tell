@@ -39,7 +39,7 @@ export class CampaignPublications {
   readonly showNewPublicationModal = model(false);
   readonly publications: ResourceRef<CampaignPublication[]> = rxResource({
     request: () => this.campaign()?.id,
-    loader: ({ request }) => request ? this.http.get<CampaignPublication[]>(`/api/campaigns/${request}/publications`) : of([])
+    loader: ({ request }) => request ? this.http.get<CampaignPublication[]>(`/api/campaign/publications/${request}`) : of([])
   });
   private readonly walletBalances = rxResource({
     loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')

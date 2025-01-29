@@ -10,15 +10,10 @@ import {
   CampaignFormComponent
 } from '@app/components/campaign-form/campaign-form.component';
 import { LookupCampaignResponse } from '@lib/models/campaign';
-import { Category } from '@lib/models/category';
-import {
-  CountryData
-} from '@lib/models/country-data';
 import { MessageService, ToastMessageOptions } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { Dialog } from 'primeng/dialog';
-import { Drawer } from 'primeng/drawer';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
@@ -59,7 +54,7 @@ export class CampaignsComponent {
 
   readonly campaigns: ResourceRef<LookupCampaignResponse> = rxResource({
     request: () => ({ page: this.currentPage(), size: this.currentPageSize() }),
-    loader: ({ request: { page, size } }) => this.http.get<LookupCampaignResponse>('/api/campaigns', {
+    loader: ({ request: { page, size } }) => this.http.get<LookupCampaignResponse>('/api/campaign', {
       params: {
         page,
         size

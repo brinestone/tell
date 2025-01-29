@@ -33,7 +33,7 @@ export class PrefsUpdated {
   static type = `${prefix} prefs updated`
 }
 
-export class UpdatePrefs implements DisplayPrefs {
+export class UpdatePrefs implements Partial<DisplayPrefs> {
   constructor(readonly theme: 'dark' | 'light' | 'system', readonly country: string, readonly currency: string, readonly language: string) { }
   static type = `${prefix} upate prefs`;
 }
@@ -48,4 +48,8 @@ export class RefreshPaymentMethod {
 
 export class RefreshAccessToken {
   static type = `${prefix} refresh access token`
+}
+
+export class WalletBalanceUpdated {
+  static type = `${prefix} wallet balance updated`
 }

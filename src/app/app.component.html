@@ -6,5 +6,5 @@
 <main class="overflow-y-auto relative">
   <router-outlet/>
   <p-toast [position]="(isSmallDisplay | async) ? 'top-center' : 'bottom-right'"/>
-  <p-toast key="under-modal" [position]="(isSmallDisplay | async) ? 'top-left' : 'bottom-left'"/>
+  <p-toast key="under-modal" [position]="(isSmallDisplay | async) ? 'top-center' : 'bottom-left'"/>
 </main>

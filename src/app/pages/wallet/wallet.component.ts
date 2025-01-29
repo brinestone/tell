@@ -1,21 +1,23 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, effect, inject, model, signal, viewChild } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TopUpFormComponent } from '@app/components/top-up-form/top-up-form.component';
-import { preferences } from '@app/state/user';
+import { preferences, WalletBalanceUpdated } from '@app/state/user';
 import { WalletBalanceResponse, WalletTransfersResponse } from '@lib/models/wallet';
-import { select } from '@ngxs/store';
+import { Actions, ofActionCompleted, select } from '@ngxs/store';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Drawer } from 'primeng/drawer';
+import { Message } from 'primeng/message';
 import { Panel } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TableModule } from 'primeng/table';
+import { TableModule, TablePageEvent } from 'primeng/table';
 import { Tag } from 'primeng/tag';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'tm-wallet',
@@ -55,12 +57,25 @@ export class WalletComponent {
   readonly showTopupFormModal = model(false);
   readonly prefs = select(preferences);
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(actions$: Actions, private router: Router) {
+    actions$.pipe(
+      takeUntilDestroyed(),
+      ofActionCompleted(WalletBalanceUpdated),
+    ).subscribe(() => {
+      this.balances.reload();
+      this.transfers.reload();
+    });
+
     effect(() => {
       const topUpQueryAvailable = this.topUpQuery() == 'true';
       if (!topUpQueryAvailable) return;
       this.showTopupFormModal.set(true);
     })
+  }
+
+  onCurrentPageChanged(event: TablePageEvent) {
+    console.log(event);
+
   }
 
   publicationModalHidden() {
@@ -71,10 +86,11 @@ export class WalletComponent {
     this.router.navigate([], { queryParamsHandling: 'replace', queryParams: {} })
   }
 
-  transferStatusText(status: 'pending' | 'cancelled' | 'complete') {
+  transferStatusText(status: 'pending' | 'cancelled' | 'complete' | 'failed') {
     switch (status) {
       case 'complete': return 'success';
       case 'pending': return 'warn';
+      case 'failed': return 'danger';
       default:
         return 'secondary'
     }

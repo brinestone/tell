@@ -20,7 +20,7 @@ export class ConnectionsFormComponent {
   readonly verifyingTelegramCode = signal(false);
   readonly disconnectingTelegram = signal(false);
   readonly connections = rxResource({
-    loader: () => this.http.get<ConnectedAccount[]>('/api/users/connections')
+    loader: () => this.http.get<ConnectedAccount[]>('/api/connections')
   });
   readonly telegramConnection = computed(() => {
     return this.connections.value()?.find(({ provider }) => provider == 'telegram');
@@ -29,7 +29,7 @@ export class ConnectionsFormComponent {
 
   onTelegramVerificationCodeSubmitted({ code }: VerificationSubmission) {
     this.verifyingTelegramCode.set(true);
-    this.http.get('/api/users/connections/verify/tm', {
+    this.http.get('/api/connections/verify/tm', {
       params: {
         code
       }
@@ -56,7 +56,7 @@ export class ConnectionsFormComponent {
 
   onDisconnectTelegramConnectionRequested() {
     this.disconnectingTelegram.set(true);
-    this.http.get('/api/users/connections/disconnect/tm').subscribe({
+    this.http.get('/api/connections/disconnect/tm').subscribe({
       error: (error: HttpErrorResponse) => {
         this.disconnectingTelegram.set(false);
         this.messageService.add({

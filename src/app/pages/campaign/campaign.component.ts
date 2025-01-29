@@ -64,7 +64,7 @@ export class CampaignComponent {
     request: () => this.campaignId(),
     loader: ({ request }) => {
       if (!request) return EMPTY;
-      return this.http.get<Campaign>(`/api/campaigns/${request}`)
+      return this.http.get<Campaign>(`/api/campaign/${request}`)
     }
   });
 

@@ -1,24 +1,12 @@
-[functions]
-node_bundler = "esbuild"
-external_node_modules = ["fluent-ffmpeg"]
-directory = "server/functions"
-
 [[redirects]]
 from = "/api/*"
-to = "/.netlify/functions/:splat"
-status = 200
+to = "${API_ORIGIN}/" + substr(req.path, 5)
+status = 301
+
 [context.branch-deploy]
 command = "pnpm build --configuration staging"
+
 [[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
-
-[context.production]
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-
-[context.dev.environment]
-  VIDEO_PREVIEW_DURATION=10

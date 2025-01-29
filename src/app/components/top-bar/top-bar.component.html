@@ -16,7 +16,7 @@
       </p-menu>
       <div class="flex items-center gap-3">
         <div>
-          <p-toggle-switch [(ngModel)]="darkMode" (onChange)="onDarkModeChanged($event)">
+          <p-toggle-switch [disabled]="updatingMode()" [(ngModel)]="darkMode" (onChange)="onDarkModeChanged($event)">
             <ng-template #handle let-checked="checked">
               <i class="pi text-sm" [ngClass]="{
                 'pi-sun': !checked,

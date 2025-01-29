@@ -25,7 +25,7 @@ export class LoginComponent {
 
   onGoogleButtonClicked() {
     const continueTo = this.route.snapshot.queryParams['continue'] ?? '/';
-    this.beginGoogleFlow(`${environment.apiOrigin}/api`, continueTo);
+    this.beginGoogleFlow(`${environment.apiOrigin}`, continueTo);
   }
 
 }
