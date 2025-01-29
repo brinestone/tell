@@ -63,7 +63,7 @@ export class PublicationFormComponent {
     this.errorMessage.set('');
     this.submitting.set(true);
     const { credits, publishBefore, publishAfter } = this.form.value;
-    this.http.post(`/api/campaigns/${this.campaign()?.id}/publications`, {
+    this.http.post(`/api/campaign/publications/${this.campaign()?.id}`, {
       credits,
       publishBefore,
       publishAfter

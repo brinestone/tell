@@ -7,7 +7,7 @@ export type PaymentMethodLookup = {
 
 export const PaymentMethodProviderSchema = z.object({
   label: z.string(),
-  name: z.enum(['momo','virtual']),
+  name: z.enum(['momo', 'virtual']),
   image: z.string().optional()
 });
 

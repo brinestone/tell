@@ -1,4 +1,5 @@
-import { NgPlural, NgPluralCase, NgTemplateOutlet } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AsyncPipe, NgPlural, NgPluralCase, NgTemplateOutlet } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, effect, inject, input, output, signal, viewChildren } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -24,6 +25,7 @@ import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Toast } from 'primeng/toast';
+import { map } from 'rxjs';
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 function isImageOrVideoUrl(url: string): "image" | "video" | null {
@@ -77,11 +79,12 @@ function newLinkControl(value = '') {
 @Component({
   providers: [MessageService, ConfirmationService],
   selector: 'tm-campaign-settings',
-  imports: [Divider, ConfirmDialog, Toast, PhoneDirective, FileUpload, Select, NgTemplateOutlet, ReactiveFormsModule, Message, AccordionModule, Fieldset, Textarea, Inplace, InputText, Button, MultiSelect, NgPlural, NgPluralCase],
+  imports: [Divider, ConfirmDialog, AsyncPipe, Toast, PhoneDirective, FileUpload, Select, NgTemplateOutlet, ReactiveFormsModule, Message, AccordionModule, Fieldset, Textarea, Inplace, InputText, Button, MultiSelect, NgPlural, NgPluralCase],
   templateUrl: './campaign-settings.component.html',
   styleUrl: './campaign-settings.component.scss'
 })
 export class CampaignSettings {
+  readonly isSmallDisplay = inject(BreakpointObserver).observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape]).pipe(map(({ matches }) => matches))
   private pendingToastMessageVisible = false;
   private inPlaceControls = viewChildren(Inplace);
   readonly uploading = signal(false);
@@ -344,7 +347,15 @@ export class CampaignSettings {
     this.attachments.updateValueAndValidity();
   }
 
+  onFormSubmit() {
+    this.doSubmitForm();
+  }
+
   onSubmitButtonClicked() {
+    this.doSubmitForm();
+  }
+
+  private doSubmitForm() {
     this.updating.set(true);
     const request = {
       ...this.attachmentsOutput,
@@ -352,7 +363,7 @@ export class CampaignSettings {
       ...this.modifiedLinksAndContactsOutput
     };
 
-    this.http.patch(`/api/campaigns/${this.campaign()?.id}`, request).subscribe({
+    this.http.patch(`/api/campaign/${this.campaign()?.id}`, request).subscribe({
       error: (error: HttpErrorResponse) => {
         this.ms.add({
           severity: 'error',
@@ -404,7 +415,7 @@ export class CampaignSettings {
 
   private doDeleteCampaign() {
     this.deleting.set(true);
-    this.http.delete(`/api/campaigns/${this.campaign()?.id}`).subscribe({
+    this.http.delete(`/api/campaign/${this.campaign()?.id}`).subscribe({
       error: (error: HttpErrorResponse) => {
         this.deleting.set(false);
         this.error.emit(error?.error ?? error);

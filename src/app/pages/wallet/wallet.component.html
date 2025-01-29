@@ -4,7 +4,8 @@
     <p-card>
       <div class="flex justify-between items-center">
         <p class="text-muted-color text-sm">Funding</p>
-        <p-button (onClick)="showTopupFormModal.set(true)" severity="secondary" size="small" label="Top up" [text]="true" icon="pi pi-download"/>
+        <p-button (onClick)="showTopupFormModal.set(true)" severity="secondary" size="small" label="Top up"
+          [text]="true" icon="pi pi-download" />
       </div>
       <h1 class="text-xl font-semibold">
         <span>
@@ -20,7 +21,8 @@
     <p-card>
       <div class="flex justify-between items-center">
         <p class="text-muted-color text-sm">Rewards</p>
-        <p-button [disabled]="(balances.value()?.rewards?.balance ?? 0) <= 0" severity="secondary" size="small" label="Withdraw" [text]="true" icon="pi pi-upload"/>
+        <p-button [disabled]="(balances.value()?.rewards?.balance ?? 0) <= 0" severity="secondary" size="small"
+          label="Withdraw" [text]="true" icon="pi pi-upload" />
       </div>
       <h1 class="text-xl font-semibold">
         <span>
@@ -35,12 +37,14 @@
     </p-card>
   </section>
   <section class="">
+    @let totalRecords = transfers.value()?.total ?? 0;
     <p-panel>
-      <p-table [rows]="10" [paginator]="(transfers.value()?.data ?? []).length > 10"
-        [totalRecords]="transfers.value()?.total ?? 0" dataKey="id" [value]="transfers.value()?.data ?? []">
+      <p-table [rows]="10" size="small" [scrollable]="true" scrollHeight="500px" [paginator]="true"
+        (onPage)="onCurrentPageChanged($event)" [totalRecords]="totalRecords" dataKey="id"
+        [value]="transfers.value()?.data ?? []">
         <ng-template #header>
           <tr>
-            <th>Amount</th>
+            <th># of Credits</th>
             <th>Status</th>
             <th>Type</th>
             <th>Date</th>
@@ -59,18 +63,29 @@
         </ng-template>
         <ng-template #body let-transaction>
           <tr>
-            <td>{{ transaction.amount | number }} @if(transaction.payment){
-              <div class="inline-flex items-center gap-1">
-                <span class="text-muted-color text-xs">| {{ transaction.payment.amount |
-                  currency:transaction.payment.currency:'symbol' }}</span>
-                <i class="pi pi-circle-fill text-[3px] text-muted-color"></i>
-                <span class="text-muted-color text-xs">{{ transaction.payment.status }}</span>
+            <td>
+              <div class="inline-flex items-center gap-1 flex-wrap">
+                @if(transaction.amount === undefined || transaction.amount == null) {
+                <p class="text-sm text-muted-color inline">
+                  Unavailable
+                </p>
+                } @else {
+                <span>{{ transaction.amount | number }}</span>
+                @if(transaction.payment){
+                <div class="inline-flex items-center gap-1">
+                  <span class="hidden md:inline text-sm text-muted-color">|</span>
+                  <span class="text-muted-color text-xs">{{ transaction.payment.amount |
+                    currency:transaction.payment.currency:'symbol' }}</span>
+                  <i class="pi pi-circle-fill text-[3px] text-muted-color"></i>
+                  <span class="text-muted-color text-xs">{{ transaction.payment.status }}</span>
+                </div>
+                }
+                }
               </div>
-              }
             </td>
             <td><p-tag [severity]="transferStatusText(transaction.status)">{{ transaction.status }}</p-tag></td>
             <td><p-tag [severity]="transferTypeText(transaction.type)">{{ transaction.type }}</p-tag></td>
-            <td>{{ transaction.date | date }}</td>
+            <td>{{ transaction.date | date:'dd/MM/yy, HH:mm' }}</td>
           </tr>
         </ng-template>
       </p-table>

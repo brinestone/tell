@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="onSubmitButtonClicked()">
   <section>
     <p-fieldset formGroupName="general" legend="General Information">
       <div class="grid grid-cols-[auto_1fr] gap-2 items-baseline">
@@ -185,7 +185,7 @@
               label: uploading() ? 'Uploading' : 'Upload file',
               loading: uploading(),
               disabled: uploading()
-            }" chooseIcon="pi pi-upload" mode="basic" auto url="/api/blob/upload" name="uploads"
+            }" chooseIcon="pi pi-upload" mode="basic" auto url="/api/blob" name="file"
               accept="image/*,video/*" maxFileSize="6291456" (onError)="onUploadFailed($event)"
               (onSend)="onBeforeUpload()" (onUpload)="onAttachmentFileUploaded($event)" />
           </div>
@@ -230,7 +230,9 @@
   </section>
 </form>
 
-<p-toast styleClass="text-sm" key="pending-campaign-changes" position="bottom-center">
+@let isSmallDisplayVar = isSmallDisplay | async;
+<p-toast styleClass="text-sm" key="pending-campaign-changes"
+  [position]="isSmallDisplayVar ? 'top-center' : 'bottom-center' ">
   <ng-template #message let-message>
     @if(!message.sticky) {
     <span>{{ message.detail }}</span>

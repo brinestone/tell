@@ -4,7 +4,7 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { paymentMethods, preferences } from '@app/state/user';
+import { paymentMethods } from '@app/state/user';
 import { environment } from '@env/environment.development';
 import { Currency } from '@lib/models/country-data';
 import { PaymentMethodProvider } from '@lib/models/payment-method-lookup';
@@ -14,7 +14,7 @@ import { Fluid } from 'primeng/fluid';
 import { InputNumber } from 'primeng/inputnumber';
 import { Message } from 'primeng/message';
 import { Select } from 'primeng/select';
-import { concatMap, distinctUntilKeyChanged, EMPTY, tap } from 'rxjs';
+import { catchError, concatMap, distinctUntilKeyChanged, EMPTY, retry, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'tm-top-up-form',
@@ -38,6 +38,7 @@ export class TopUpFormComponent {
   readonly error = output<Error>();
   readonly onSubmit = output();
   readonly exchangeRate = signal(1);
+  readonly gettingExchangeRate = signal(false);
   readonly registeredPaymentMethods = select(paymentMethods);
   readonly initialCurrency = input<string>();
   readonly form = new FormGroup({
@@ -59,7 +60,7 @@ export class TopUpFormComponent {
 
   // Resources
   readonly currencies = rxResource({
-    loader: () => this.http.get<Currency[]>('/api/currencies')
+    loader: () => this.http.get<Currency[]>('/api/finance/currencies')
   });
   readonly paymentMethodProviders = rxResource({
     loader: () => this.http.get<PaymentMethodProvider[]>('/api/payment/providers')
@@ -131,12 +132,22 @@ export class TopUpFormComponent {
           this.exchangeRate.set(1);
           return EMPTY;
         }
-        return this.http.get<Record<'XAF', number>>('/api/countries/exchange_rates', {
+        this.gettingExchangeRate.set(true);
+        return this.http.get<Record<'XAF', number>>('/api/finance/exchange_rates', {
           params: {
             src: currency,
             dest: 'XAF'
           }
-        })
+        }).pipe(
+          retry({ count: 10, delay: 3000 }),
+          tap(() => {
+            setTimeout(() => this.gettingExchangeRate.set(false), 10);
+          }),
+          catchError((e) => {
+            setTimeout(() => this.gettingExchangeRate.set(false), 10);
+            return throwError(() => e);
+          })
+        )
       }),
     ).subscribe({
       next: ({ XAF }) => {

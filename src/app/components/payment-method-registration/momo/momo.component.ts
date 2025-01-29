@@ -124,7 +124,7 @@ export class MomoComponent {
     const phoneNumber = util.format(p, PhoneNumberFormat.E164);
 
     this.submitting.set(true);
-    this.http.put('/api/payment/methods', { data: { phoneNumber }, provider: 'momo' }).subscribe({
+    this.http.patch('/api/payment/method', { data: { phoneNumber }, provider: 'momo' }).subscribe({
       error: (error: HttpErrorResponse) => {
         this.messageService.add({
           summary: 'Error',

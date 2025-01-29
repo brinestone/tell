@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, inject, linkedSignal } from '@angular/core';
+import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { dispatch, select } from '@ngxs/store';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -28,6 +28,7 @@ export class TopBarComponent {
   readonly principal = select(principal);
   readonly preferences = select(preferences);
   private updateMode = dispatch(SetColorMode);
+  readonly updatingMode = signal(false);
   readonly darkMode = linkedSignal(() => this.preferences().theme == 'dark');
   readonly menuItems: MenuItem[] = [
     // { label: 'Dashboard', routerLink: '/', icon: 'pi pi-gauge', routerLinkActiveOptions: { match: true } },
@@ -46,8 +47,13 @@ export class TopBarComponent {
 
   onDarkModeChanged({ checked }: ToggleSwitchChangeEvent) {
     this.darkMode.set(checked);
+    this.updatingMode.set(true);
     this.updateMode(checked ? 'dark' : 'light').subscribe({
+      complete: () => {
+        this.updatingMode.set(false);
+      },
       error: (error: Error) => {
+        this.updatingMode.set(false);
         this.messageService.add({
           detail: error.message,
           summary: 'Error',

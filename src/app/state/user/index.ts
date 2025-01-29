@@ -1,5 +1,8 @@
+import { Location } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { EnvironmentProviders, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { environment } from '@env/environment.development';
 import {
   PaymentMethodLookup
 } from '@lib/models/payment-method-lookup';
@@ -9,12 +12,13 @@ import {
   Action,
   createPropertySelectors,
   createSelector, NgxsOnInit,
-  provideStates,
   State,
   StateContext,
-  StateToken
+  StateToken,
+  Store
 } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
+import { EventSource } from 'eventsource';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, EMPTY, map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { z } from 'zod';
@@ -28,10 +32,9 @@ import {
   SignedIn,
   SignedOut,
   SignOut,
-  UpdatePrefs
+  UpdatePrefs,
+  WalletBalanceUpdated
 } from './actions';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 
 export * from './actions';
 
@@ -73,6 +76,9 @@ export const ParamsSchema = z.object({
     .pipe(RefreshTokenClaimsSchema)
 });
 
+class FatalError extends Error { }
+class RetriableError extends Error { }
+
 @State({
   name: USER,
   defaults: defaultState
@@ -82,6 +88,53 @@ export class UserState implements NgxsOnInit {
   private http = inject(HttpClient);
   private router = inject(Router);
   private location = inject(Location);
+  private eventsource?: EventSource;
+  private store = inject(Store);
+
+  @Action(SignedOut)
+  closeUpdates(ctx: Context) {
+    this.eventsource?.close();
+    this.eventsource = undefined;
+  }
+
+  @Action(SignedIn)
+  receiveUpdates() {
+    if (this.eventsource) return;
+    setTimeout(async () => {
+      const eventsource = new EventSource(new URL(`/updates`, environment.apiOrigin), {
+        fetch: (input, init) => {
+          const token = this.store.selectSnapshot(accessToken);
+          return fetch(input, {
+            ...init, headers: {
+              authorization: `Bearer ${token}`
+            }
+          });
+        }
+      });
+
+      eventsource.onerror = (event) => {
+        if (event.code === 401) {
+          this.store.dispatch(new RefreshAccessToken()).subscribe(() => {
+            this.receiveUpdates();
+          });
+          return;
+        }
+        console.error(event);
+      }
+
+      eventsource.onmessage = ({ data }) => {
+        const { event } = JSON.parse(data) as { event: string, data?: any };
+        switch (event) {
+          case 'balance.update':
+            this.store.dispatch(WalletBalanceUpdated);
+            break;
+          case 'prefs.update':
+            this.store.dispatch(PrefsUpdated);
+            break;
+        }
+      }
+    });
+  }
 
   @Action(SignedOut)
   refreshOnSignedOut(_: Context, { redirect }: SignedOut) {
@@ -146,8 +199,7 @@ export class UserState implements NgxsOnInit {
         currency: action.currency || defaultDisplayPrefs.currency
       })
     }));
-    return this.http.put('/api/users/prefs', action).pipe(
-      tap(() => ctx.dispatch(PrefsUpdated)),
+    return this.http.patch('/api/users/prefs', action).pipe(
       catchError((e: Error) => {
         ctx.setState(patch({
           prefs: backup
@@ -158,7 +210,7 @@ export class UserState implements NgxsOnInit {
   }
 
   @Action(SignedIn)
-  @Action(PrefsUpdated)
+  @Action(PrefsUpdated, { cancelUncompleted: true })
   onUserSignedIn(ctx: Context) {
     return this.http.get<UserPrefs>('/api/users/prefs').pipe(
       tap(prefs => {
@@ -227,7 +279,9 @@ export class UserState implements NgxsOnInit {
     if (now > Number(exp) * 1000) {
       ctx.setState(defaultState);
       location.reload();
+      return;
     }
+    this.receiveUpdates();
   }
 }
 

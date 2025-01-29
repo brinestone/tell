@@ -30,7 +30,7 @@ export class CampaignFormComponent {
   onCreateCampaignButtonClicked() {
     this.submitting.set(true);
     const val = this.form.value;
-    this.http.post('/api/campaigns', val).subscribe({
+    this.http.post('/api/campaign', val).subscribe({
       error: (error: HttpErrorResponse) => {
         this.submitting.set(false);
         this.onErrored.emit(error.error ?? error);
