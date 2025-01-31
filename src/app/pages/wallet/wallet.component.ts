@@ -5,6 +5,7 @@ import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TopUpFormComponent } from '@app/components/top-up-form/top-up-form.component';
 import { preferences, WalletBalanceUpdated } from '@app/state/user';
+import { environment } from '@env/environment.development';
 import { WalletBalanceResponse, WalletTransfersResponse } from '@lib/models/wallet';
 import { Actions, ofActionCompleted, select } from '@ngxs/store';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
@@ -46,12 +47,12 @@ export class WalletComponent {
   readonly pageSize = signal(10);
   readonly transfers = rxResource({
     request: () => ({ page: this.currentPage(), size: this.pageSize(), }),
-    loader: ({ request }) => this.http.get<WalletTransfersResponse>('/api/wallet/transfers', {
+    loader: ({ request }) => this.http.get<WalletTransfersResponse>(environment.apiOrigin + '/wallet/transfers', {
       params: request
     })
   })
   readonly balances = rxResource({
-    loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
+    loader: () => this.http.get<WalletBalanceResponse>(environment.apiOrigin + '/wallet/balances')
   });
   readonly topUpQuery = injectQueryParams('top-up');
   readonly showTopupFormModal = model(false);

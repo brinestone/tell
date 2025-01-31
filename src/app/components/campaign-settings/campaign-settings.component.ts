@@ -6,6 +6,7 @@ import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PhoneDirective } from '@app/directives/phone.directive';
 import { phoneValidator } from '@app/util/phone-valiator';
+import { environment } from '@env/environment.development';
 import { Campaign } from '@lib/models/campaign';
 import { Category } from '@lib/models/category';
 import { CountryData } from '@lib/models/country-data';
@@ -96,10 +97,10 @@ export class CampaignSettings {
   readonly error = output<Error>();
   readonly campaign = input<Campaign>();
   readonly categories = rxResource({
-    loader: () => this.http.get<Category[]>('/api/categories')
+    loader: () => this.http.get<Category[]>(environment.apiOrigin + '/categories')
   });
   readonly countries = rxResource({
-    loader: () => this.http.get<CountryData[]>('/api/countries')
+    loader: () => this.http.get<CountryData[]>(environment.apiOrigin + '/countries')
   });
   readonly form = new FormGroup({
     general: new FormGroup({
@@ -118,6 +119,10 @@ export class CampaignSettings {
     }),
     media: new FormArray<FormControl<string>>([])
   });
+
+  get origin() {
+    return environment.apiOrigin;
+  }
 
   get emails() {
     return this.form.controls.linksAndContacts.controls.emails;
@@ -363,7 +368,7 @@ export class CampaignSettings {
       ...this.modifiedLinksAndContactsOutput
     };
 
-    this.http.patch(`/api/campaign/${this.campaign()?.id}`, request).subscribe({
+    this.http.patch(`${environment.apiOrigin}/campaign/${this.campaign()?.id}`, request).subscribe({
       error: (error: HttpErrorResponse) => {
         this.ms.add({
           severity: 'error',
@@ -415,7 +420,7 @@ export class CampaignSettings {
 
   private doDeleteCampaign() {
     this.deleting.set(true);
-    this.http.delete(`/api/campaign/${this.campaign()?.id}`).subscribe({
+    this.http.delete(`${environment.apiOrigin}/campaign/${this.campaign()?.id}`).subscribe({
       error: (error: HttpErrorResponse) => {
         this.deleting.set(false);
         this.error.emit(error?.error ?? error);

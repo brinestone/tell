@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, output, signal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { environment } from "@env/environment.development";
 import { Button } from "primeng/button";
 import { Fluid } from "primeng/fluid";
 import { InputText } from "primeng/inputtext";
@@ -30,7 +31,7 @@ export class CampaignFormComponent {
   onCreateCampaignButtonClicked() {
     this.submitting.set(true);
     const val = this.form.value;
-    this.http.post('/api/campaign', val).subscribe({
+    this.http.post(`${environment.apiOrigin}/campaign`, val).subscribe({
       error: (error: HttpErrorResponse) => {
         this.submitting.set(false);
         this.onErrored.emit(error.error ?? error);

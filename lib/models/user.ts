@@ -13,7 +13,7 @@ export const AccessTokenClaimsSchema = z.object({
   name: z.string(),
   image: z.string().optional(),
   tokenId: z.string().uuid(),
-  aud: z.string(),
+  aud: z.string().optional(),
   exp: z.number()
 });
 

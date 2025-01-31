@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import {
   CampaignFormComponent
 } from '@app/components/campaign-form/campaign-form.component';
+import { environment } from '@env/environment.development';
 import { LookupCampaignResponse } from '@lib/models/campaign';
 import { MessageService, ToastMessageOptions } from 'primeng/api';
 import { Button } from 'primeng/button';
@@ -54,7 +55,7 @@ export class CampaignsComponent {
 
   readonly campaigns: ResourceRef<LookupCampaignResponse> = rxResource({
     request: () => ({ page: this.currentPage(), size: this.currentPageSize() }),
-    loader: ({ request: { page, size } }) => this.http.get<LookupCampaignResponse>('/api/campaign', {
+    loader: ({ request: { page, size } }) => this.http.get<LookupCampaignResponse>(environment.apiOrigin + '/campaign', {
       params: {
         page,
         size

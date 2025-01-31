@@ -185,7 +185,7 @@
               label: uploading() ? 'Uploading' : 'Upload file',
               loading: uploading(),
               disabled: uploading()
-            }" chooseIcon="pi pi-upload" mode="basic" auto url="/api/blob" name="file"
+            }" chooseIcon="pi pi-upload" mode="basic" auto url="{{origin}}/blob" name="file"
               accept="image/*,video/*" maxFileSize="6291456" (onError)="onUploadFailed($event)"
               (onSend)="onBeforeUpload()" (onUpload)="onAttachmentFileUploaded($event)" />
           </div>

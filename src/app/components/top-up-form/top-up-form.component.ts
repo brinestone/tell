@@ -60,10 +60,10 @@ export class TopUpFormComponent {
 
   // Resources
   readonly currencies = rxResource({
-    loader: () => this.http.get<Currency[]>('/api/finance/currencies')
+    loader: () => this.http.get<Currency[]>(environment.apiOrigin + '/finance/currencies')
   });
   readonly paymentMethodProviders = rxResource({
-    loader: () => this.http.get<PaymentMethodProvider[]>('/api/payment/providers')
+    loader: () => this.http.get<PaymentMethodProvider[]>(environment.apiOrigin + '/payment/providers')
   });
   readonly paymentMethods = computed(() => {
     const providers = this.paymentMethodProviders.value() ?? [];
@@ -79,7 +79,7 @@ export class TopUpFormComponent {
   onFormSubmit() {
     this.submitting.set(true);
     const { amount, currency, paymentMethod } = this.form.value;
-    this.http.post('/api/wallet/top-up', {
+    this.http.post(environment.apiOrigin + '/wallet/top-up', {
       paymentMethod,
       currency,
       amount
@@ -133,7 +133,7 @@ export class TopUpFormComponent {
           return EMPTY;
         }
         this.gettingExchangeRate.set(true);
-        return this.http.get<Record<'XAF', number>>('/api/finance/exchange_rates', {
+        return this.http.get<Record<'XAF', number>>(environment.apiOrigin + '/finance/exchange_rates', {
           params: {
             src: currency,
             dest: 'XAF'

@@ -10,6 +10,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { dispatch } from '@ngxs/store';
 import { SignOut } from '@app/state/user';
+import { environment } from '@env/environment.development';
 @Component({
   selector: 'tm-settings',
   imports: [
@@ -52,7 +53,7 @@ export class SettingsComponent {
       },
       accept: () => {
         this.deletingAccount.set(true);
-        this.http.delete('/api/auth').subscribe({
+        this.http.delete(environment.apiOrigin + '/auth').subscribe({
           complete: () => {
             this.deletingAccount.set(false);
             this.signOut('/');

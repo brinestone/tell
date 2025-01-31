@@ -9,6 +9,7 @@ import { Fluid } from 'primeng/fluid';
 import { Button } from 'primeng/button';
 import { Message } from 'primeng/message';
 import { DecimalPipe, PercentPipe } from '@angular/common';
+import { environment } from '@env/environment.development';
 
 @Component({
   selector: 'tm-publication-form',
@@ -63,7 +64,7 @@ export class PublicationFormComponent {
     this.errorMessage.set('');
     this.submitting.set(true);
     const { credits, publishBefore, publishAfter } = this.form.value;
-    this.http.post(`/api/campaign/publications/${this.campaign()?.id}`, {
+    this.http.post(`${environment.apiOrigin}/campaign/publications/${this.campaign()?.id}`, {
       credits,
       publishBefore,
       publishAfter

@@ -4,6 +4,7 @@ import { Component, computed, inject, input, model, ResourceRef } from '@angular
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { PublicationFormComponent } from '@app/components/publication-form';
+import { environment } from '@env/environment.development';
 import { Campaign, CampaignPublication } from '@lib/models/campaign';
 import { WalletBalanceResponse } from '@lib/models/wallet';
 import { Button } from 'primeng/button';
@@ -39,10 +40,10 @@ export class CampaignPublications {
   readonly showNewPublicationModal = model(false);
   readonly publications: ResourceRef<CampaignPublication[]> = rxResource({
     request: () => this.campaign()?.id,
-    loader: ({ request }) => request ? this.http.get<CampaignPublication[]>(`/api/campaign/publications/${request}`) : of([])
+    loader: ({ request }) => request ? this.http.get<CampaignPublication[]>(`${environment.apiOrigin}/campaign/publications/${request}`) : of([])
   });
   private readonly walletBalances = rxResource({
-    loader: () => this.http.get<WalletBalanceResponse>('/api/wallet/balances')
+    loader: () => this.http.get<WalletBalanceResponse>(environment.apiOrigin + '/wallet/balances')
   });
   readonly availableFundingCredits = computed(() => {
     return this.walletBalances.value()?.funding?.balance ?? 0
