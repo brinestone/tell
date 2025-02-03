@@ -99,8 +99,9 @@ export class WalletComponent {
 
   transferTypeText(type: 'funding' | 'reward' | 'withdrawal') {
     switch (type) {
-      case 'funding': return 'warn';
-      case 'reward': return 'success';
+      case 'funding': return 'success';
+      case 'withdrawal':
+      case 'reward': return 'warn';
       default: return 'secondary';
     }
   }

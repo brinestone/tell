@@ -36,58 +36,80 @@
       </h1>
     </p-card>
   </section>
-  <section class="">
+  <section>
     @let totalRecords = transfers.value()?.total ?? 0;
     <p-panel>
       <p-table [rows]="10" size="small" [scrollable]="true" scrollHeight="500px" [paginator]="true"
         (onPage)="onCurrentPageChanged($event)" [totalRecords]="totalRecords" dataKey="id"
-        [value]="transfers.value()?.data ?? []">
+        [value]="transfers.value()?.groups ?? []">
         <ng-template #header>
           <tr>
+            <th style="width: 5rem"></th>
             <th># of Credits</th>
+            <th># of Transactions</th>
+            <th pSortableColumn="burst">Date</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-transaction let-exp="expanded">
+          <tr>
+            <td><p-button type="button" [rounded]="true" size="small" [text]="true" [pRowToggler]="transaction"
+                [plain]="true" [icon]="exp ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" /></td>
+            <td class="font-semibold">{{ transaction.transferredCredits | number }}</td>
+            <td>{{ transaction.transfers.length | number }}</td>
+            <td>{{ transaction.burst | date }}</td>
+          </tr>
+        </ng-template>
+        <ng-template #expandedrow let-transaction>
+          <tr>
+            <td colspan="4">
+              <p-table dataKey="transaction" [value]="transaction.transfers">
+                <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 5rem"></th>
+            <th>Credits </th>
             <th>Status</th>
             <th>Type</th>
-            <th>Date</th>
+            <th>Payment</th>
+            <th>Time</th>
+            <!-- <th></th> -->
           </tr>
         </ng-template>
-        <ng-template #caption>
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-2">
-              <h1 class="font-semibold text-lg">Transactions</h1>
-              @if(transfers.isLoading()) {
-              <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-                [style]="{ width: '20px', height: '20px' }" />
-              }
-            </div>
-          </div>
-        </ng-template>
-        <ng-template #body let-transaction>
+        <ng-template pTemplate="body" let-transfer>
           <tr>
-            <td>
-              <div class="inline-flex items-center gap-1 flex-wrap">
-                @if(transaction.amount === undefined || transaction.amount == null) {
-                <p class="text-sm text-muted-color inline">
-                  Unavailable
-                </p>
-                } @else {
-                <span>{{ transaction.amount | number }}</span>
-                @if(transaction.payment){
-                <div class="inline-flex items-center gap-1">
-                  <span class="hidden md:inline text-sm text-muted-color">|</span>
-                  <span class="text-muted-color text-xs">{{ transaction.payment.amount |
-                    currency:transaction.payment.currency:'symbol' }}</span>
-                  <i class="pi pi-circle-fill text-[3px] text-muted-color"></i>
-                  <span class="text-muted-color text-xs">{{ transaction.payment.status }}</span>
-                </div>
-                }
-                }
+            <td></td>
+            <td class="font-semibold">{{ transfer.credits | number }}</td>
+            <td><p-tag [severity]="transferStatusText(transfer.status)">{{ transfer.status }}</p-tag></td>
+            <td><p-tag [severity]="transferTypeText(transfer.type)">{{ transfer.type }}</p-tag></td>
+            <td>@if(transfer.payment){
+              <div class="inline-flex items-center gap-1">
+                <span class="hidden md:inline text-sm text-muted-color">|</span>
+                <span class="text-muted-color text-xs">{{ transfer.payment.amount |
+                  currency:transfer.payment.currency:'symbol' }}</span>
+                <i class="pi pi-circle-fill text-[3px] text-muted-color"></i>
+                <span class="text-muted-color text-xs">{{ transfer.payment.status }}</span>
               </div>
+              } @else {
+              N/A
+              }
             </td>
-            <td><p-tag [severity]="transferStatusText(transaction.status)">{{ transaction.status }}</p-tag></td>
-            <td><p-tag [severity]="transferTypeText(transaction.type)">{{ transaction.type }}</p-tag></td>
-            <td>{{ transaction.date | date:'dd/MM/yy, HH:mm' }}</td>
+            <td>{{ transfer.recordedAt | date:'HH:mm' }}</td>
           </tr>
         </ng-template>
+      </p-table>
+      </td>
+      </tr>
+      </ng-template>
+      <ng-template #caption>
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-2">
+            <h1 class="font-semibold text-lg">Transfers</h1>
+            @if(transfers.isLoading()) {
+            <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+              [style]="{ width: '20px', height: '20px' }" />
+            }
+          </div>
+        </div>
+      </ng-template>
       </p-table>
     </p-panel>
   </section>

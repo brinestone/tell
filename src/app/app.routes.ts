@@ -7,6 +7,11 @@ const signedInGuard = authGuard('/auth/login');
 
 export const appRoutes: Routes = [
   {
+    path: 'analytics',
+    title: 'Analytics',
+    loadComponent: () => import('./pages/analytics/analytics.component').then(m => m.AnalyticsComponent)
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth.routes').then(m => m.authRoutes)
   },

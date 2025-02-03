@@ -10,7 +10,7 @@ export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
   const token = store.selectSnapshot(accessToken);
 
-  if (req.url.startsWith('/api') && token) {
+  if (req.url.startsWith(environment.apiOrigin) && token) {
     return next(req.clone({ setHeaders: { 'Authorization': `Bearer ${token}` } })).pipe(
       catchError((e: HttpErrorResponse) => {
         if (e.status == 401 && req.url != environment.apiOrigin + '/auth/revoke-token')
