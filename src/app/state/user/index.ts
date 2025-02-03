@@ -148,7 +148,7 @@ export class UserState implements NgxsOnInit {
     return this.http.get<{
       access: string,
       refresh: string
-    }>('/api/auth/refresh', { params: { token: refreshToken ?? '' } }).pipe(
+    }>(environment.apiOrigin + '/auth/refresh', { params: { token: refreshToken ?? '' } }).pipe(
       map(arg => ({
         ...ParamsSchema.parse(arg),
         accessToken: arg.access,
@@ -170,7 +170,7 @@ export class UserState implements NgxsOnInit {
 
   @Action(RefreshPaymentMethod)
   onRefreshPaymentMethod(ctx: Context) {
-    return this.http.get<PaymentMethodLookup[]>('/api/payment/methods').pipe(
+    return this.http.get<PaymentMethodLookup[]>(environment.apiOrigin + '/payment/methods').pipe(
       tap(paymentMethods => ctx.setState(patch({
         paymentMethods
       })))
@@ -199,7 +199,7 @@ export class UserState implements NgxsOnInit {
         currency: action.currency || defaultDisplayPrefs.currency
       })
     }));
-    return this.http.patch('/api/users/prefs', action).pipe(
+    return this.http.patch(environment.apiOrigin + '/users/prefs', action).pipe(
       catchError((e: Error) => {
         ctx.setState(patch({
           prefs: backup
@@ -212,7 +212,7 @@ export class UserState implements NgxsOnInit {
   @Action(SignedIn)
   @Action(PrefsUpdated, { cancelUncompleted: true })
   onUserSignedIn(ctx: Context) {
-    return this.http.get<UserPrefs>('/api/users/prefs').pipe(
+    return this.http.get<UserPrefs>(environment.apiOrigin + '/users/prefs').pipe(
       tap(prefs => {
         ctx.setState(patch({ prefs }));
       })
@@ -228,7 +228,7 @@ export class UserState implements NgxsOnInit {
       return EMPTY;
     }
 
-    return this.http.get(`/api/auth/revoke-token`, {
+    return this.http.get(`${environment.apiOrigin}/auth/revoke-token`, {
       params: {
         token: refreshToken
       }

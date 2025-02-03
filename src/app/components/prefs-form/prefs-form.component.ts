@@ -3,6 +3,7 @@ import { Component, inject, OnInit, output, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { preferences, PrefsUpdated, UpdatePrefs } from '@app/state/user';
+import { environment } from '@env/environment.development';
 import { CountryData, Currency, Language } from '@lib/models/country-data';
 import { Actions, dispatch, ofActionCompleted, ofActionDispatched, select } from '@ngxs/store';
 import { Select } from 'primeng/select';
@@ -24,7 +25,7 @@ export class PrefsFormComponent implements OnInit {
   readonly submitting = signal(false);
   readonly loadingPrefs = signal(false);
   readonly countries = rxResource({
-    loader: () => this.http.get<CountryData[]>('/api/countries')
+    loader: () => this.http.get<CountryData[]>(environment.apiOrigin + '/countries')
   });
   readonly languages = rxResource({
     request: () => ({ countries: this.countries.value() }),

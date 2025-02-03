@@ -10,6 +10,7 @@ import {
   CampaignPublications
 }                                                  from '@app/components/campaign-publications/campaign-publications.component';
 import { CampaignSettings }                        from '@app/components/campaign-settings/campaign-settings.component';
+import { environment } from '@env/environment.development';
 import { Campaign }                                from '@lib/models/campaign';
 import { Navigate }                                from '@ngxs/router-plugin';
 import { dispatch }                                from '@ngxs/store';
@@ -64,7 +65,7 @@ export class CampaignComponent {
     request: () => this.campaignId(),
     loader: ({ request }) => {
       if (!request) return EMPTY;
-      return this.http.get<Campaign>(`/api/campaign/${request}`)
+      return this.http.get<Campaign>(`${environment.apiOrigin}/campaign/${request}`)
     }
   });
 

@@ -1,0 +1,9 @@
+<div tmReCaptcha [recaptchaKey]="siteKey" class="flex items-center justify-center h-full" (ready)="onRecaptchaReady()">
+  <p>
+    @if(failed()) {
+    Broken URL. Redirecting to home page...
+    }@else {
+    Redirecting...
+    }
+  </p>
+</div>

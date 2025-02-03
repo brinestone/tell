@@ -20,6 +20,7 @@ import { Tag } from 'primeng/tag';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 import { filter, map, startWith } from 'rxjs';
+import { environment } from '@env/environment.development';
 const momoSupportedCountries = ['BJ', 'BW', 'BF', 'BI', 'CM', 'TD', 'CG', 'CD', 'CI', 'GH', 'GN', 'GW', 'KE', 'MW', 'ML', 'MZ', 'NE', 'NG', 'RW', 'SN', 'SC', 'SL', 'SO', 'SS', 'SZ', 'TZ', 'TG', 'UG', 'ZM', 'ZW', 'CN', 'IN', 'PH', 'TR', 'CA', 'ET'];
 const util = PhoneNumberUtil.getInstance();
 
@@ -101,7 +102,7 @@ export class MomoComponent {
       if (!showingMomoNumberInput || momoCountries.length == momoSupportedCountries.length) return;
 
       this.loadingMomoCountries.set(true);
-      this.http.get<CountryData[]>('/api/countries/find', {
+      this.http.get<CountryData[]>(environment.apiOrigin + '/countries/find', {
         params: {
           alpha2Code: momoSupportedCountries.join(',')
         }
@@ -124,7 +125,7 @@ export class MomoComponent {
     const phoneNumber = util.format(p, PhoneNumberFormat.E164);
 
     this.submitting.set(true);
-    this.http.patch('/api/payment/method', { data: { phoneNumber }, provider: 'momo' }).subscribe({
+    this.http.patch(environment.apiOrigin + '/payment/method', { data: { phoneNumber }, provider: 'momo' }).subscribe({
       error: (error: HttpErrorResponse) => {
         this.messageService.add({
           summary: 'Error',
@@ -163,7 +164,7 @@ export class MomoComponent {
       },
       accept: () => {
         this.disconnecting.set(true);
-        this.http.delete('/api/payment/methods', { params: { provider: 'momo' } }).subscribe({
+        this.http.delete(environment.apiOrigin + '/payment/methods', { params: { provider: 'momo' } }).subscribe({
           error: (error: HttpErrorResponse) => {
             this.messageService.add({
               summary: 'Error',
