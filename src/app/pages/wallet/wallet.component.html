@@ -62,13 +62,14 @@
         <ng-template #expandedrow let-transaction>
           <tr>
             <td colspan="4">
-              <p-table dataKey="transaction" [value]="transaction.transfers">
-                <ng-template pTemplate="header">
+              <p-panel>
+                <p-table [scrollable]="true" scrollHeight="300px" dataKey="transaction" [value]="transaction.transfers">
+                  <ng-template pTemplate="header">
           <tr>
             <th style="width: 5rem"></th>
             <th>Credits </th>
-            <th>Status</th>
             <th>Type</th>
+            <th>Status</th>
             <th>Payment</th>
             <th>Time</th>
             <!-- <th></th> -->
@@ -78,39 +79,40 @@
           <tr>
             <td></td>
             <td class="font-semibold">{{ transfer.credits | number }}</td>
-            <td><p-tag [severity]="transferStatusText(transfer.status)">{{ transfer.status }}</p-tag></td>
-            <td><p-tag [severity]="transferTypeText(transfer.type)">{{ transfer.type }}</p-tag></td>
-            <td>@if(transfer.payment){
+            <td>@if(transfer.paymentTransaction){
               <div class="inline-flex items-center gap-1">
-                <span class="hidden md:inline text-sm text-muted-color">|</span>
-                <span class="text-muted-color text-xs">{{ transfer.payment.amount |
-                  currency:transfer.payment.currency:'symbol' }}</span>
+                <!-- <span class="hidden md:inline text-sm text-muted-color">|</span> -->
+                <span class="text-muted-color">{{ transfer.paymentTransaction.amount |
+                  currency:transfer.paymentTransaction.currency:'symbol' }}</span>
                 <i class="pi pi-circle-fill text-[3px] text-muted-color"></i>
-                <span class="text-muted-color text-xs">{{ transfer.payment.status }}</span>
+                <span class="text-muted-color">{{ transfer.paymentTransaction.status }}</span>
               </div>
               } @else {
               N/A
               }
             </td>
+            <td><p-tag [severity]="transferTypeText(transfer.type)">{{ transfer.type }}</p-tag></td>
+            <td><p-tag [severity]="transferStatusText(transfer.status)">{{ transfer.status }}</p-tag></td>
             <td>{{ transfer.recordedAt | date:'HH:mm' }}</td>
           </tr>
         </ng-template>
       </p-table>
-      </td>
-      </tr>
-      </ng-template>
-      <ng-template #caption>
-        <div class="flex justify-between items-start">
-          <div class="flex items-center gap-2">
-            <h1 class="font-semibold text-lg">Transfers</h1>
-            @if(transfers.isLoading()) {
-            <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-              [style]="{ width: '20px', height: '20px' }" />
-            }
-          </div>
+    </p-panel>
+    </td>
+    </tr>
+    </ng-template>
+    <ng-template #caption>
+      <div class="flex justify-between items-start">
+        <div class="flex items-center gap-2">
+          <h1 class="font-semibold text-lg">Transfers</h1>
+          @if(transfers.isLoading()) {
+          <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
+            [style]="{ width: '20px', height: '20px' }" />
+          }
         </div>
-      </ng-template>
-      </p-table>
+      </div>
+    </ng-template>
+    </p-table>
     </p-panel>
   </section>
 
