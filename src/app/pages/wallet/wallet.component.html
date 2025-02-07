@@ -40,7 +40,7 @@
     @let totalRecords = transfers.value()?.total ?? 0;
     <p-panel>
       <p-table [rows]="10" size="small" [scrollable]="true" scrollHeight="500px" [paginator]="true"
-        (onPage)="onCurrentPageChanged($event)" [totalRecords]="totalRecords" dataKey="id"
+        (onPage)="onCurrentPageChanged($event)" [totalRecords]="totalRecords" dataKey="burst"
         [value]="transfers.value()?.groups ?? []">
         <ng-template #header>
           <tr>

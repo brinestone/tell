@@ -7,7 +7,6 @@ import { environment } from '@env/environment.development';
 import { Navigate } from '@ngxs/router-plugin';
 import { dispatch, select } from '@ngxs/store';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
-import { timer } from 'rxjs';
 import { z } from 'zod';
 
 const AnalyticsQueryInputSchema = z.object({
@@ -73,12 +72,12 @@ export class AnalyticsComponent implements OnInit {
       // timer(5000).subscribe(() => {
       //   this.navigate(['/']);
       // });
-      return;
+      // return;
     }
 
     this.http.post(`${environment.apiOrigin}/analytics`, {
-      type: params.t,
-      key: params.id,
+      type: params?.t,
+      key: params?.id,
       data: {
         deviceInfo: {
           hash: await this.computeDeviceCode(),
@@ -89,17 +88,14 @@ export class AnalyticsComponent implements OnInit {
       }
     }, {
       headers: {
-        'x-recaptcha': token,
+        'x-recaptcha': token as string,
       }
     }).subscribe({
       complete: () => {
-        location.href = params.r;
+        location.href = params?.r as unknown as string;
       },
       error: () => {
-        this.failed.set(true);
-        timer(5000).subscribe(() => {
-          this.navigate(['/']);
-        })
+        location.href = params?.r as unknown as string;
       }
     })
   }
